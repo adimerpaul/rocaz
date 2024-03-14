@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('codigo')->nullable();
             $table->string('nombre')->nullable();
             $table->string('image')->nullable()->default('default.png');
-            $table->string('medida')->nullable();
+//            $table->string('medida')->nullable();
             $table->string('ubicacion')->nullable();
             $table->integer('minStock')->nullable();
             $table->integer('stock1')->nullable();
@@ -29,6 +29,8 @@ return new class extends Migration
             $table->double('precio6',11,6)->nullable();
             $table->unsignedBigInteger('category_id');
             $table->foreign('category_id')->references('id')->on('categories');
+            $table->unsignedBigInteger('medida_id')->nullable()->default(1);
+            $table->foreign('medida_id')->references('id')->on('medidas');
             $table->softDeletes();
             $table->timestamps();
         });

@@ -35,11 +35,11 @@ class ProductSeeder extends Seeder
 //T 3,60	Transversal 3,60	Perfil	Unidad	EST2-N1-ESP7	75	 $13.50 	 $23.49 	 $24.55 	 $25.62 	 $26.69 	 $27.76
 
         DB::table('products')->insert([
-            ['codigo' => 'G-567', 'nombre' => 'Gypsum 567', 'medida' => 'm2', 'ubicacion' => 'EST2-N1-ESP4', 'minStock' => 500, 'stock1' => 500, 'stock2' => 500, 'precio1' => 7.20, 'precio2' => 20.90, 'precio3' => 21.85, 'precio4' => 22.80, 'precio5' => 23.75, 'precio6' => 24.70, 'category_id' => 1],
-            ['codigo' => 'G-975', 'nombre' => 'Gypsum 975', 'medida' => 'm2', 'ubicacion' => 'EST2-N1-ESP5', 'minStock' => 500, 'stock1' => 500, 'stock2' => 500, 'precio1' => 7.20, 'precio2' => 11.00, 'precio3' => 11.50, 'precio4' => 12.00, 'precio5' => 12.50, 'precio6' => 13.00, 'category_id' => 1],
-            ['codigo' => 'G-238', 'nombre' => 'Gypsum 238', 'medida' => 'm2', 'ubicacion' => 'EST2-N1-ESP3', 'minStock' => 500, 'stock1' => 500, 'stock2' => 500, 'precio1' => 7.20, 'precio2' => 19.80, 'precio3' => 20.70, 'precio4' => 21.60, 'precio5' => 22.50, 'precio6' => 23.40, 'category_id' => 1],
-            ['codigo' => '7.2', 'nombre' => 'Gypsum 239-G color', 'medida' => 'm2', 'ubicacion' => 'EST2-N1-ESP6', 'minStock' => 500, 'stock1' => 500, 'stock2' => 500, 'precio1' => 7.20, 'precio2' => 24.20, 'precio3' => 25.30,'precio4' => 26.40, 'precio5' => 27.50, 'precio6' => 28.60, 'category_id' => 1],
-            ['codigo' => 'T 3,60', 'nombre' => 'Transversal 3,60', 'medida' => 'Unidad', 'ubicacion' => 'EST2-N1-ESP7', 'minStock' => 75, 'stock1' => 75, 'stock2' => 75, 'precio1' => 13.50, 'precio2' => 23.49, 'precio3' => 24.55, 'precio4' => 25.62, 'precio5' => 26.69, 'precio6' => 27.76, 'category_id' => 2],
+            ['codigo' => 'G-567', 'nombre' => 'Gypsum 567', 'medida_id' => 1, 'ubicacion' => 'EST2-N1-ESP4', 'minStock' => 500, 'stock1' => 500, 'stock2' => 500, 'precio1' => 7.20, 'precio2' => 20.90, 'precio3' => 21.85, 'precio4' => 22.80, 'precio5' => 23.75, 'precio6' => 24.70, 'category_id' => 1],
+            ['codigo' => 'G-975', 'nombre' => 'Gypsum 975', 'medida_id' => 1, 'ubicacion' => 'EST2-N1-ESP5', 'minStock' => 500, 'stock1' => 500, 'stock2' => 500, 'precio1' => 7.20, 'precio2' => 11.00, 'precio3' => 11.50, 'precio4' => 12.00, 'precio5' => 12.50, 'precio6' => 13.00, 'category_id' => 1],
+            ['codigo' => 'G-238', 'nombre' => 'Gypsum 238', 'medida_id' => 1, 'ubicacion' => 'EST2-N1-ESP3', 'minStock' => 500, 'stock1' => 500, 'stock2' => 500, 'precio1' => 7.20, 'precio2' => 19.80, 'precio3' => 20.70, 'precio4' => 21.60, 'precio5' => 22.50, 'precio6' => 23.40, 'category_id' => 1],
+            ['codigo' => '7.2', 'nombre' => 'Gypsum 239-G color', 'medida_id' => 1, 'ubicacion' => 'EST2-N1-ESP6', 'minStock' => 500, 'stock1' => 500, 'stock2' => 500, 'precio1' => 7.20, 'precio2' => 24.20, 'precio3' => 25.30,'precio4' => 26.40, 'precio5' => 27.50, 'precio6' => 28.60, 'category_id' => 1],
+            ['codigo' => 'T 3,60', 'nombre' => 'Transversal 3,60', 'medida_id' => 2, 'ubicacion' => 'EST2-N1-ESP7', 'minStock' => 75, 'stock1' => 75, 'stock2' => 75, 'precio1' => 13.50, 'precio2' => 23.49, 'precio3' => 24.55, 'precio4' => 25.62, 'precio5' => 26.69, 'precio6' => 27.76, 'category_id' => 2],
         ]);
     }
 }

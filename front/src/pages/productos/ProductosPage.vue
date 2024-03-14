@@ -29,7 +29,7 @@
           emit-value />
       </div>
       <div class="col-12 col-md-5 text-right">
-        <q-btn label="Categorias" color="primary" icon="o_edit" outline no-caps rounded />
+        <q-btn label="Categorias" color="black" icon="o_edit" outline no-caps rounded class="bg-white" />
       </div>
       <div class="col-12">
         <div class="row q-pt-xs">
@@ -50,17 +50,23 @@
         <pre>{{products}}</pre>
       </div>
     </div>
+    <q-dialog v-model="productDialog" position="right" maximized>
+      <DialogProducto :productData="product" :categories="categories" :medidasData="medidas" @closeDialog="productDialog = false" :productAction="'create'" />
+    </q-dialog>
   </q-page>
 </template>
 <script>
 import cardComponent from 'components/CardComponent.vue'
+import DialogProducto from 'pages/productos/DialogProducto.vue'
 export default {
   name: 'ProductosPage',
   components: {
-    cardComponent
+    cardComponent,
+    DialogProducto
   },
   data () {
     return {
+      productDialog: false,
       search: '',
       categories: [
         { id: '', name: 'Todas' }
@@ -76,20 +82,28 @@ export default {
       ordenSelected: 'Alfabético',
       products: [],
       productsAll: [],
-      product: {}
+      product: {},
+      medidas: [],
+      medida: {}
     }
   },
   mounted () {
     this.categoriesGet()
     this.productsGet()
+    this.medidasGet()
   },
   methods: {
+    medidasGet () {
+      this.$axios.get('medidas').then(response => {
+        this.medidas = this.medidas.concat(response.data)
+      })
+    },
     clickProducto () {
+      this.productDialog = true
       this.product = {
         codigo: '',
         nombre: '',
-        image: '',
-        medida: '',
+        image: 'default.png',
         ubicacion: '',
         minStock: '',
         stock1: '',
@@ -100,7 +114,8 @@ export default {
         precio4: '',
         precio5: '',
         precio6: '',
-        category_id: 1
+        category_id: 1,
+        medida_id: 1
       }
     },
     searchProducts () {
