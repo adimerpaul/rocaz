@@ -22,7 +22,7 @@
     <q-drawer
       v-model="leftDrawerOpen"
       show-if-above
-      :width="220"
+      :width="200"
     >
       <!--      :breakpoint="400"-->
       <q-layout>
@@ -187,7 +187,7 @@ export default {
   name: 'MainLayout',
   data () {
     return {
-      leftDrawerOpen: true
+      leftDrawerOpen: false
     }
   },
   methods: {

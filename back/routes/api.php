@@ -21,4 +21,6 @@ Route::post('/login', [\App\Http\Controllers\UserController::class, 'login']);
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/me', [\App\Http\Controllers\UserController::class, 'me']);
     Route::post('/logout', [\App\Http\Controllers\UserController::class, 'logout']);
+    Route::apiResource('categories', \App\Http\Controllers\CategoryController::class);
+    Route::apiResource('products', \App\Http\Controllers\ProductController::class);
 });
