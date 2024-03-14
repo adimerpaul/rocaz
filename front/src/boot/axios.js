@@ -16,6 +16,7 @@ export default boot(({ app, router }) => {
 
   app.config.globalProperties.$axios = axios.create({ baseURL: import.meta.env.VITE_BACK })
   app.config.globalProperties.$alert = Alert
+  app.config.globalProperties.$url = import.meta.env.VITE_BACK
   app.config.globalProperties.$store = useCounterStore()
   const token = localStorage.getItem('tokenRocaz')
   if (token) {

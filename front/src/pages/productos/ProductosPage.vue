@@ -2,7 +2,7 @@
   <q-page class="bg-grey-3 q-pa-xs">
     <div class="row">
       <div class="col-12 col-md-3">
-        <q-input v-model="search" label="Buscar" outlined dense class="bg-white">
+        <q-input v-model="search" label="Buscar" outlined dense class="bg-white" @update:modelValue="searchProducts">
           <template v-slot:prepend>
             <q-icon name="o_search" />
           </template>
@@ -12,7 +12,7 @@
         <q-btn label="Descargar reporte" color="primary" icon="cloud_download" flat no-caps />
       </div>
       <div class="col-6 col-md-6 text-right">
-        <q-btn label="Crear producto" color="green" icon="add_circle_outline" no-caps rounded />
+        <q-btn label="Crear producto" color="green" icon="add_circle_outline" no-caps rounded @click="clickProducto" />
       </div>
       <div class="col-12 col-md-6 q-pa-xs">
         <cardComponent :color="'grey'" :title="'Total de referencias'" :monto="1000" :icono="'o_store'" />
@@ -32,6 +32,21 @@
         <q-btn label="Categorias" color="primary" icon="o_edit" outline no-caps rounded />
       </div>
       <div class="col-12">
+        <div class="row q-pt-xs">
+          <div class="col-4 col-md-2" v-for="p in products" :key="p.id">
+            <q-card @click="clickDetalleProducto(p)">
+              <q-img :src="`${$url}../images/${p.image}`" width="100%" height="100px">
+                <div class="absolute-bottom text-center text-subtitle2" style="padding: 0px 0px;line-height: 1;">
+                  {{p.nombre}}
+                </div>
+              </q-img>
+              <q-card-section class="q-pa-none q-ma-none">
+                <div class="text-center text-subtitle2">{{ p.precio1 }} Bs</div>
+                <div :class="`text-center text-bold text-${(p.stock)<=p.minStock?'red':(p.stock)<=p.minStock*2?'yellow-9':'black'}`">{{ p.stock}} {{ $q.screen.lt.md?'Dis':'Disponible' }}</div>
+              </q-card-section>
+            </q-card>
+          </div>
+        </div>
         <pre>{{products}}</pre>
       </div>
     </div>
@@ -59,7 +74,9 @@ export default {
         'Ultimas unidades disponibles'
       ],
       ordenSelected: 'Alfabético',
-      products: []
+      products: [],
+      productsAll: [],
+      product: {}
     }
   },
   mounted () {
@@ -67,6 +84,32 @@ export default {
     this.productsGet()
   },
   methods: {
+    clickProducto () {
+      this.product = {
+        codigo: '',
+        nombre: '',
+        image: '',
+        medida: '',
+        ubicacion: '',
+        minStock: '',
+        stock1: '',
+        stock2: '',
+        precio1: '',
+        precio2: '',
+        precio3: '',
+        precio4: '',
+        precio5: '',
+        precio6: '',
+        category_id: 1
+      }
+    },
+    searchProducts () {
+      if (this.search === '') {
+        this.products = this.productsAll
+      } else {
+        this.products = this.productsAll.filter(p => p.nombre.toLowerCase().includes(this.search.toLowerCase()))
+      }
+    },
     categoriesGet () {
       this.$axios.get('categories').then(response => {
         this.categories = this.categories.concat(response.data)
@@ -75,6 +118,7 @@ export default {
     productsGet () {
       this.$axios.get('products').then(response => {
         this.products = response.data
+        this.productsAll = response.data
       })
     }
   }

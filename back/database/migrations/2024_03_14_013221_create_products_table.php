@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('nombre')->nullable();
             $table->string('image')->nullable()->default('default.png');
             $table->string('medida')->nullable();
-            $table->string('ubicaion')->nullable();
+            $table->string('ubicacion')->nullable();
             $table->integer('minStock')->nullable();
             $table->integer('stock1')->nullable();
             $table->integer('stock2')->nullable();
