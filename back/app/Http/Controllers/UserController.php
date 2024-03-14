@@ -16,6 +16,10 @@ class UserController extends Controller{
                     'token' => $token,
                     'user' => $user
                 ]);
+            }else{
+                return response()->json([
+                    'message' => 'Credenciales incorrectas'
+                ], 401);
             }
         }else{
             return response()->json([
