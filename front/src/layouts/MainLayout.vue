@@ -12,7 +12,7 @@
         />
 
         <q-toolbar-title>
-          Quasar App
+          <q-img src="logo.png" style="width: 100px" />
         </q-toolbar-title>
 
 <!--        <div>Quasar v{{ $q.version }}</div>-->
@@ -35,7 +35,7 @@
               <div>
                 <div style="line-height: 1">
                   <b class="text-grey">Bienvenido:</b> <br>
-                  <a class="text-caption text-primary">{{ $store.user.name }}</a>
+                  <a class="text-caption text-primary">{{ $store.user?.name }}</a>
                 </div>
               </div>
             </div>

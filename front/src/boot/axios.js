@@ -11,7 +11,7 @@ import { Alert } from 'src/addons/Alert'
 // for each client)
 const api = axios.create({ baseURL: 'https://api.example.com' })
 
-export default boot(({ app }) => {
+export default boot(({ app, router }) => {
   // for use inside Vue files (Options API) through this.$axios and this.$api
 
   app.config.globalProperties.$axios = axios.create({ baseURL: import.meta.env.VITE_BACK })
@@ -22,6 +22,12 @@ export default boot(({ app }) => {
     app.config.globalProperties.$axios.defaults.headers.common.Authorization = `Bearer ${token}`
     app.config.globalProperties.$axios.get('me').then((response) => {
       useCounterStore().user = response.data
+    }).catch(() => {
+      console.log('error')
+      localStorage.removeItem('tokenRocaz')
+      useCounterStore().user = null
+      useCounterStore().isLogin = false
+      router.push('/login')
     })
   }
   // ^ ^ ^ this will allow you to use this.$axios (for Vue Options API form)
