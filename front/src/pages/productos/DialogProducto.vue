@@ -14,8 +14,8 @@
           <div class="col-12 text-bold">
             Subir imagen
           </div>
-          <div class="col-12 flex flex-center">
-            <q-avatar @click="openFilePicker" size="100px" class="cursor-pointer">
+          <div class="col-12 flex flex-center q-pb-xs">
+            <q-avatar @click="openFilePicker" size="130px" class="cursor-pointer">
               <img :src="product.image"/>
               <q-badge floating color="grey">
                 <q-icon name="o_camera_alt" size="xs"/>
@@ -52,7 +52,7 @@
             <q-input v-model="product.stock2" label="Stock 2" outlined dense type="number" hint=""/>
           </div>
           <div class="col-6 col-md-4">
-            <q-input v-model="product.precio1" label="Stock 2" outlined dense type="number" hint=""/>
+            <q-input v-model="product.precio1" label="Precio 1" outlined dense type="number" hint=""/>
           </div>
           <div class="col-6 col-md-4">
             <q-input v-model="product.precio2" label="Precio 2" outlined dense type="number" hint=""/>
@@ -69,8 +69,12 @@
           <div class="col-6 col-md-4">
             <q-input v-model="product.precio6" label="Precio 6" outlined dense type="number" hint=""/>
           </div>
+          <div class="col-6 col-md-4">
+            <q-select v-model="product.category_id" :options="categories" label="Categoría" outlined dense emit-value map-options :option-label="item => item.name" :option-value="item => item.id"
+                      :rules="[(val) => val !== null && val !== undefined || 'Selecciona una categoría']"/>
+          </div>
           <div class="col-12">
-            <q-btn type="submit" label="Guardar" color="primary" class="full-width" no-caps rounded/>
+            <q-btn type="submit" label="Guardar" color="primary" class="full-width" no-caps rounded :loading="loading"/>
           </div>
           <pre>{{product}}</pre>
         </div>
@@ -101,6 +105,7 @@ export default {
   },
   data () {
     return {
+      loading: false,
       medidas: this.medidasData || [],
       product: this.productData || {
         codigo: '',
@@ -132,9 +137,12 @@ export default {
         cancel: true,
         persistent: true
       }).onOk(data => {
+        this.loading = true
         this.$axios.post('medidas', { nombre: data }).then(response => {
           this.medidas.push(response.data)
           this.product.medida_id = response.data.id
+        }).finally(() => {
+          this.loading = false
         })
       })
     },
@@ -145,13 +153,18 @@ export default {
       const data = new FormData()
       data.append('file', this.$refs.fileInput.files[0])
       data.append('product', JSON.stringify(this.product))
+      this.loading = true
       this.$axios.post('products', data, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       }).then(response => {
-        console.log(response.data)
-        // this.$emit('productSaved', response.data)
+        // console.log(response.data)
+        this.$emit('productSaved', response.data)
+      }).finally(() => {
+        this.loading = false
+      }).catch(err => {
+        this.$alert.error(err.response.data.message)
       })
     },
     handleFileChange () {

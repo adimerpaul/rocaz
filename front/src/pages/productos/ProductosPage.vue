@@ -2,17 +2,17 @@
   <q-page class="bg-grey-3 q-pa-xs">
     <div class="row">
       <div class="col-12 col-md-3">
-        <q-input v-model="search" label="Buscar" outlined dense class="bg-white" @update:modelValue="searchProducts">
+        <q-input v-model="search" label="Buscar" outlined dense class="bg-white" @update:modelValue="searchProducts" :loading="loading">
           <template v-slot:prepend>
             <q-icon name="o_search" />
           </template>
         </q-input>
       </div>
       <div class="col-6 col-md-3">
-        <q-btn label="Descargar reporte" color="primary" icon="cloud_download" flat no-caps />
+        <q-btn label="Descargar reporte" color="primary" icon="cloud_download" flat no-caps :loading="loading" />
       </div>
       <div class="col-6 col-md-6 text-right">
-        <q-btn label="Crear producto" color="green" icon="add_circle_outline" no-caps rounded @click="clickProducto" />
+        <q-btn label="Crear producto" color="green" icon="add_circle_outline" no-caps rounded @click="clickProducto" :loading="loading" />
       </div>
       <div class="col-12 col-md-6 q-pa-xs">
         <cardComponent :color="'grey'" :title="'Total de referencias'" :monto="1000" :icono="'o_store'" />
@@ -51,7 +51,8 @@
       </div>
     </div>
     <q-dialog v-model="productDialog" position="right" maximized>
-      <DialogProducto :productData="product" :categories="categories" :medidasData="medidas" @closeDialog="productDialog = false" :productAction="'create'" />
+      <DialogProducto :productData="product" :categories="categories" :medidasData="medidas" @closeDialog="productDialog = false" :productAction="'create'"
+      @productSaved="productSaved"/>
     </q-dialog>
   </q-page>
 </template>
@@ -69,8 +70,9 @@ export default {
       productDialog: false,
       search: '',
       categories: [
-        { id: '', name: 'Todas' }
+        { id: '', name: 'Selecciona una categoría' }
       ],
+      loading: false,
       categoriSelected: '',
       ordenes: [
         'Alfabético',
@@ -93,13 +95,16 @@ export default {
     this.medidasGet()
   },
   methods: {
+    productSaved (product) {
+      this.productDialog = false
+      this.products.push(product)
+    },
     medidasGet () {
       this.$axios.get('medidas').then(response => {
         this.medidas = this.medidas.concat(response.data)
       })
     },
     clickProducto () {
-      this.productDialog = true
       this.product = {
         codigo: '',
         nombre: '',
@@ -117,6 +122,7 @@ export default {
         category_id: 1,
         medida_id: 1
       }
+      this.productDialog = true
     },
     searchProducts () {
       if (this.search === '') {
@@ -131,7 +137,9 @@ export default {
       })
     },
     productsGet () {
+      this.loading = true
       this.$axios.get('products').then(response => {
+        this.loading = false
         this.products = response.data
         this.productsAll = response.data
       })
