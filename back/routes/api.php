@@ -22,6 +22,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/me', [\App\Http\Controllers\UserController::class, 'me']);
     Route::post('/logout', [\App\Http\Controllers\UserController::class, 'logout']);
     Route::apiResource('categories', \App\Http\Controllers\CategoryController::class);
-    Route::apiResource('products', \App\Http\Controllers\ProductController::class);
+    Route::get('products', [\App\Http\Controllers\ProductController::class, 'index']);
+    Route::post('products', [\App\Http\Controllers\ProductController::class, 'store']);
+    Route::post('productsUpdate', [\App\Http\Controllers\ProductController::class, 'update']);
     Route::apiResource('medidas', \App\Http\Controllers\MedidaController::class);
 });

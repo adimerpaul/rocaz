@@ -8,7 +8,7 @@ use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Imagick\Driver;
 class ProductController extends Controller{
     public function index(){
-        return Product::all();
+        return Product::with('category')->get();
     }
     public function show(Product $product){
         return $product;
@@ -42,5 +42,28 @@ class ProductController extends Controller{
         }else{
             return 'default.png';
         }
+    }
+    public function update(Request $request){
+        $file = $request->file('file');
+        $productRequest = json_decode($request->product, true);
+        $product=Product::find($productRequest['id']);
+        if ($request->hasFile('file')) {
+            error_log('entro');
+            $fileName = $this->uploadFileResize($file);
+            $productRequest['image'] = $fileName;
+        }
+        $productRequest['minStock'] = $productRequest['minStock'] == '' ? 0 : $productRequest['minStock'];
+        $productRequest['stock1'] = $productRequest['stock1'] == '' ? 0 : $productRequest['stock1'];
+        $productRequest['stock2'] = $productRequest['stock2'] == '' ? 0 : $productRequest['stock2'];
+        $productRequest['precio1'] = $productRequest['precio1'] == '' ? 0 : $productRequest['precio1'];
+        $productRequest['precio2'] = $productRequest['precio2'] == '' ? 0 : $productRequest['precio2'];
+        $productRequest['precio3'] = $productRequest['precio3'] == '' ? 0 : $productRequest['precio3'];
+        $productRequest['precio4'] = $productRequest['precio4'] == '' ? 0 : $productRequest['precio4'];
+        $productRequest['precio5'] = $productRequest['precio5'] == '' ? 0 : $productRequest['precio5'];
+        $productRequest['precio6'] = $productRequest['precio6'] == '' ? 0 : $productRequest['precio6'];
+        $productRequest['category_id'] = $productRequest['category_id'] == '' ? null : $productRequest['category_id'];
+        $product->update($productRequest);
+
+        return response()->json($product, 200);
     }
 }

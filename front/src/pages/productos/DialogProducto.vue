@@ -16,7 +16,8 @@
           </div>
           <div class="col-12 flex flex-center q-pb-xs">
             <q-avatar @click="openFilePicker" size="130px" class="cursor-pointer">
-              <img :src="product.image"/>
+<!--              <img :src="`${$url}../images/${product.image}`">-->
+              <img :src="product.image.includes('http')?product.image:`${$url}../images/${product.image}`" width="100%" height="100%" style="border-radius: 10px;">
               <q-badge floating color="grey">
                 <q-icon name="o_camera_alt" size="xs"/>
               </q-badge>
@@ -74,11 +75,135 @@
                       :rules="[(val) => val !== null && val !== undefined || 'Selecciona una categoría']"/>
           </div>
           <div class="col-12">
-            <q-btn type="submit" label="Guardar" color="primary" class="full-width" no-caps rounded :loading="loading"/>
+            <q-btn type="submit" :label="`${productAction === 'create' ? 'Crear' : productAction === 'edit' ? 'Guardar' : ''}`"
+                   :color="`${productAction === 'create' ? 'green' : productAction === 'edit' ? 'orange' : ''}`"
+                   class="full-width" no-caps rounded :loading="loading"/>
           </div>
           <pre>{{product}}</pre>
         </div>
       </q-form>
+      <div v-else>
+        <div class="row">
+          <div class="col-12 text-center">
+<!--            <q-img :src="`${product.image}`" width="200px">-->
+            <q-img :src="product.image.includes('http')?product.image:`${$url}../images/${product.image}`" width="200px" style="border-radius: 10px;">
+              <div class="absolute-bottom text-center text-subtitle2" style="padding: 0px 0px;">
+                {{product.nombre}}
+              </div>
+            </q-img>
+          </div>
+          <div class="col-12">
+            <div :class="`text-bold text-${(product.stock)<=product.minStock?'red':(product.stock)<=product.minStock*2?'yellow-9':'black'} text-center`">
+              <div>{{ product.stock }} Disponible</div>
+              <div>Min Stock: {{ product.minStock }}</div>
+            </div>
+          </div>
+          <div class="col-12">
+          <q-card>
+            <q-card-section class="row">
+                <div class="col-6">
+                  <div class="text-bold text-grey">
+                    <q-icon name="o_qr_code_2" class="text-grey" size="20px" />
+                    Codigo
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="text-grey text-caption text-right">{{ product.codigo }}</div>
+                </div>
+                <div class="col-6">
+                  <div class="text-bold text-grey">
+                    <q-icon name="o_paid" class="text-grey" size="20px" />
+                    Precio 1
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="text-grey text-caption text-right">{{ product.precio1 }} Bs</div>
+                </div>
+                <div class="col-6">
+                  <div class="text-bold text-grey">
+                    <q-icon name="o_paid" class="text-grey" size="20px" />
+                    Precio 2
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="text-grey text-caption text-right">{{ product.precio2 }} Bs</div>
+                </div>
+                <div class="col-6">
+                  <div class="text-bold text-grey">
+                    <q-icon name="o_paid" class="text-grey" size="20px" />
+                    Precio 3
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="text-grey text-caption text-right">{{ product.precio3 }} Bs</div>
+                </div>
+                <div class="col-6">
+                  <div class="text-bold text-grey">
+                    <q-icon name="o_paid" class="text-grey" size="20px" />
+                    Precio 4
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="text-grey text-caption text-right">{{ product.precio4 }} Bs</div>
+                </div>
+                <div class="col-6">
+                  <div class="text-bold text-grey">
+                    <q-icon name="o_paid" class="text-grey" size="20px" />
+                    Precio 5
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="text-grey text-caption text-right">{{ product.precio5 }} Bs</div>
+                </div>
+                <div class="col-6">
+                  <div class="text-bold text-grey">
+                    <q-icon name="o_paid" class="text-grey" size="20px" />
+                    Precio 6
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="text-grey text-caption text-right">{{ product.precio6 }} Bs</div>
+                </div>
+              <div class="col-6">
+                <div class="text-bold text-grey">
+                  <q-icon name="o_shopping_cart" class="text-grey" size="20px" />
+                  Stock 1
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="text-grey text-caption text-right">{{ product.stock1 }}</div>
+              </div>
+              <div class="col-6">
+                <div class="text-bold text-grey">
+                  <q-icon name="o_shopping_cart" class="text-grey" size="20px" />
+                  Stock 2
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="text-grey text-caption text-right">{{ product.stock2 }}</div>
+              </div>
+              <div class="col-6">
+                <div class="text-bold text-grey">
+                  <q-icon name="o_local_mall" class="text-grey" size="20px" />
+                  Categoria
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="text-grey text-caption text-right">{{ product.category?.name }}</div>
+              </div>
+            </q-card-section>
+          </q-card>
+          <div class="row q-pa-xs">
+            <div class="col-6">
+              <q-btn label="Editar" color="orange" class="full-width" no-caps rounded @click="productAction = 'edit'" icon="o_edit"/>
+            </div>
+            <div class="col-6">
+              <q-btn label="Eliminar" color="red" class="full-width" no-caps outline rounded @click="productDeleted(product.id)" icon="o_delete"/>
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
     </q-card-section>
   </q-card>
 </template>
@@ -94,7 +219,7 @@ export default {
       type: Array,
       required: false
     },
-    productAction: {
+    productActionData: {
       type: String,
       required: true
     },
@@ -106,6 +231,8 @@ export default {
   data () {
     return {
       loading: false,
+      imagen: null,
+      productAction: this.productActionData,
       medidas: this.medidasData || [],
       product: this.productData || {
         codigo: '',
@@ -149,7 +276,7 @@ export default {
     openFilePicker () {
       this.$refs.fileInput.click()
     },
-    saveProduct () {
+    createProduct () {
       const data = new FormData()
       data.append('file', this.$refs.fileInput.files[0])
       data.append('product', JSON.stringify(this.product))
@@ -167,10 +294,36 @@ export default {
         this.$alert.error(err.response.data.message)
       })
     },
+    saveProduct () {
+      if (this.productAction === 'show') {
+        return
+      }
+      if (this.productAction === 'create') {
+        this.createProduct()
+      }
+      if (this.productAction === 'edit') {
+        const data = new FormData()
+        data.append('file', this.imagen)
+        data.append('product', JSON.stringify(this.product))
+        this.loading = true
+        this.$axios.post('productsUpdate', data, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }).then(response => {
+          this.$emit('productUpdated', response.data)
+        }).finally(() => {
+          this.loading = false
+        }).catch(err => {
+          this.$alert.error(err.response.data.message)
+        })
+      }
+    },
     handleFileChange () {
       const file = event.target.files[0]
 
       if (file) {
+        this.imagen = file
         this.product.image = URL.createObjectURL(file)
       }
     }

@@ -35,7 +35,8 @@
         <div class="row q-pt-xs">
           <div class="col-4 col-md-2" v-for="p in products" :key="p.id">
             <q-card @click="clickDetalleProducto(p)">
-              <q-img :src="`${$url}../images/${p.image}`" width="100%" height="100px">
+<!--              <q-img :src="`${$url}../images/${p.image}`" width="100%" height="100px">-->
+              <q-img :src="p.image.includes('http')?p.image:`${$url}../images/${p.image}`" width="100%" height="100px">
                 <div class="absolute-bottom text-center text-subtitle2" style="padding: 0px 0px;line-height: 1;">
                   {{p.nombre}}
                 </div>
@@ -47,12 +48,12 @@
             </q-card>
           </div>
         </div>
-        <pre>{{products}}</pre>
+<!--        <pre>{{products}}</pre>-->
       </div>
     </div>
     <q-dialog v-model="productDialog" position="right" maximized>
-      <DialogProducto :productData="product" :categories="categories" :medidasData="medidas" @closeDialog="productDialog = false" :productAction="'create'"
-      @productSaved="productSaved"/>
+      <DialogProducto :productData="product" :categories="categories" :medidasData="medidas" @closeDialog="productDialog = false" :productActionData="productAction"
+      @productSaved="productSaved" @productUpdated="productUpdated"/>
     </q-dialog>
   </q-page>
 </template>
@@ -68,6 +69,7 @@ export default {
   data () {
     return {
       productDialog: false,
+      productAction: '',
       search: '',
       categories: [
         { id: '', name: 'Selecciona una categoría' }
@@ -95,6 +97,37 @@ export default {
     this.medidasGet()
   },
   methods: {
+    productUpdated (product) {
+      this.productDialog = false
+      this.products = this.products.map(p => {
+        if (p.id === product.id) {
+          return product
+        }
+        return p
+      })
+    },
+    clickDetalleProducto (product) {
+      this.productAction = 'show'
+      this.product = {
+        id: product.id,
+        codigo: product.codigo,
+        nombre: product.nombre,
+        image: product.image,
+        ubicacion: product.ubicacion,
+        minStock: product.minStock,
+        stock1: product.stock1,
+        stock2: product.stock2,
+        precio1: product.precio1,
+        precio2: product.precio2,
+        precio3: product.precio3,
+        precio4: product.precio4,
+        precio5: product.precio5,
+        precio6: product.precio6,
+        category_id: product.category_id,
+        medida_id: product.medida_id
+      }
+      this.productDialog = true
+    },
     productSaved (product) {
       this.productDialog = false
       this.products.push(product)
@@ -105,6 +138,7 @@ export default {
       })
     },
     clickProducto () {
+      this.productAction = 'create'
       this.product = {
         codigo: '',
         nombre: '',
