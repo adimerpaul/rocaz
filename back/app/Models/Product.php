@@ -13,7 +13,7 @@ class Product extends Model
         'codigo',
         'nombre',
         'image',
-        'medida',
+//        'medida',
         'ubicacion',
         'minStock',
         'stock1',
@@ -24,7 +24,8 @@ class Product extends Model
         'precio4',
         'precio5',
         'precio6',
-        'category_id'
+        'category_id',
+        'medida_id'
     ];
     public function category(){
         return $this->belongsTo(Category::class);
@@ -35,4 +36,8 @@ class Product extends Model
     }
     protected $appends = ['stock'];
     protected $hidden = ['created_at', 'updated_at','deleted_at'];
+
+    public function details(){
+        return $this->hasMany(Detail::class);
+    }
 }

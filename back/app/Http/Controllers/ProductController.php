@@ -28,7 +28,7 @@ class ProductController extends Controller{
         $productRequest['precio5'] = $productRequest['precio5'] == '' ? 0 : $productRequest['precio5'];
         $productRequest['precio6'] = $productRequest['precio6'] == '' ? 0 : $productRequest['precio6'];
         $productRequest['category_id'] = $productRequest['category_id'] == '' ? null : $productRequest['category_id'];
-//        error_log(json_encode($productRequest));
+        error_log(json_encode($productRequest));
         $product = Product::create($productRequest);
         return response()->json($product, 201);
     }
@@ -64,6 +64,14 @@ class ProductController extends Controller{
         $productRequest['category_id'] = $productRequest['category_id'] == '' ? null : $productRequest['category_id'];
         $product->update($productRequest);
 
+        return response()->json($product, 200);
+    }
+    public function destroy(Product $product){
+        $cantidadVenta = $product->details()->count();
+        if ($cantidadVenta > 0) {
+            return response()->json('No se puede eliminar el producto, ya que esta en una venta', 400);
+        }
+        $product->delete();
         return response()->json($product, 200);
     }
 }

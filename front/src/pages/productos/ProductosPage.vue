@@ -53,7 +53,7 @@
     </div>
     <q-dialog v-model="productDialog" position="right" maximized>
       <DialogProducto :productData="product" :categories="categories" :medidasData="medidas" @closeDialog="productDialog = false" :productActionData="productAction"
-      @productSaved="productSaved" @productUpdated="productUpdated"/>
+      @productSaved="productSaved" @productUpdated="productUpdated" @productDeleted="productDeleted"/>
     </q-dialog>
   </q-page>
 </template>
@@ -97,6 +97,11 @@ export default {
     this.medidasGet()
   },
   methods: {
+    productDeleted (product) {
+      this.productDialog = false
+      this.index = this.products.findIndex(p => p.id === product.id)
+      this.products.splice(this.index, 1)
+    },
     productUpdated (product) {
       this.productDialog = false
       this.products = this.products.map(p => {
