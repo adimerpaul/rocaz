@@ -31,4 +31,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('proveedores', [\App\Http\Controllers\GastoController::class, 'proveedores']);
     Route::post('proveedorCreateSimple', [\App\Http\Controllers\GastoController::class, 'proveedorCreateSimple']);
     Route::post('registrarGasto', [\App\Http\Controllers\GastoController::class, 'registrarGasto']);
+
+    Route::get('sales', [\App\Http\Controllers\SaleController::class, 'index']);
 });

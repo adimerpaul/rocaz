@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreign('client_id')->references('id')->on('clients');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
-            $table->string('tipo_venta')->nullable()->comment('INGRESO EGRESO ANULADO COTIZACION');
+            $table->string('tipo_venta')->nullable()->comment('INGRESO EGRESO COTIZACION');
             $table->string('concepto')->nullable();
             $table->double('descuento',11,6)->nullable();
             $table->double('subtotal',11,6)->nullable();
@@ -25,8 +25,8 @@ return new class extends Migration
             $table->string('precio')->nullable()->comment('CONTADO CREDITO');
             $table->string('metodo')->nullable()->comment('EFECTIVO TRANSFERENCIA QR');
             $table->string('precio_colocado')->nullable()->comment('PRECIO 1 2 3 4 5 6');
-            $table->dateTime('fechaEmision')->nullable();
-//            $table->string('estado')->nullable()->comment('PENDIENTE PAGADO ANULADO');
+            $table->string("estado")->nullable()->default('ACTIVO')->comment('ACTIVO ANULADO');
+            $table->dateTime('fecha_emision')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

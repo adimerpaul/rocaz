@@ -35,8 +35,10 @@ class GastoController extends Controller{
         $sale->precio = 'CONTADO';
         $sale->metodo = $request->metodo;
         $sale->precio_colocado = '';
+        $sale->estado = 'ACTIVO';
+        $sale->fecha_emision = date('Y-m-d H:i:s');
         $sale->save();
-        return $sale;
+        return $sale->with(['user', 'client'])->find($sale->id);
 
     }
 }

@@ -12,7 +12,7 @@
           <q-form @submit="saveSale">
             <div class="row">
               <div class="col-12">
-                <q-input outlined dense v-model="gasto.monto" label="Monto *" :rules="[val => !!val || 'Campo requerido']" />
+                <q-input outlined dense v-model="gasto.monto" label="Monto *" type="number" step="0.1" :rules="[val => !!val || 'Campo requerido']" />
               </div>
               <div class="col-12">
                 <q-input outlined dense hint="" v-model="gasto.concepto" label="Descripción" />
