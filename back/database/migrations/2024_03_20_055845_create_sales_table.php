@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('client_id');
+            $table->unsignedBigInteger('client_id')->nullable();
             $table->foreign('client_id')->references('id')->on('clients');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
@@ -23,7 +23,9 @@ return new class extends Migration
             $table->double('subtotal',11,6)->nullable();
             $table->double('total',11,6)->nullable();
             $table->string('precio')->nullable()->comment('CONTADO CREDITO');
+            $table->string('metodo')->nullable()->comment('EFECTIVO TRANSFERENCIA QR');
             $table->string('precio_colocado')->nullable()->comment('PRECIO 1 2 3 4 5 6');
+            $table->dateTime('fechaEmision')->nullable();
 //            $table->string('estado')->nullable()->comment('PENDIENTE PAGADO ANULADO');
             $table->softDeletes();
             $table->timestamps();

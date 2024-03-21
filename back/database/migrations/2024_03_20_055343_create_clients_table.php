@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->string('telefono')->nullable();
             $table->string('direccion')->nullable();
+            $table->string('tipo')->nullable()->default('cliente')->comment('CLIENTE, PROVEEDOR');
             $table->softDeletes();
             $table->timestamps();
         });

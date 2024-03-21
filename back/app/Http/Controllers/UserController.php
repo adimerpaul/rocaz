@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller{
     public function login(Request $request){
-        $user = User::where('email', $request->email)->first();
+        $user = User::where('username', $request->username)->first();
         if($user){
             if(Hash::check($request->password, $user->password)){
                 $token = $user->createToken('web')->plainTextToken;

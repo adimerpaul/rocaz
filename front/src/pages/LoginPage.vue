@@ -25,7 +25,7 @@
                         </div>
                       </div>
                       <div class="col-12">
-                        <q-input v-model="user.email" label="Email" outlined rounded type="email"
+                        <q-input v-model="user.username" label="Usuario" outlined rounded type="username"
                                  :rules="[val => val.length > 3 || 'El usuario debe tener al menos 4 caracteres']"
                         >
                           <template v-slot:prepend>
@@ -66,7 +66,7 @@ export default {
   data () {
     return {
       user: {
-        email: '',
+        username: '',
         password: ''
       },
       showPassword: false,
