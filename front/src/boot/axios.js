@@ -3,6 +3,7 @@ import axios from 'axios'
 import { useCounterStore } from 'stores/example-store'
 import { Alert } from 'src/addons/Alert'
 import moment from 'moment'
+import { Excel } from 'src/addons/Excel'
 
 // Be careful when using SSR for cross-request state pollution
 // due to creating a Singleton instance here;
@@ -17,6 +18,7 @@ export default boot(({ app, router }) => {
 
   app.config.globalProperties.$axios = axios.create({ baseURL: import.meta.env.VITE_BACK })
   app.config.globalProperties.$alert = Alert
+  app.config.globalProperties.$excel = Excel
   app.config.globalProperties.$metodos = ['EFECTIVO', 'TRANSFERENCIA', 'QR']
   app.config.globalProperties.$url = import.meta.env.VITE_BACK
   app.config.globalProperties.$store = useCounterStore()

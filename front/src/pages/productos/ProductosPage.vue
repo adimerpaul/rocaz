@@ -9,7 +9,7 @@
         </q-input>
       </div>
       <div class="col-6 col-md-3">
-        <q-btn label="Descargar reporte" color="primary" icon="cloud_download" flat no-caps :loading="loading" />
+        <q-btn label="Descargar reporte" color="primary" icon="cloud_download" flat no-caps :loading="loading" @click="downloadReport" />
 <!--        <q-btn label="Refresh" color="primary" icon="refresh" flat no-caps @click="productsGet" :loading="loading" />-->
       </div>
       <div class="col-6 col-md-6 text-right">
@@ -33,22 +33,7 @@
         <q-btn label="Categorias" color="black" icon="o_edit" outline no-caps rounded class="bg-white" @click="categoriesDialog = true" />
       </div>
       <div class="col-12">
-        <div class="row q-pt-xs">
-          <div class="col-4 col-md-2" v-for="p in products" :key="p.id">
-            <q-card @click="clickDetalleProducto(p)">
-<!--              <q-img :src="`${$url}../images/${p.image}`" width="100%" height="100px">-->
-              <q-img :src="p.image.includes('http')?p.image:`${$url}../images/${p.image}`" width="100%" height="100px">
-                <div class="absolute-bottom text-center text-subtitle2" style="padding: 0px 0px;line-height: 1;">
-                  {{p.nombre}}
-                </div>
-              </q-img>
-              <q-card-section class="q-pa-none q-ma-none">
-                <div class="text-center text-subtitle2">{{ p.precio1 }} Bs</div>
-                <div :class="`text-center text-bold text-${(p.stock)<=p.minStock?'red':(p.stock)<=p.minStock*2?'yellow-9':'black'}`">{{ p.stock}} {{ $q.screen.lt.md?'Dis':'Disponible' }}</div>
-              </q-card-section>
-            </q-card>
-          </div>
-        </div>
+        <ProductsComponents :products="products" @clickDetalleProducto="clickDetalleProducto" />
 <!--        <pre>{{products}}</pre>-->
       </div>
     </div>
@@ -65,9 +50,11 @@
 import cardComponent from 'components/CardComponent.vue'
 import DialogProducto from 'pages/productos/DialogProducto.vue'
 import DialogCategory from 'pages/productos/DialogCategory.vue'
+import ProductsComponents from 'components/ProductsComponents.vue'
 export default {
   name: 'ProductosPage',
   components: {
+    ProductsComponents,
     DialogCategory,
     cardComponent,
     DialogProducto
@@ -105,6 +92,30 @@ export default {
     this.medidasGet()
   },
   methods: {
+    downloadReport () {
+      const data = [
+        {
+          sheet: 'Productos',
+          columns: [
+            { label: 'Código', value: 'codigo' },
+            { label: 'Nombre', value: 'nombre' },
+            { label: 'Ubicación', value: 'ubicacion' },
+            { label: 'Stock', value: 'stock' },
+            { label: 'Stock mínimo', value: 'minStock' },
+            { label: 'Precio 1', value: 'precio1' },
+            { label: 'Precio 2', value: 'precio2' },
+            { label: 'Precio 3', value: 'precio3' },
+            { label: 'Precio 4', value: 'precio4' },
+            { label: 'Precio 5', value: 'precio5' },
+            { label: 'Precio 6', value: 'precio6' },
+            { label: 'Categoría', value: 'category_id' },
+            { label: 'Medida', value: 'medida_id' }
+          ],
+          content: this.products
+        }
+      ]
+      this.$excel.export(data)
+    },
     categoryDeleted (category) {
       this.categories = this.categories.filter(c => c.id !== category.id)
     },
