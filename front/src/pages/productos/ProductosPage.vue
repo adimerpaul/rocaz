@@ -10,6 +10,7 @@
       </div>
       <div class="col-6 col-md-3">
         <q-btn label="Descargar reporte" color="primary" icon="cloud_download" flat no-caps :loading="loading" />
+<!--        <q-btn label="Refresh" color="primary" icon="refresh" flat no-caps @click="productsGet" :loading="loading" />-->
       </div>
       <div class="col-6 col-md-6 text-right">
         <q-btn label="Crear producto" color="green" icon="add_circle_outline" no-caps rounded @click="clickProducto" :loading="loading" />
@@ -22,14 +23,14 @@
       </div>
       <div class="col-4 col-md-3">
         <q-select v-model="categoriSelected" :options="categories" label="Categoría" outlined dense class="bg-white"
-          emit-value map-options :option-label="item => item.name" :option-value="item => item.id" />
+          emit-value map-options :option-label="item => item.name" :option-value="item => item.id" @update:model-value="searchProductsCategory" />
       </div>
       <div class="col-8 col-md-4">
-        <q-select v-model="ordenSelected" :options="ordenes" label="Ordenar por" outlined dense class="bg-white"
+        <q-select v-model="ordenSelected" :options="ordenes" label="Ordenar por" outlined dense class="bg-white" @update:model-value="searchProductsOrder"
           emit-value />
       </div>
       <div class="col-12 col-md-5 text-right">
-        <q-btn label="Categorias" color="black" icon="o_edit" outline no-caps rounded class="bg-white" />
+        <q-btn label="Categorias" color="black" icon="o_edit" outline no-caps rounded class="bg-white" @click="categoriesDialog = true" />
       </div>
       <div class="col-12">
         <div class="row q-pt-xs">
@@ -53,22 +54,28 @@
     </div>
     <q-dialog v-model="productDialog" position="right" maximized>
       <DialogProducto :productData="product" :categories="categories" :medidasData="medidas" @closeDialog="productDialog = false" :productActionData="productAction"
-      @productSaved="productSaved" @productUpdated="productUpdated" @productDeleted="productDeleted"/>
+      @productSaved="productSaved" @productUpdated="productUpdated" @productDeleted="productDeleted" @categoryCreated="categoryCreated" />
+    </q-dialog>
+    <q-dialog v-model="categoriesDialog" position="right" maximized>
+      <DialogCategory :categories="categories.filter(c => c.id !== '')" @categoryUpdated="categoryUpdated" @categoryDeleted="categoryDeleted"/>
     </q-dialog>
   </q-page>
 </template>
 <script>
 import cardComponent from 'components/CardComponent.vue'
 import DialogProducto from 'pages/productos/DialogProducto.vue'
+import DialogCategory from 'pages/productos/DialogCategory.vue'
 export default {
   name: 'ProductosPage',
   components: {
+    DialogCategory,
     cardComponent,
     DialogProducto
   },
   data () {
     return {
       productDialog: false,
+      categoriesDialog: false,
       productAction: '',
       search: '',
       categories: [
@@ -77,13 +84,14 @@ export default {
       loading: false,
       categoriSelected: '',
       ordenes: [
+        'Selecciona un orden',
         'Alfabético',
         'Producto más vendido',
-        'Producto mas rentable',
+        // 'Producto mas rentable',
         'Producto menos vendido',
         'Ultimas unidades disponibles'
       ],
-      ordenSelected: 'Alfabético',
+      ordenSelected: 'Selecciona un orden',
       products: [],
       productsAll: [],
       product: {},
@@ -97,6 +105,46 @@ export default {
     this.medidasGet()
   },
   methods: {
+    categoryDeleted (category) {
+      this.categories = this.categories.filter(c => c.id !== category.id)
+    },
+    categoryUpdated (category) {
+      this.categories = this.categories.map(c => {
+        if (c.id === category.id) {
+          return category
+        }
+        return c
+      })
+    },
+    categoryCreated (category) {
+      this.categories.push(category)
+    },
+    searchProductsOrder (order) {
+      // console.log(order)
+      if (order === '') {
+        this.products = this.productsAll
+      }
+      if (order === 'Alfabético') {
+        this.products = this.productsAll.sort((a, b) => a.nombre.localeCompare(b.nombre))
+      }
+      if (order === 'Producto más vendido') {
+        this.products = this.productsAll.sort((a, b) => b.cantidadVentas - a.cantidadVentas)
+      }
+      if (order === 'Producto menos vendido') {
+        this.products = this.productsAll.sort((a, b) => a.cantidadVentas + b.cantidadVentas)
+      }
+      if (order === 'Ultimas unidades disponibles') {
+        this.products = this.productsAll.sort((a, b) => a.stock - b.stock)
+      }
+    },
+    searchProductsCategory (categoryId) {
+      console.log(categoryId)
+      if (categoryId === '') {
+        this.products = this.productsAll
+      } else {
+        this.products = this.productsAll.filter(p => p.category_id === categoryId)
+      }
+    },
     productDeleted (product) {
       this.productDialog = false
       this.index = this.products.findIndex(p => p.id === product.id)

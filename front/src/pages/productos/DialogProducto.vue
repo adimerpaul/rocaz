@@ -70,16 +70,22 @@
           <div class="col-6 col-md-4">
             <q-input v-model="product.precio6" label="Precio 6" outlined dense step="0.1" type="number" hint=""/>
           </div>
-          <div class="col-6 col-md-4">
+          <div class="col-6 col-md-8">
             <q-select v-model="product.category_id" :options="categories" label="Categoría" outlined dense emit-value map-options :option-label="item => item.name" :option-value="item => item.id"
-                      :rules="[(val) => val !== null && val !== undefined || 'Selecciona una categoría']"/>
+                      :rules="[(val) => val !== null && val !== undefined || 'Selecciona una categoría']">
+              <template v-slot:after>
+                <q-icon name="add_circle_outline" color="green" class="cursor-pointer" @click="openCategoryDialog">
+                  <q-tooltip>Crear nueva categoría</q-tooltip>
+                </q-icon>
+              </template>
+            </q-select>
           </div>
           <div class="col-12">
             <q-btn type="submit" :label="`${productAction === 'create' ? 'Crear' : productAction === 'edit' ? 'Guardar' : ''}`"
                    :color="`${productAction === 'create' ? 'green' : productAction === 'edit' ? 'orange' : ''}`"
                    class="full-width" no-caps rounded :loading="loading"/>
           </div>
-          <pre>{{product}}</pre>
+<!--          <pre>{{product}}</pre>-->
         </div>
       </q-form>
       <div v-else>
@@ -254,6 +260,25 @@ export default {
     }
   },
   methods: {
+    openCategoryDialog () {
+      this.$q.dialog({
+        title: 'Nueva categoría',
+        prompt: {
+          model: '',
+          type: 'text'
+        },
+        cancel: true,
+        persistent: true
+      }).onOk(data => {
+        this.loading = true
+        this.$axios.post('categories', { name: data }).then(response => {
+          this.$emit('categoryCreated', response.data)
+          this.product.category_id = response.data.id
+        }).finally(() => {
+          this.loading = false
+        })
+      })
+    },
     productDeleted (id) {
       this.$q.dialog({
         title: 'Eliminar producto',

@@ -8,7 +8,12 @@ use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Imagick\Driver;
 class ProductController extends Controller{
     public function index(){
-        return Product::with('category')->get();
+        //cantidadde details
+        $products= Product::with(['category','details'])->get();
+        $products->each(function($product){
+            $product->cantidadVentas = $product->details->count();
+        });
+        return $products;
     }
     public function show(Product $product){
         return $product;
@@ -28,7 +33,7 @@ class ProductController extends Controller{
         $productRequest['precio5'] = $productRequest['precio5'] == '' ? 0 : $productRequest['precio5'];
         $productRequest['precio6'] = $productRequest['precio6'] == '' ? 0 : $productRequest['precio6'];
         $productRequest['category_id'] = $productRequest['category_id'] == '' ? null : $productRequest['category_id'];
-        error_log(json_encode($productRequest));
+//        error_log(json_encode($productRequest));
         $product = Product::create($productRequest);
         return response()->json($product, 201);
     }

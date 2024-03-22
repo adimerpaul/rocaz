@@ -9,31 +9,29 @@
     </q-card-section>
     <q-card-section>
       <q-form @submit="saveSale">
-          <q-form @submit="saveSale">
-            <div class="row">
-              <div class="col-12">
-                <q-input outlined dense v-model="gasto.monto" label="Monto *" type="number" step="0.1" :rules="[val => !!val || 'Campo requerido']" />
-              </div>
-              <div class="col-12">
-                <q-input outlined dense hint="" v-model="gasto.concepto" label="Descripción" />
-              </div>
-              <div class="col-12">
-                <q-select outlined dense hint="" v-model="gasto.metodo" :options="$metodos" label="Método de pago" />
-              </div>
-              <div class="col-12">
-                <q-select outlined dense hint="" v-model="gasto.client_id" :options="provider" label="Proveedor" emit-value map-options
-                          option-value="id" option-label="nombre" use-input
-                >
-                  <template v-slot:after>
-                    <q-btn flat dense icon="add_circle_outline" @click="proveedorCreateSimple" color="green"/>
-                  </template>
-                </q-select>
-              </div>
-              <div class="col-12">
-                <q-btn type="submit" label="Guardar" color="red-7" class="full-width" no-caps rounded :loading="loading"/>
-              </div>
-            </div>
-          </q-form>
+        <div class="row">
+          <div class="col-12">
+            <q-input outlined dense v-model="gasto.monto" label="Monto *" type="number" step="0.1" :rules="[val => !!val || 'Campo requerido']" />
+          </div>
+          <div class="col-12">
+            <q-input outlined dense hint="" v-model="gasto.concepto" label="Descripción" />
+          </div>
+          <div class="col-12">
+            <q-select outlined dense hint="" v-model="gasto.metodo" :options="$metodos" label="Método de pago" />
+          </div>
+          <div class="col-12">
+            <q-select outlined dense hint="" v-model="gasto.client_id" :options="provider" label="Proveedor" emit-value map-options
+                      option-value="id" option-label="nombre" use-input
+            >
+              <template v-slot:after>
+                <q-btn flat dense icon="add_circle_outline" @click="proveedorCreateSimple" color="green"/>
+              </template>
+            </q-select>
+          </div>
+          <div class="col-12">
+            <q-btn type="submit" label="Guardar" color="red-7" class="full-width" no-caps rounded :loading="loading"/>
+          </div>
+        </div>
       </q-form>
 <!--      <pre>{{gasto}}</pre>-->
 <!--      <pre>{{provider}}</pre>-->
