@@ -53,22 +53,22 @@
             <q-input v-model="product.stock2" label="Stock 2" outlined dense type="number" hint=""/>
           </div>
           <div class="col-6 col-md-4">
-            <q-input v-model="product.precio1" label="Precio 1" outlined dense step="0.1" type="number" hint=""/>
+            <q-input v-model="product.precio1" label="Precio 1" outlined dense step="0.01" type="number" hint=""/>
           </div>
           <div class="col-6 col-md-4">
-            <q-input v-model="product.precio2" label="Precio 2" outlined dense step="0.1" type="number" hint=""/>
+            <q-input v-model="product.precio2" label="Precio 2" outlined dense step="0.01" type="number" hint=""/>
           </div>
           <div class="col-6 col-md-4">
-            <q-input v-model="product.precio3" label="Precio 3" outlined dense step="0.1" type="number" hint=""/>
+            <q-input v-model="product.precio3" label="Precio 3" outlined dense step="0.01" type="number" hint=""/>
           </div>
           <div class="col-6 col-md-4">
-            <q-input v-model="product.precio4" label="Precio 4" outlined dense step="0.1" type="number" hint=""/>
+            <q-input v-model="product.precio4" label="Precio 4" outlined dense step="0.01" type="number" hint=""/>
           </div>
           <div class="col-6 col-md-4">
-            <q-input v-model="product.precio5" label="Precio 5" outlined dense step="0.1" type="number" hint=""/>
+            <q-input v-model="product.precio5" label="Precio 5" outlined dense step="0.01" type="number" hint=""/>
           </div>
           <div class="col-6 col-md-4">
-            <q-input v-model="product.precio6" label="Precio 6" outlined dense step="0.1" type="number" hint=""/>
+            <q-input v-model="product.precio6" label="Precio 6" outlined dense step="0.01" type="number" hint=""/>
           </div>
           <div class="col-6 col-md-8">
             <q-select v-model="product.category_id" :options="categories" label="Categoría" outlined dense emit-value map-options :option-label="item => item.name" :option-value="item => item.id"

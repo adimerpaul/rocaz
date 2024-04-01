@@ -21,19 +21,25 @@
       <div class="col-12 col-md-6 q-pa-xs">
         <cardComponent :color="'green'" :title="'Costo total de inventario'" :monto="1000" :icono="'o_trending_up'" />
       </div>
-      <div class="col-4 col-md-3">
+      <div class="col-4 col-md-2">
         <q-select v-model="categoriSelected" :options="categories" label="Categoría" outlined dense class="bg-white"
           emit-value map-options :option-label="item => item.name" :option-value="item => item.id" @update:model-value="searchProductsCategory" />
       </div>
-      <div class="col-8 col-md-4">
+      <div class="col-8 col-md-3">
         <q-select v-model="ordenSelected" :options="ordenes" label="Ordenar por" outlined dense class="bg-white" @update:model-value="searchProductsOrder"
           emit-value />
       </div>
-      <div class="col-12 col-md-5 text-right">
+      <div class="col-4 col-md-2">
+        <q-select v-model="almacenSelected" :options="['Todo','Almacen 1','Almacen 2']" label="Almacen" outlined dense class="bg-white" emit-value />
+      </div>
+      <div class="col-12 col-md-2 text-right">
+        <q-select v-model="precio" :options="['PRECIO 1','PRECIO 2','PRECIO 3','PRECIO 4','PRECIO 5','PRECIO 6']" label="Precio" outlined dense class="bg-white" emit-value />
+      </div>
+      <div class="col-12 col-md-3 text-right">
         <q-btn label="Categorias" color="black" icon="o_edit" outline no-caps rounded class="bg-white" @click="categoriesDialog = true" />
       </div>
       <div class="col-12">
-        <ProductsComponents :products="products" @clickDetalleProducto="clickDetalleProducto" />
+        <ProductsComponents :products="products" @clickDetalleProducto="clickDetalleProducto" :precio="precio" :almacenSelected="almacenSelected" />
 <!--        <pre>{{products}}</pre>-->
       </div>
     </div>
@@ -61,6 +67,8 @@ export default {
   },
   data () {
     return {
+      precio: 'PRECIO 1',
+      almacenSelected: 'Todo',
       productDialog: false,
       categoriesDialog: false,
       productAction: '',
