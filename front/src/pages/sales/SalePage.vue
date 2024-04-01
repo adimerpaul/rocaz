@@ -72,7 +72,7 @@
                             {{props.row.nombre}}
                           </div>
                           <div class="text-grey">Disponible: {{props.row.stock}}</div>
-                          <q-input v-model="props.row.precioVenta" style="width: 170px" class="super-small" step="0.1" type="number" @update:model-value="precioVenta(props.row)" dense outlined>
+                          <q-input v-model="props.row.precioVenta" style="width: 170px" class="super-small" step="0.01" type="number" @update:model-value="precioVenta(props.row)" dense outlined>
                             <template v-slot:prepend>
                               <q-icon name="edit" size="xs" />
                               <div style="font-size: 10px">Bs.</div>
@@ -148,7 +148,83 @@
         </q-card>
       </div>
     </div>
-
+    <q-dialog v-model="saleDialog" persistent>
+      <q-card style="width: 750px; max-width: 90vw;">
+        <q-card-section class="row items-center q-pb-none">
+          <div class="text-h6">Realizar venta</div>
+          <q-space />
+          <q-btn flat round dense icon="close" v-close-popup />
+        </q-card-section>
+        <q-form @submit.prevent="saleInsert">
+          <q-card-section>
+            <div class="row">
+              <div class="col-6 col-md-4">
+                <q-input outlined dense label="NIT/CARNET" required @update:model-value="searchClient" v-model="client.nit" :loading="loading" :debounce="500" />
+              </div>
+<!--              <div class="col-6 col-md-3">-->
+<!--                <q-input outlined dense label="Complemento"  @keyup="searchClient" v-model="client.complemento" style="text-transform: uppercase"/>-->
+<!--              </div>-->
+              <div class="col-12 col-md-8">
+                <q-input outlined dense label="Nombre Razon Social" required v-model="client.nombre" style="text-transform: uppercase" />
+              </div>
+<!--              <div class="col-12 col-md-6">-->
+<!--                &lt;!&ndash;                @update:model-value="validarnit"&ndash;&gt;-->
+<!--                <q-select v-model="document" outlined dense :options="documents" />-->
+<!--              </div>-->
+<!--              <div class="col-12 col-md-6">-->
+<!--                <q-input outlined dense label="Email"  v-model="client.email" type="email" />-->
+<!--              </div>-->
+            </div>
+          </q-card-section>
+          <q-separator/>
+          <q-card-section>
+            <div class="row">
+              <div class="col-6 col-md-2">
+                <q-input outlined dense label="TOTAL A PAGAR:" readonly v-model="total" />
+              </div>
+              <div class="col-6 col-md-3">
+                <q-input outlined dense label="EFECTIVO BS."  v-model="efectivo" />
+              </div>
+              <div class="col-6 col-md-2">
+                <q-input outlined dense label="CAMBIO:" readonly v-model="cambio" />
+              </div>
+<!--              <div class="col-6 col-md-2">-->
+<!--                <q-checkbox v-model="aporte" :label="textoCambio"-->
+<!--                            :class="`bg-${parseFloat(efectivo)> parseFloat(total)?'green':'red'} text-white full-width bi-border-all`"-->
+<!--                            :disable="parseFloat(efectivo)> parseFloat(total)?false:true">-->
+<!--                  <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">-->
+<!--                    Si el cliente paga con un monto mayor al total, se registrará el cambio como un aporte.-->
+<!--                  </q-tooltip>-->
+<!--                </q-checkbox>-->
+<!--              </div>-->
+              <!--              <div class="col-6 col-md-2 q-pl-xs">-->
+              <!--                <q-checkbox v-model="qr" label="QR"-->
+              <!--                            :class="`bg-${parseFloat(efectivo)> parseFloat(total)?'green':'red'} text-white full-width bi-border-all`"-->
+              <!--                            :disable="parseFloat(efectivo)> parseFloat(total)?false:true" />-->
+              <!--              </div>-->
+              <div class="col-6 col-md-3">
+                <q-select dense outlined v-model="metodoPago" label="Metodo de pago"
+                          :options="$metodos" hint="Metodo de pago del gasto" />
+              </div>
+              <!--              <div class="col-12">-->
+              <!--                <pre>{{cambioDecimal}}</pre>-->
+              <!--              </div>-->
+            </div>
+          </q-card-section>
+          <q-separator/>
+          <q-card-section>
+            <div class="row">
+              <div class="col-6">
+                <q-btn type="submit" class="full-width" icon="o_add_circle" label="Realizar venta" :loading="loading" no-caps color="green"  />
+              </div>
+              <div class="col-6">
+                <q-btn class="full-width" icon="undo" v-close-popup label="Atras" no-caps color="red" :loading="loading" />
+              </div>
+            </div>
+          </q-card-section>
+        </q-form>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 <script>
@@ -160,6 +236,7 @@ export default {
   },
   data () {
     return {
+      metodoPago: 'EFECTIVO',
       precio: 'PRECIO 1',
       almacenSelected: 'Todo',
       search: '',
@@ -179,7 +256,13 @@ export default {
       ordenSelected: 'Selecciona un orden',
       medidas: [],
       products: [],
-      productsAll: []
+      productsAll: [],
+      saleDialog: false,
+      client: {
+        nit: '',
+        nombre: ''
+      },
+      efectivo: ''
     }
   },
   mounted () {
@@ -188,6 +271,65 @@ export default {
     this.medidasGet()
   },
   methods: {
+    saleInsert () {
+      // this.loading = true
+      // this.$axios.post('sales', {
+      //   client_id: this.client.id,
+      //   total: this.total,
+      //   efectivo: this.efectivo,
+      //   cambio: this.cambio,
+      //   aporte: this.aporte,
+      //   metodoPago: this.metodoPago
+      // }).then(response => {
+      //   this.loading = false
+      //   this.$store.productosVenta.forEach(p => {
+      //     this.$axios.post('salesdetails', {
+      //       sale_id: response.data.id,
+      //       product_id: p.id,
+      //       cantidad: p.cantidadVenta,
+      //       precio: p.precioVenta
+      //     }).then(response => {
+      //       console.log(response)
+      //     })
+      //   })
+      //   this.$store.productosVenta = []
+      //   this.saleDialog = false
+      // })
+    },
+    precioVenta (n) {
+      if (n.precioVenta === '') {
+        n.precioVenta = 1
+      }
+    },
+    cambioNumero (n, i) {
+      console.log(n)
+      // if (n.cantidadVenta !== '') {
+      //   n.cantidad = parseInt(n.cantidadReal) - parseInt(n.cantidadVenta)
+      //   n.cantidadPedida = parseInt(n.cantidadVenta)
+      // }
+      // if (n.cantidadVenta === 0) {
+      //   n.cantidad = parseInt(n.cantidadReal) - 1
+      //   n.cantidadVenta = 1
+      //   n.cantidadPedida = 1
+      // }
+    },
+    removeCantidad (n, i) {
+      n.cantidad++
+      n.cantidadPedida--
+      if (n.cantidadVenta > 1) {
+        n.cantidadVenta = parseInt(n.cantidadVenta) - 1
+      } else if (n.cantidadVenta === 1) {
+        this.$store.productosVenta.splice(i, 1)
+      }
+    },
+    addCantidad (n, i) {
+      n.cantidad--
+      n.cantidadPedida++
+      n.cantidadVenta = parseInt(n.cantidadVenta) + 1
+    },
+    deleteProductosVenta (product, index) {
+      this.$store.productosVenta.splice(index, 1)
+    },
     redondeo (n) {
       return Math.round(n * 100) / 100
     },
@@ -196,6 +338,24 @@ export default {
       if (search) {
         search.cantidadVenta += 1
       } else {
+        if (this.precio === 'PRECIO 1') {
+          product.precioVenta = product.precio1
+        }
+        if (this.precio === 'PRECIO 2') {
+          product.precioVenta = product.precio2
+        }
+        if (this.precio === 'PRECIO 3') {
+          product.precioVenta = product.precio3
+        }
+        if (this.precio === 'PRECIO 4') {
+          product.precioVenta = product.precio4
+        }
+        if (this.precio === 'PRECIO 5') {
+          product.precioVenta = product.precio5
+        }
+        if (this.precio === 'PRECIO 6') {
+          product.precioVenta = product.precio6
+        }
         this.$store.productosVenta.push({
           id: product.id,
           nombre: product.nombre,
@@ -208,16 +368,12 @@ export default {
       }
     },
     clickSale () {
-      // this.$store.productosVenta.forEach(p => {
-      //   this.$store.ventas.push({
-      //     product_id: p.id,
-      //     cantidad: p.cantidadVenta,
-      //     precio: p.precioVenta,
-      //     total: p.cantidadVenta * p.precioVenta
-      //   })
-      // })
-      // this.$store.productosVenta = []
-      // this.$router.push('/ventas')
+      this.saleDialog = true
+      this.efectivo = ''
+      this.client = {
+        nit: '',
+        nombre: ''
+      }
     },
     vaciarCanasta () {
       this.$store.productosVenta = []
@@ -270,11 +426,29 @@ export default {
         this.products = response.data
         this.productsAll = response.data
       })
+    },
+    searchClient (nit) {
+      this.loading = true
+      this.$axios.post('searchClient', {
+        nit: nit
+      }).then(res => {
+        if (res.data.nombre !== undefined) {
+          this.client.nombre = res.data.nombre
+        }
+      }).finally(() => {
+        this.loading = false
+      })
     }
   },
   computed: {
+    cambio () {
+      const efectivo = parseFloat(this.efectivo === '' ? 0 : this.efectivo)
+      const total = parseFloat(this.total === '' ? 0 : this.total)
+      return Math.round((efectivo - total) * 100) / 100
+    },
     total () {
-      return this.$store.productosVenta.reduce((acc, p) => acc + p.cantidadVenta * p.precioVenta, 0)
+      const total = this.$store.productosVenta.reduce((acc, p) => acc + p.cantidadVenta * p.precioVenta, 0)
+      return Math.round(total * 100) / 100
     },
     totalganancia () {
       return this.$store.productosVenta.reduce((acc, p) => acc + (p.cantidadVenta * p.precioVenta - p.costoUnitario) * p.cantidadVenta, 0)

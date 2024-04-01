@@ -17,7 +17,7 @@
         </q-input>
       </div>
       <div class="col-12 col-md-5 text-right">
-        <q-btn label="Nuevo Venta" color="green"  icon="add_circle_outline" no-caps rounded/>
+        <q-btn label="Nuevo Venta" color="green"  icon="add_circle_outline" no-caps rounded to="/sale"/>
         <q-btn label="Nuevo Gasto" color="red"  icon="add_circle_outline" no-caps rounded @click="gastoDialog = true"/>
       </div>
       <div class="col-12 col-md-4 q-pa-xs">

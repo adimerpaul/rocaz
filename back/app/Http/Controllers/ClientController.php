@@ -6,6 +6,12 @@ use App\Models\Client;
 use Illuminate\Http\Request;
 
 class ClientController extends Controller{
+    public function searchClient(Request $request){
+        $nit = $request->nit;
+        error_log('Buscando cliente con NIT: '.$nit);
+        $client = Client::where('nit', $nit)->first();
+        return response()->json($client);
+    }
     public function index(Request $request)
     {
         $search = $request->input('search');

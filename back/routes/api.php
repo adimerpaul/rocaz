@@ -35,6 +35,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('clients', [\App\Http\Controllers\ClientController::class, 'store']);
     Route::put('clients/{client}', [\App\Http\Controllers\ClientController::class, 'update']);
     Route::delete('clients/{client}', [\App\Http\Controllers\ClientController::class, 'destroy']);
+//    searchClient
+    Route::post('searchClient', [\App\Http\Controllers\ClientController::class, 'searchClient']);
 
     Route::get('proveedores', [\App\Http\Controllers\GastoController::class, 'proveedores']);
     Route::post('proveedorCreateSimple', [\App\Http\Controllers\GastoController::class, 'proveedorCreateSimple']);

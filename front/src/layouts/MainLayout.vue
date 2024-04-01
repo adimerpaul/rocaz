@@ -69,17 +69,17 @@
                 </q-item-label>
               </q-item-section>
             </q-item>
-            <q-item clickable v-ripple exact active-class="bg-primary text-white" to="/compras">
-              <q-item-section avatar><q-icon name="o_storefront" /></q-item-section>
-              <q-item-section>
-                <q-item-label>
-                  Compras
-                  <q-tooltip anchor="top middle" self="bottom middle">
-                    Compra de productos
-                  </q-tooltip>
-                </q-item-label>
-              </q-item-section>
-            </q-item>
+<!--            <q-item clickable v-ripple exact active-class="bg-primary text-white" to="/compras">-->
+<!--              <q-item-section avatar><q-icon name="o_storefront" /></q-item-section>-->
+<!--              <q-item-section>-->
+<!--                <q-item-label>-->
+<!--                  Compras-->
+<!--                  <q-tooltip anchor="top middle" self="bottom middle">-->
+<!--                    Compra de productos-->
+<!--                  </q-tooltip>-->
+<!--                </q-item-label>-->
+<!--              </q-item-section>-->
+<!--            </q-item>-->
             <q-item clickable v-ripple exact active-class="bg-primary text-white" to="/productos" >
               <q-item-section avatar><q-icon name="o_local_mall" /></q-item-section>
               <q-item-section>
@@ -92,21 +92,21 @@
             <q-item clickable v-ripple exact active-class="bg-primary text-white" to="/clientes" >
               <q-item-section avatar><q-icon name="o_face" /></q-item-section>
               <q-item-section>
-                <q-item-label>Clientes</q-item-label>
+                <q-item-label>Cliente/Provedor</q-item-label>
                 <q-tooltip anchor="top middle" self="bottom middle">
                   Administrar clientes
                 </q-tooltip>
               </q-item-section>
             </q-item>
-            <q-item clickable v-ripple exact active-class="bg-primary text-white" to="/proveedores" >
-              <q-item-section avatar><q-icon name="o_assignment_ind" /></q-item-section>
-              <q-item-section>
-                <q-item-label>Proveedores</q-item-label>
-                <q-tooltip anchor="top middle" self="bottom middle">
-                  Administrar proveedores
-                </q-tooltip>
-              </q-item-section>
-            </q-item>
+<!--            <q-item clickable v-ripple exact active-class="bg-primary text-white" to="/proveedores" >-->
+<!--              <q-item-section avatar><q-icon name="o_assignment_ind" /></q-item-section>-->
+<!--              <q-item-section>-->
+<!--                <q-item-label>Proveedores</q-item-label>-->
+<!--                <q-tooltip anchor="top middle" self="bottom middle">-->
+<!--                  Administrar proveedores-->
+<!--                </q-tooltip>-->
+<!--              </q-item-section>-->
+<!--            </q-item>-->
             <q-item clickable v-ripple exact active-class="bg-primary text-white" to="/reportes" >
               <q-item-section avatar><q-icon name="o_print" /></q-item-section>
               <q-item-section>
