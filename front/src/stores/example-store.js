@@ -5,7 +5,12 @@ export const useCounterStore = defineStore('counter', {
     counter: 0,
     user: {},
     isLogin: !!localStorage.getItem('tokenRocaz'),
-    productosVenta: []
+    productosVenta: [],
+    env: {
+      razon: 'ROCAZ ECO HOME',
+      direccion: '6 de octubre y caro',
+      telefono: '69592090'
+    }
   }),
   getters: {
     doubleCount: (state) => state.counter * 2

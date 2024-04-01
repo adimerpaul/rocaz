@@ -55,8 +55,9 @@
               </q-td>
               <q-td key="concepto" :props="props" class="">
                 <div>
-                  <q-btn icon="o_local_atm" size="15px" :color="`${props.row.tipoVenta=='Ingreso'?'green':'red'}-7`"
-                         :class="`bg-${props.row.tipoVenta=='Ingreso'?'green':'red'}-2`" dense flat
+<!--                  {{ props.row.tipo_venta}}-->
+                  <q-btn icon="o_local_atm" size="15px" :color="`${props.row.tipo_venta=='INGRESO'?'green':'red'}-7`"
+                         :class="`bg-${props.row.tipo_venta=='INGRESO'?'green':'red'}-2`" dense flat
                          style="padding: 0px; margin: 0px; border-radius: 0px;position: absolute;top: 5px;left: 0px;"/>
                   <div style="padding-left: 15px">
                     <div class="text-grey q-ml-xs" style="width: 400px; white-space: normal; overflow-wrap: break-word;line-height: 0.9;">{{ props.row.concepto }}</div>

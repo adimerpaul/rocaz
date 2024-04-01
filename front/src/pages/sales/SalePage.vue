@@ -225,6 +225,7 @@
         </q-form>
       </q-card>
     </q-dialog>
+    <pre>{{$store.productosVenta}}</pre>
   </q-page>
 </template>
 <script>
@@ -272,29 +273,21 @@ export default {
   },
   methods: {
     saleInsert () {
-      // this.loading = true
-      // this.$axios.post('sales', {
-      //   client_id: this.client.id,
-      //   total: this.total,
-      //   efectivo: this.efectivo,
-      //   cambio: this.cambio,
-      //   aporte: this.aporte,
-      //   metodoPago: this.metodoPago
-      // }).then(response => {
-      //   this.loading = false
-      //   this.$store.productosVenta.forEach(p => {
-      //     this.$axios.post('salesdetails', {
-      //       sale_id: response.data.id,
-      //       product_id: p.id,
-      //       cantidad: p.cantidadVenta,
-      //       precio: p.precioVenta
-      //     }).then(response => {
-      //       console.log(response)
-      //     })
-      //   })
-      //   this.$store.productosVenta = []
-      //   this.saleDialog = false
-      // })
+      this.loading = true
+      this.$axios.post('sales', {
+        nit: this.client.nit,
+        nombre: this.client.nombre,
+        total: this.total,
+        metodo: this.metodoPago,
+        almacen: this.almacenSelected,
+        productos: this.$store.productosVenta
+      }).then(response => {
+        console.log(response.data)
+      }).finally(() => {
+        this.loading = false
+        this.saleDialog = false
+        this.$store.productosVenta = []
+      })
     },
     precioVenta (n) {
       if (n.precioVenta === '') {

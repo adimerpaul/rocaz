@@ -43,4 +43,5 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('registrarGasto', [\App\Http\Controllers\GastoController::class, 'registrarGasto']);
 
     Route::get('sales', [\App\Http\Controllers\SaleController::class, 'index']);
+    Route::post('sales', [\App\Http\Controllers\SaleController::class, 'store']);
 });
