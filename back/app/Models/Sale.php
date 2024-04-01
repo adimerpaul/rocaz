@@ -22,6 +22,7 @@ class Sale extends Model
         'precio_colocado',
         'estado',
         'fecha_emision',
+        'almacen'
     ];
     protected $hidden = [
         'created_at',

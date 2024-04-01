@@ -21,7 +21,8 @@ return new class extends Migration
             $table->double('precio',11,6)->nullable();
             $table->double('descuento',11,6)->nullable();
             $table->double('subtotal',11,6)->nullable();
-            $table->string('total')->nullable()->comment('CONTADO CREDITO');
+            $table->float('total')->nullable()->comment('monto');
+            $table->string('producto')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

@@ -164,8 +164,11 @@
 <!--              <div class="col-6 col-md-3">-->
 <!--                <q-input outlined dense label="Complemento"  @keyup="searchClient" v-model="client.complemento" style="text-transform: uppercase"/>-->
 <!--              </div>-->
-              <div class="col-12 col-md-8">
+              <div class="col-12 col-md-4">
                 <q-input outlined dense label="Nombre Razon Social" required v-model="client.nombre" style="text-transform: uppercase" />
+              </div>
+              <div class="col-4 col-md-4">
+                <q-select v-model="almacenSelected" :options="['Todo','Almacen 1','Almacen 2']" label="Almacen" outlined dense class="bg-white" emit-value />
               </div>
 <!--              <div class="col-12 col-md-6">-->
 <!--                &lt;!&ndash;                @update:model-value="validarnit"&ndash;&gt;-->
@@ -225,11 +228,13 @@
         </q-form>
       </q-card>
     </q-dialog>
-    <pre>{{$store.productosVenta}}</pre>
+    <div id="myElement" class="hidden"></div>
+<!--    <pre>{{$store.productosVenta}}</pre>-->
   </q-page>
 </template>
 <script>
 import ProductsComponents from 'components/ProductsComponents.vue'
+import { Imprimir } from 'src/addons/Imprimir'
 export default {
   name: 'ProductosPage',
   components: {
@@ -282,7 +287,8 @@ export default {
         almacen: this.almacenSelected,
         productos: this.$store.productosVenta
       }).then(response => {
-        console.log(response.data)
+        // console.log(response.data)
+        Imprimir.nota(response.data)
       }).finally(() => {
         this.loading = false
         this.saleDialog = false
@@ -364,8 +370,8 @@ export default {
       this.saleDialog = true
       this.efectivo = ''
       this.client = {
-        nit: '',
-        nombre: ''
+        nit: '0',
+        nombre: 'SN'
       }
     },
     vaciarCanasta () {
@@ -423,7 +429,7 @@ export default {
     searchClient (nit) {
       this.loading = true
       this.$axios.post('searchClient', {
-        nit: nit
+        nit
       }).then(res => {
         if (res.data.nombre !== undefined) {
           this.client.nombre = res.data.nombre

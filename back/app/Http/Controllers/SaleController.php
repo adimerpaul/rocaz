@@ -42,6 +42,7 @@ class SaleController extends Controller{
         $sale->metodo = $request->metodo;
         $sale->estado='ACTIVO';
         $sale->fecha_emision = now();
+        $sale->almacen = $almacen;
         $sale->save();
         $concepto = '';
         foreach ($request->productos as $producto){
@@ -51,6 +52,7 @@ class SaleController extends Controller{
             $detalle->product_id = $producto['id'];
             $detalle->cantidad = $producto['cantidadVenta'];
             $detalle->precio = $producto['precioVenta'];
+            $detalle->producto = $producto['nombre'];
 //            $detalle->descuento = $producto['descuento'];
 //            $detalle->subtotal = $producto['subtotal'];
             $detalle->total = round($producto['cantidadVenta'] * $producto['precioVenta'], 2);

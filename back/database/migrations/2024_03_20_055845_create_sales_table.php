@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('metodo')->nullable()->comment('EFECTIVO TRANSFERENCIA QR');
             $table->string('precio_colocado')->nullable()->comment('PRECIO 1 2 3 4 5 6');
             $table->string("estado")->nullable()->default('ACTIVO')->comment('ACTIVO ANULADO');
+            $table->string("almacen")->nullable();
             $table->dateTime('fecha_emision')->nullable();
             $table->softDeletes();
             $table->timestamps();
