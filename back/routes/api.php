@@ -31,6 +31,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::delete('products/{product}', [\App\Http\Controllers\ProductController::class, 'destroy']);
     Route::apiResource('medidas', \App\Http\Controllers\MedidaController::class);
 
+    Route::get('clients', [\App\Http\Controllers\ClientController::class, 'index']);
+    Route::post('clients', [\App\Http\Controllers\ClientController::class, 'store']);
+    Route::put('clients/{client}', [\App\Http\Controllers\ClientController::class, 'update']);
+    Route::delete('clients/{client}', [\App\Http\Controllers\ClientController::class, 'destroy']);
+
     Route::get('proveedores', [\App\Http\Controllers\GastoController::class, 'proveedores']);
     Route::post('proveedorCreateSimple', [\App\Http\Controllers\GastoController::class, 'proveedorCreateSimple']);
     Route::post('registrarGasto', [\App\Http\Controllers\GastoController::class, 'registrarGasto']);
