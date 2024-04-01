@@ -75,4 +75,24 @@ class SaleController extends Controller{
         DB::commit();
         return Sale::with(['user', 'client', 'details'])->find($sale->id);
     }
+    public function saleAnular(Request $request){
+        DB::commit();
+        $sale = Sale::find($request->id);
+        $sale->estado = 'ANULADO';
+        $sale->save();
+        $details = Detail::where('sale_id', $sale->id)->get();
+        foreach ($details as $detail){
+            $product = Product::find($detail->product_id);
+            if($sale->almacen == 'TODO' || $sale->almacen == 'Almacen 1') {
+                $product->stock1 = $product->stock1 + $detail->cantidad;
+                $product->save();
+            }
+            if($sale->almacen == 'TODO' || $sale->almacen == 'Almacen 2') {
+                $product->stock2 = $product->stock2 + $detail->cantidad;
+                $product->save();
+            }
+        }
+        DB::commit();
+        return response()->json($sale);
+    }
 }

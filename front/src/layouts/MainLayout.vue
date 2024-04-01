@@ -198,8 +198,16 @@ export default {
       this.$q.dialog({
         title: 'Cerrar sesión',
         message: '¿Está seguro que desea cerrar sesión?',
-        cancel: true,
-        persistent: true
+        ok: {
+          label: 'Si',
+          color: 'negative',
+          push: true
+        },
+        cancel: {
+          label: 'No',
+          color: 'primary',
+          push: true
+        }
       }).onOk(() => {
         this.$q.loading.show()
         this.$axios.post('logout')

@@ -45,7 +45,7 @@
               <q-td key="opcion" :props="props" auto-width>
                 <q-btn-group v-if="props.row.estado=='ACTIVO'">
                   <q-btn dense label="Anular" color="red-4" size="10px"
-                         no-caps no-wrap icon="o_highlight_off" @click="saleDelete(props.row.id)">
+                         no-caps no-wrap icon="o_highlight_off" @click="saleAnular(props.row.id)">
                     <q-tooltip>Anular venta</q-tooltip>
                   </q-btn>
                 </q-btn-group>
@@ -124,6 +124,31 @@ export default {
     this.salesGet()
   },
   methods: {
+    saleAnular (id) {
+      this.$q.dialog({
+        title: 'Anular venta',
+        message: '¿Está seguro de anular la venta?',
+        persistent: true,
+        ok: {
+          label: 'Si',
+          color: 'negative',
+          push: true
+        },
+        cancel: {
+          label: 'No',
+          color: 'primary',
+          push: true
+        }
+      }).onOk(() => {
+        this.$axios.post('saleAnular', { id })
+          .then(response => {
+            this.salesGet()
+          })
+          .catch(error => {
+            console.log(error)
+          })
+      })
+    },
     gastoCreated (gasto) {
       // this.sales.push(gasto)
       // colocar al principio
@@ -154,17 +179,22 @@ export default {
   computed: {
     balance () {
       return this.sales.reduce((acc, sale) => {
-        return sale.tipo_venta === 'INGRESO' ? acc + sale.total : acc - sale.total
+        // y que no se anulado
+        // return sale.tipo_venta === 'INGRESO' ? acc + sale.total : acc - sale.total
+        return sale.estado !== 'ANULADO' ? sale.tipo_venta === 'INGRESO' ? acc + sale.total : acc - sale.total : acc
       }, 0)
     },
     ingreso () {
       return this.sales.reduce((acc, sale) => {
-        return sale.tipo_venta === 'INGRESO' ? acc + sale.total : acc
+        // y que no sea anulado
+        return sale.tipo_venta === 'INGRESO' && sale.estado !== 'ANULADO' ? acc + sale.total : acc
       }, 0)
     },
     gasto () {
       return this.sales.reduce((acc, sale) => {
-        return sale.tipo_venta === 'EGRESO' ? acc + sale.total : acc
+        // return sale.tipo_venta === 'EGRESO' ? acc + sale.total : acc
+        // y que su estado no se anulado
+        return sale.tipo_venta === 'EGRESO' && sale.estado !== 'ANULADO' ? acc + sale.total : acc
       }, 0)
     }
   }
