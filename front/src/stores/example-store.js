@@ -18,6 +18,12 @@ export const useCounterStore = defineStore('counter', {
     cieloFalsoDesmontableConstanteTransversal360: 2.7 / 12.96,
     cieloFalsoDesmontableConstanteTransversal120: 17.5 / 12.96,
     cieloFalsoDesmontableConstanteTransversal060: 17.52 / 12.96,
+    pisoFlotante8mm: '',
+    pisoFlotante8mmConstante: 0.241164,
+    pisoFlotanteSPC: '',
+    pisoFlotanteSPCConstante: 0.22204,
+    pisoFlotante12mm: '20',
+    pisoFlotante12mmConstante: 0.244,
     isLogin: !!localStorage.getItem('tokenRocaz'),
     productosVenta: [],
     env: {

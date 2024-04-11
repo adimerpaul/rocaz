@@ -238,6 +238,57 @@
                 </tbody>
               </q-markup-table>
             </q-tab-panel>
+            <q-tab-panel name="Calculo piso flotante 8 mm">
+              <div class="text-h6 q-mb-md">Calculo piso flotante 8 mm</div>
+              <div class="row">
+                <div class="col-12 col-md-3">
+                  <q-input outlined v-model="$store.pisoFlotante8mm" label="Area (m2)" class="bg-orange" />
+                </div>
+                <div class="col-12 col-md-3">
+                  <q-input outlined :model-value="redondear($store.pisoFlotante8mmConstante,3)" label="Constante" class="bg-white" readonly/>
+                </div>
+                <div class="col-12 col-md-3">
+                  <q-input outlined :model-value="redondear($store.pisoFlotante8mm/$store.pisoFlotante8mmConstante)" label="Piezas" class="bg-blue" readonly/>
+                </div>
+                <div class="col-12 col-md-3">
+                  <q-input outlined :model-value="redondear($store.pisoFlotante8mm/$store.pisoFlotante8mmConstante/10)" label="Cajas" class="bg-green" readonly/>
+                </div>
+              </div>
+            </q-tab-panel>
+            <q-tab-panel name="Calculo piso flotante SPC">
+              <div class="text-h6 q-mb-md">Calculo piso flotante SPC</div>
+              <div class="row">
+                <div class="col-12 col-md-3">
+                  <q-input outlined v-model="$store.pisoFlotanteSPC" label="Area (m2)" class="bg-orange" />
+                </div>
+                <div class="col-12 col-md-3">
+                  <q-input outlined :model-value="redondear($store.pisoFlotanteSPCConstante,3)" label="Constante" class="bg-white" readonly/>
+                </div>
+                <div class="col-12 col-md-3">
+                  <q-input outlined :model-value="redondear($store.pisoFlotanteSPC/$store.pisoFlotanteSPCConstante)" label="Piezas" class="bg-blue" readonly/>
+                </div>
+                <div class="col-12 col-md-3">
+                  <q-input outlined :model-value="redondear($store.pisoFlotanteSPC/$store.pisoFlotanteSPCConstante/8)" label="Cajas" class="bg-green" readonly/>
+                </div>
+              </div>
+            </q-tab-panel>
+            <q-tab-panel name="Calculo piso flotante 12 mm">
+              <div class="text-h6 q-mb-md">Calculo piso flotante 12 mm</div>
+              <div class="row">
+                <div class="col-12 col-md-3">
+                  <q-input outlined v-model="$store.pisoFlotante12mm" label="Area (m2)" class="bg-orange" />
+                </div>
+                <div class="col-12 col-md-3">
+                  <q-input outlined :model-value="redondear($store.pisoFlotante12mmConstante,3)" label="Constante" class="bg-white" readonly/>
+                </div>
+                <div class="col-12 col-md-3">
+                  <q-input outlined :model-value="redondear($store.pisoFlotante12mm/$store.pisoFlotante12mmConstante)" label="Piezas" class="bg-blue" readonly/>
+                </div>
+                <div class="col-12 col-md-3">
+                  <q-input outlined :model-value="redondear($store.pisoFlotante12mm/$store.pisoFlotante12mmConstante/10)" label="Cajas" class="bg-green" readonly/>
+                </div>
+              </div>
+            </q-tab-panel>
           </q-tab-panels>
         </template>
 
@@ -253,6 +304,11 @@ export default {
     return {
       splitterModel: 20
       // area2PisoFlotante8mm: ''
+    }
+  },
+  methods: {
+    redondear (value, decimals = 1) {
+      return value.toFixed(decimals)
     }
   },
   computed: {
