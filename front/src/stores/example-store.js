@@ -7,6 +7,11 @@ export const useCounterStore = defineStore('counter', {
     tab: '',
     area2PisoFlotante8mm: '',
     area2PisoFlotante8mmConstante: 0.244,
+    area2PisoFlotante12mm: '',
+    area2PisoFlotante12mmConstante: 0.244,
+    pvcTablilla: '',
+    pvcTablillaConstante: 1.4875,
+    pvcTablillaConstanteCorinsa: (4 / 3),
     isLogin: !!localStorage.getItem('tokenRocaz'),
     productosVenta: [],
     env: {

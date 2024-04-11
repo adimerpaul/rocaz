@@ -67,6 +67,102 @@
                 </div>
               </div>
             </q-tab-panel>
+            <q-tab-panel name="Calculo 2 piso flotante 12 mm">
+              <div class="text-h6 q-mb-md">Calculo 2 piso flotante 12 mm</div>
+              <div class="row">
+                <div class="col-12 col-md-3">
+                  <q-input outlined v-model="$store.area2PisoFlotante12mm" label="Area (m2)" class="bg-orange" />
+                </div>
+                <div class="col-12 col-md-3">
+                  <q-input outlined v-model="$store.area2PisoFlotante12mmConstante" label="Constante" class="bg-white" readonly/>
+                </div>
+                <div class="col-12 col-md-3">
+                  <q-input outlined :model-value="piezasArea2PisoFlotante12mm" label="Piezas" class="bg-blue" readonly/>
+                </div>
+                <div class="col-12 col-md-3">
+                  <q-input outlined :model-value="cajasArea2PisoFlotante12mm" label="Cajas" class="bg-green" readonly/>
+                </div>
+              </div>
+            </q-tab-panel>
+            <q-tab-panel name="Calculo PVC tablilla rocaz">
+              <div class="text-h6">Calculo PVC tablilla rocaz</div>
+<!--              <div class="row">-->
+<!--                <div class="col-12 col-md-3">-->
+                  <q-markup-table>
+                    <thead>
+                      <tr>
+                        <th>Detalle</th>
+                        <th>M2</th>
+                        <th>Factor</th>
+                        <th>Placas</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td class="text-bold">PLACAS</td>
+                        <td>
+                          <q-input v-model="$store.pvcTablilla" outlined label="PVC tablilla" class="bg-orange"/>
+                        </td>
+                        <td>
+                          <q-input v-model="$store.pvcTablillaConstante" outlined label="Constante" readonly/>
+                        </td>
+                        <td>
+                          <q-input :model-value="pvcTablillaPlacas" outlined label="Placas" readonly/>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="text-bold">CORINSA</td>
+                        <td>
+                          <q-input :model-value="pvcTablillaRaiz" outlined label="PVC tablilla" readonly/>
+                        </td>
+                        <td>
+                          <q-input v-model="pvcTablillaConstanteCorinsa" outlined label="Constante" readonly/>
+                        </td>
+                        <td>
+                          <q-input :model-value="pvcTablillaConrinzaPlaca" outlined label="Placas" readonly/>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="text-bold">OMEGA</td>
+                        <td>
+                          <q-input v-model="$store.pvcTablilla" outlined label="PVC tablilla" readonly/>
+                        </td>
+                        <td>
+                          <q-input :model-value="pvcTablilla1_8" outlined label="Constante" readonly/>
+                        </td>
+                        <td>
+                          <q-input :model-value="pvcTablilla1_8" outlined label="Placas" readonly/>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="text-bold">SOLERA</td>
+                        <td>
+                          <q-input v-model="$store.pvcTablilla" outlined label="PVC tablilla" readonly/>
+                        </td>
+                        <td>
+                          <q-input v-model="pvcTablilla3_6" outlined label="Constante" readonly/>
+                        </td>
+                        <td>
+                          <q-input :model-value="pvcTablilla3_6" outlined label="Placas" readonly/>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="text-bold">ANGULAR</td>
+                        <td>
+                          <q-input v-model="$store.pvcTablilla" outlined label="PVC tablilla" readonly/>
+                        </td>
+                        <td>
+                          <q-input outlined label="Constante" readonly/>
+                        </td>
+                        <td>
+                          <q-input :model-value="pvcTablilla5_4" outlined label="Placas" readonly/>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </q-markup-table>
+<!--                </div>-->
+<!--              </div>-->
+            </q-tab-panel>
           </q-tab-panels>
         </template>
 
@@ -80,18 +176,56 @@
 export default {
   data () {
     return {
-      splitterModel: 30
+      splitterModel: 20
       // area2PisoFlotante8mm: ''
     }
   },
   computed: {
     piezasArea2PisoFlotante8mm () {
-      const calculta = this.$store.area2PisoFlotante8mm / this.$store.area2PisoFlotante8mmConstante
-      return calculta.toFixed(1)
+      const calculate = this.$store.area2PisoFlotante8mm / this.$store.area2PisoFlotante8mmConstante
+      return calculate.toFixed(1)
     },
     cajasArea2PisoFlotante8mm () {
-      const calculta = (this.$store.area2PisoFlotante8mm / this.$store.area2PisoFlotante8mmConstante) / 10
-      return calculta.toFixed(1)
+      const calculate = (this.$store.area2PisoFlotante8mm / this.$store.area2PisoFlotante8mmConstante) / 10
+      return calculate.toFixed(1)
+    },
+    piezasArea2PisoFlotante12mm () {
+      const calculate = this.$store.area2PisoFlotante12mm / this.$store.area2PisoFlotante12mmConstante
+      return calculate.toFixed(1)
+    },
+    cajasArea2PisoFlotante12mm () {
+      const calculate = (this.$store.area2PisoFlotante12mm / this.$store.area2PisoFlotante12mmConstante) / 10
+      return calculate.toFixed(1)
+    },
+    pvcTablillaPlacas () {
+      const calculate = this.$store.pvcTablilla / this.$store.pvcTablillaConstante
+      return calculate.toFixed(1)
+    },
+    pvcTablillaRaiz () {
+      const raizcudrada = Math.sqrt(this.$store.pvcTablilla, 2)
+      return raizcudrada.toFixed(1)
+    },
+    pvcTablillaConrinzaPlaca () {
+      const raizcudrada = Math.sqrt(this.$store.pvcTablilla, 2)
+      const pvcTablillaConstanteCorinsa = this.$store.pvcTablillaConstanteCorinsa
+      const calculate = (raizcudrada * pvcTablillaConstanteCorinsa) / 2
+      return calculate.toFixed(1)
+    },
+    pvcTablillaConstanteCorinsa () {
+      const calculate = this.$store.pvcTablillaConstanteCorinsa
+      return calculate.toFixed(1)
+    },
+    pvcTablilla1_8 () {
+      const calculate = this.$store.pvcTablilla / 1.8
+      return calculate.toFixed(1)
+    },
+    pvcTablilla3_6 () {
+      const calculate = this.$store.pvcTablilla / 3.6
+      return calculate.toFixed(1)
+    },
+    pvcTablilla5_4 () {
+      const calculate = this.$store.pvcTablilla / 5.4
+      return calculate.toFixed(1)
     }
   }
 }
