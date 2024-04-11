@@ -163,6 +163,81 @@
 <!--                </div>-->
 <!--              </div>-->
             </q-tab-panel>
+            <q-tab-panel name="Calculo cielo falso desmontable 0,60 x 0,60">
+              <div class="text-h6">Calculo cielo falso desmontable 0,60 x 0,60</div>
+              <q-markup-table>
+                <thead>
+                <tr>
+                  <th>Detalle</th>
+                  <th>M2</th>
+                  <th>Factor</th>
+                  <th>Placas</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <td class="text-bold">PLACAS</td>
+                  <td>
+                    <q-input v-model="$store.cieloFalsoDesmontable" outlined label="PVC tablilla" class="bg-orange"/>
+                  </td>
+                  <td>
+                    <q-input v-model="$store.cieloFalsoDesmontableConstantePlaca" outlined label="Constante" readonly/>
+                  </td>
+                  <td>
+                    <q-input :model-value="cieloFalsoPlaca" outlined label="Placas" readonly/>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="text-bold">CORINSA</td>
+                  <td>
+                    <q-input :model-value="cieloFalsoDesmontableRaiz" outlined label="PVC tablilla" readonly/>
+                  </td>
+                  <td>
+                    <q-input v-model="cieloFalsoDesmontableCorinsaConstante" outlined label="Constante" readonly/>
+                  </td>
+                  <td>
+                    <q-input :model-value="cieloFalsoCorinsa" outlined label="Placas" readonly/>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="text-bold">OMEGA</td>
+                  <td>
+                    <q-input v-model="$store.cieloFalsoDesmontable" outlined label="PVC tablilla" readonly/>
+                  </td>
+                  <td>
+                    <q-input :model-value="cieloFalsoDesmontableOmegaConstante" outlined label="Constante" readonly/>
+                  </td>
+                  <td>
+                    <q-input :model-value="cieloFalsoOmega" outlined label="Placas" readonly/>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="text-bold">SOLERA</td>
+                  <td>
+                    <q-input v-model="$store.cieloFalsoDesmontable" outlined label="PVC tablilla" readonly/>
+                  </td>
+                  <td>
+                    <q-input v-model="cieloFalsoDesmontableSoleraConstante" outlined label="Constante" readonly/>
+                  </td>
+                  <td>
+                    <q-input :model-value="cieloFalsoSolera" outlined label="Placas" readonly/>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="text-bold">ANGULAR</td>
+                  <td>
+                    <q-input v-model="$store.cieloFalsoDesmontable" outlined label="PVC tablilla" readonly/>
+                  </td>
+                  <td>
+                    <q-input v-model="cieloFalsoDesmontableAngularConstante" outlined label="Constante" readonly/>
+                  </td>
+                  <td>
+                    <q-input :model-value="cieloFalsoAngular" outlined label="Placas" readonly/>
+                  </td>
+                </tr>
+                </tbody>
+              </q-markup-table>
+            </q-tab-panel>
           </q-tab-panels>
         </template>
 
@@ -225,6 +300,51 @@ export default {
     },
     pvcTablilla5_4 () {
       const calculate = this.$store.pvcTablilla / 5.4
+      return calculate.toFixed(1)
+    },
+    cieloFalsoPlaca () {
+      const calculate = this.$store.cieloFalsoDesmontable / this.$store.cieloFalsoDesmontableConstantePlaca
+      return calculate.toFixed(1)
+    },
+    cieloFalsoDesmontableRaiz () {
+      const raizcudrada = Math.sqrt(this.$store.cieloFalsoDesmontable, 2)
+      return raizcudrada.toFixed(1)
+    },
+    cieloFalsoDesmontableCorinsaConstante () {
+      const calculate = this.$store.cieloFalsoDesmontableConstanteAngular
+      return calculate.toFixed(1)
+    },
+    cieloFalsoDesmontableOmegaConstante () {
+      const calculate = this.$store.cieloFalsoDesmontableConstanteTransversal360
+      return calculate.toFixed(1)
+    },
+    cieloFalsoDesmontableSoleraConstante () {
+      const calculate = this.$store.cieloFalsoDesmontableConstanteTransversal120
+      return calculate.toFixed(1)
+    },
+    cieloFalsoDesmontableAngularConstante () {
+      const calculate = this.$store.cieloFalsoDesmontableConstanteTransversal060
+      return calculate.toFixed(1)
+    },
+    cieloFalsoCorinsa () {
+      const raizcudrada = Math.sqrt(this.$store.cieloFalsoDesmontable, 2)
+      const cieloFalsoDesmontableConstanteAngular = this.$store.cieloFalsoDesmontableConstanteAngular
+      const calculate = (raizcudrada * cieloFalsoDesmontableConstanteAngular)
+      return calculate.toFixed(1)
+    },
+    cieloFalsoOmega () {
+      const cieloFalsoDesmontableConstanteTransversal360 = this.$store.cieloFalsoDesmontableConstanteTransversal360
+      const calculate = (this.$store.cieloFalsoDesmontable * cieloFalsoDesmontableConstanteTransversal360)
+      return calculate.toFixed(1)
+    },
+    cieloFalsoSolera () {
+      const cieloFalsoDesmontableConstanteTransversal120 = this.$store.cieloFalsoDesmontableConstanteTransversal120
+      const calculate = (this.$store.cieloFalsoDesmontable * cieloFalsoDesmontableConstanteTransversal120)
+      return calculate.toFixed(1)
+    },
+    cieloFalsoAngular () {
+      const cieloFalsoDesmontableConstanteTransversal060 = this.$store.cieloFalsoDesmontableConstanteTransversal060
+      const calculate = (this.$store.cieloFalsoDesmontable * cieloFalsoDesmontableConstanteTransversal060)
       return calculate.toFixed(1)
     }
   }

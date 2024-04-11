@@ -12,6 +12,12 @@ export const useCounterStore = defineStore('counter', {
     pvcTablilla: '',
     pvcTablillaConstante: 1.4875,
     pvcTablillaConstanteCorinsa: (4 / 3),
+    cieloFalsoDesmontable: 150,
+    cieloFalsoDesmontableConstantePlaca: 0.36,
+    cieloFalsoDesmontableConstanteAngular: (4 / 3),
+    cieloFalsoDesmontableConstanteTransversal360: 2.7 / 12.96,
+    cieloFalsoDesmontableConstanteTransversal120: 17.5 / 12.96,
+    cieloFalsoDesmontableConstanteTransversal060: 17.52 / 12.96,
     isLogin: !!localStorage.getItem('tokenRocaz'),
     productosVenta: [],
     env: {
