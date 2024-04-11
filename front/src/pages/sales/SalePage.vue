@@ -27,7 +27,7 @@
             <q-select v-model="precio" :options="['PRECIO 1','PRECIO 2','PRECIO 3','PRECIO 4','PRECIO 5','PRECIO 6']" label="Precio" outlined dense class="bg-white" emit-value />
           </div>
           <div class="col-12 col-md-2 text-right">
-<!--            <q-btn label="Categorias" color="black" icon="o_edit" outline no-caps rounded class="bg-white" @click="categoriesDialog = true" />-->
+            <q-btn label="Calculos" color="green" icon="o_calculate"  no-caps rounded class="bg-white" @click="calculateDialog = true" />
           </div>
           <div class="col-12">
             <ProductsComponents :products="products" @clickDetalleProducto="clickDetalleProducto" :precio="precio" :almacenSelected="almacenSelected" />
@@ -228,6 +228,9 @@
         </q-form>
       </q-card>
     </q-dialog>
+    <q-dialog v-model="calculateDialog" position="left" full-height>
+      <CalculatePage @close="calculateDialog = false" :products="products" />
+    </q-dialog>
     <div id="myElement" class="hidden"></div>
 <!--    <pre>{{$store.productosVenta}}</pre>-->
   </q-page>
@@ -235,13 +238,16 @@
 <script>
 import ProductsComponents from 'components/ProductsComponents.vue'
 import { Imprimir } from 'src/addons/Imprimir'
+import CalculatePage from 'pages/sales/CalculatePage.vue'
 export default {
   name: 'ProductosPage',
   components: {
+    CalculatePage,
     ProductsComponents
   },
   data () {
     return {
+      calculateDialog: false,
       metodoPago: 'EFECTIVO',
       precio: 'PRECIO 1',
       almacenSelected: 'Todo',
