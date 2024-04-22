@@ -12,7 +12,12 @@
         <q-btn label="Descargar reporte" color="primary" icon="cloud_download" flat no-caps :loading="loading" @click="downloadReport" />
 <!--        <q-btn label="Refresh" color="primary" icon="refresh" flat no-caps @click="productsGet" :loading="loading" />-->
       </div>
-      <div class="col-6 col-md-6 text-right">
+      <div class="col-6 col-md-2 text-right">
+        <q-toggle model-value="vista" :label="vista" color="primary" dense v-model="vista"
+                  false-value="lista" true-value="tabla"
+        />
+      </div>
+      <div class="col-6 col-md-4 text-right">
         <q-btn label="Crear producto" color="green" icon="add_circle_outline" no-caps rounded @click="clickProducto" :loading="loading" />
       </div>
       <div class="col-12 col-md-6 q-pa-xs">
@@ -39,7 +44,7 @@
         <q-btn label="Categorias" color="black" icon="o_edit" outline no-caps rounded class="bg-white" @click="categoriesDialog = true" />
       </div>
       <div class="col-12">
-        <ProductsComponents :products="products" @clickDetalleProducto="clickDetalleProducto" :precio="precio" :almacenSelected="almacenSelected" />
+        <ProductsComponents :products="products" @clickDetalleProducto="clickDetalleProducto" :precio="precio" :almacenSelected="almacenSelected" :vista="vista" />
 <!--        <pre>{{products}}</pre>-->
       </div>
     </div>
@@ -67,6 +72,7 @@ export default {
   },
   data () {
     return {
+      vista: 'lista',
       precio: 'PRECIO 1',
       almacenSelected: 'Todo',
       productDialog: false,

@@ -10,7 +10,12 @@
               </template>
             </q-input>
           </div>
-          <div class="col-6 col-md-9 text-right">
+          <div class="col-6 col-md-2 text-right">
+            <q-toggle model-value="vista" :label="vista" color="primary" dense v-model="vista"
+                      false-value="lista" true-value="tabla"
+            />
+          </div>
+          <div class="col-6 col-md-7 text-right">
           </div>
           <div class="col-4 col-md-3">
             <q-select v-model="categoriSelected" :options="categories" label="Categoría" outlined dense class="bg-white"
@@ -30,7 +35,7 @@
             <q-btn label="Calculos" color="green" icon="o_calculate"  no-caps rounded class="bg-white" @click="calculateDialog = true" />
           </div>
           <div class="col-12">
-            <ProductsComponents :products="products" @clickDetalleProducto="clickDetalleProducto" :precio="precio" :almacenSelected="almacenSelected" />
+            <ProductsComponents :products="products" @clickDetalleProducto="clickDetalleProducto" :precio="precio" :almacenSelected="almacenSelected" :vista="vista" />
           </div>
         </div>
       </div>
@@ -247,6 +252,7 @@ export default {
   },
   data () {
     return {
+      vista: 'lista',
       calculateDialog: false,
       metodoPago: 'EFECTIVO',
       precio: 'PRECIO 1',
