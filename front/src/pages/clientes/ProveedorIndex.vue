@@ -190,7 +190,7 @@ export default {
       }).then(response => {
         // this.clients = response.data.data
         response.data.data.forEach(r => {
-          if (r.tipo === 'CLIENTE') {
+          if (r.tipo === 'PROVEEDOR') {
             this.clients.push(r)
           }
         })

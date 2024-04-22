@@ -39,6 +39,7 @@ class SaleController extends Controller{
 
         $sale->client_id = $client->id;
         $sale->user_id = $request->user()->id;
+        $sale->lugar = $request->user()->lugar;
         $sale->tipo_venta = 'INGRESO';
         $sale->descuento = $descuento;
         $sale->total = $request->total;

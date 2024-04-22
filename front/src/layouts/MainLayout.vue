@@ -92,9 +92,18 @@
             <q-item clickable v-ripple exact active-class="bg-primary text-white" to="/clientes" >
               <q-item-section avatar><q-icon name="o_face" /></q-item-section>
               <q-item-section>
-                <q-item-label>Cliente/Provedor</q-item-label>
+                <q-item-label>Cliente</q-item-label>
                 <q-tooltip anchor="top middle" self="bottom middle">
                   Administrar clientes
+                </q-tooltip>
+              </q-item-section>
+            </q-item>
+            <q-item clickable v-ripple exact active-class="bg-primary text-white" to="/provedores" >
+              <q-item-section avatar><q-icon name="o_assignment_ind" /></q-item-section>
+              <q-item-section>
+                <q-item-label>Provedor</q-item-label>
+                <q-tooltip anchor="top middle" self="bottom middle">
+                  Administrar provedores
                 </q-tooltip>
               </q-item-section>
             </q-item>

@@ -79,6 +79,9 @@
               <q-td key="user" :props="props">
                 <p>{{ props.row.user?.name }}</p>
               </q-td>
+              <q-td key="lugar" :props="props">
+                <p>{{ props.row.lugar }}</p>
+              </q-td>
             </q-tr>
           </template>
         </q-table>
@@ -113,7 +116,8 @@ export default {
         { name: 'proveedorcliente', label: 'Proveedor / cliente', align: 'left', field: 'proveedor / cliente', sortable: true },
         { name: 'fechayhora', label: 'Fecha y hora', align: 'left', field: 'fechayhora', sortable: true },
         { name: 'egresoingreso', label: 'Egreso / ingreso', align: 'left', field: 'egreso / ingreso', sortable: true },
-        { name: 'user', label: 'Usuario', align: 'left', field: (row) => row.user.name, sortable: true }
+        { name: 'user', label: 'Usuario', align: 'left', field: (row) => row.user.name, sortable: true },
+        { name: 'lugar', label: 'lugar', align: 'left', field: (row) => row.user.lugar, sortable: true }
       ],
       sales: [],
       loading: false,

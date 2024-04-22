@@ -26,7 +26,7 @@
                       </div>
                       <div class="col-12">
                         <q-input v-model="user.username" label="Usuario" outlined rounded type="username"
-                                 :rules="[val => val.length > 3 || 'El usuario debe tener al menos 4 caracteres']"
+                                 :rules="[val => val.length > 2 || 'El usuario debe tener al menos 4 caracteres']"
                         >
                           <template v-slot:prepend>
                             <q-icon name="o_person" />
@@ -35,7 +35,7 @@
                       </div>
                       <div class="col-12 ">
                         <q-input v-model="user.password" label="Password" :type="showPassword ? 'text' : 'password'" outlined rounded
-                                 :rules="[val => val.length > 5 || 'La contraseña debe tener al menos 6 caracteres']"
+                                 :rules="[val => val.length > 2 || 'La contraseña debe tener al menos 6 caracteres']"
                         >
                           <template v-slot:prepend>
                             <q-icon name="o_lock" />
