@@ -150,6 +150,7 @@
             </q-list>
             <q-btn @click="clickSale" class="full-width" no-caps label="Confirmar venta" :color="$store.productosVenta.length==0?'grey':'warning'" :disable="$store.productosVenta.length==0?true:false"/>
           </q-card-section>
+<!--          <pre>{{$store.productosVenta}}</pre>-->
         </q-card>
       </div>
     </div>
@@ -161,64 +162,69 @@
           <q-btn flat round dense icon="close" v-close-popup />
         </q-card-section>
         <q-form @submit.prevent="saleInsert">
-          <q-card-section>
-            <div class="row">
-              <div class="col-6 col-md-4">
-                <q-input outlined dense label="NIT/CARNET" required @update:model-value="searchClient" v-model="client.nit" :loading="loading" :debounce="500" />
-              </div>
-<!--              <div class="col-6 col-md-3">-->
-<!--                <q-input outlined dense label="Complemento"  @keyup="searchClient" v-model="client.complemento" style="text-transform: uppercase"/>-->
+          <q-markup-table dense wrap-cells>
+            <thead>
+<!--            "id": 4,-->
+<!--            "nombre": "Gypsum 239-G color",-->
+<!--            "cantidadVenta": 1,-->
+<!--            "precioVenta": 7.2,-->
+<!--            "stock": 0,-->
+            <tr>
+              <th>#</th>
+              <th>Nombre</th>
+              <th>Cantidad</th>
+              <th>Precio</th>
+              <th>Subtotal</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="(product, index) in $store.productosVenta" :key="product.id">
+              <td>{{index + 1}}</td>
+              <td>{{product.nombre}}</td>
+              <td>{{product.cantidadVenta}}</td>
+              <td class="text-right">{{numero2digitosRedondeado(product.precioVenta)}}</td>
+              <td class="text-right text-bold">{{numero2digitosRedondeado(product.cantidadVenta * product.precioVenta)}} Bs.</td>
+            </tr>
+            <tr>
+              <td colspan="2" class="text-right text-bold">
+                <q-input label="Descuento" v-model="descuento" dense outlined/>
+              </td>
+              <td colspan="2" class="text-right text-bold">Total</td>
+              <td class="text-right text-bold">{{numero2digitosRedondeado(total-descuento)}} Bs.</td>
+            </tr>
+            </tbody>
+          </q-markup-table>
+<!--          <q-card-section>-->
+<!--            <div class="row">-->
+<!--              <div class="col-6 col-md-4">-->
+<!--                <q-input outlined dense label="NIT/CARNET" required @update:model-value="searchClient" v-model="client.nit" :loading="loading" :debounce="500" />-->
 <!--              </div>-->
-              <div class="col-12 col-md-4">
-                <q-input outlined dense label="Nombre Razon Social" required v-model="client.nombre" style="text-transform: uppercase" />
-              </div>
-              <div class="col-4 col-md-4">
-                <q-select v-model="almacenSelected" :options="['Todo','Almacen 1','Almacen 2']" label="Almacen" outlined dense class="bg-white" emit-value />
-              </div>
-<!--              <div class="col-12 col-md-6">-->
-<!--                &lt;!&ndash;                @update:model-value="validarnit"&ndash;&gt;-->
-<!--                <q-select v-model="document" outlined dense :options="documents" />-->
+<!--              <div class="col-12 col-md-4">-->
+<!--                <q-input outlined dense label="Nombre Razon Social" required v-model="client.nombre" style="text-transform: uppercase" />-->
 <!--              </div>-->
-<!--              <div class="col-12 col-md-6">-->
-<!--                <q-input outlined dense label="Email"  v-model="client.email" type="email" />-->
+<!--              <div class="col-4 col-md-4">-->
+<!--                <q-select v-model="almacenSelected" :options="['Todo','Almacen 1','Almacen 2']" label="Almacen" outlined dense class="bg-white" emit-value />-->
 <!--              </div>-->
-            </div>
-          </q-card-section>
-          <q-separator/>
-          <q-card-section>
-            <div class="row">
-              <div class="col-6 col-md-2">
-                <q-input outlined dense label="TOTAL A PAGAR:" readonly v-model="total" />
-              </div>
-              <div class="col-6 col-md-3">
-                <q-input outlined dense label="EFECTIVO BS."  v-model="efectivo" />
-              </div>
-              <div class="col-6 col-md-2">
-                <q-input outlined dense label="CAMBIO:" readonly v-model="cambio" />
-              </div>
+<!--            </div>-->
+<!--          </q-card-section>-->
+<!--          <q-separator/>-->
+<!--          <q-card-section>-->
+<!--            <div class="row">-->
 <!--              <div class="col-6 col-md-2">-->
-<!--                <q-checkbox v-model="aporte" :label="textoCambio"-->
-<!--                            :class="`bg-${parseFloat(efectivo)> parseFloat(total)?'green':'red'} text-white full-width bi-border-all`"-->
-<!--                            :disable="parseFloat(efectivo)> parseFloat(total)?false:true">-->
-<!--                  <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">-->
-<!--                    Si el cliente paga con un monto mayor al total, se registrará el cambio como un aporte.-->
-<!--                  </q-tooltip>-->
-<!--                </q-checkbox>-->
+<!--                <q-input outlined dense label="TOTAL A PAGAR:" readonly v-model="total" />-->
 <!--              </div>-->
-              <!--              <div class="col-6 col-md-2 q-pl-xs">-->
-              <!--                <q-checkbox v-model="qr" label="QR"-->
-              <!--                            :class="`bg-${parseFloat(efectivo)> parseFloat(total)?'green':'red'} text-white full-width bi-border-all`"-->
-              <!--                            :disable="parseFloat(efectivo)> parseFloat(total)?false:true" />-->
-              <!--              </div>-->
-              <div class="col-6 col-md-3">
-                <q-select dense outlined v-model="metodoPago" label="Metodo de pago"
-                          :options="$metodos" hint="Metodo de pago del gasto" />
-              </div>
-              <!--              <div class="col-12">-->
-              <!--                <pre>{{cambioDecimal}}</pre>-->
-              <!--              </div>-->
-            </div>
-          </q-card-section>
+<!--              <div class="col-6 col-md-3">-->
+<!--                <q-input outlined dense label="EFECTIVO BS."  v-model="efectivo" />-->
+<!--              </div>-->
+<!--              <div class="col-6 col-md-2">-->
+<!--                <q-input outlined dense label="CAMBIO:" readonly v-model="cambio" />-->
+<!--              </div>-->
+<!--              <div class="col-6 col-md-3">-->
+<!--                <q-select dense outlined v-model="metodoPago" label="Metodo de pago"-->
+<!--                          :options="$metodos" hint="Metodo de pago del gasto" />-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </q-card-section>-->
           <q-separator/>
           <q-card-section>
             <div class="row">
@@ -252,6 +258,7 @@ export default {
   },
   data () {
     return {
+      descuento: '',
       vista: 'lista',
       calculateDialog: false,
       metodoPago: 'EFECTIVO',
@@ -289,6 +296,10 @@ export default {
     this.medidasGet()
   },
   methods: {
+    numero2digitosRedondeado (n) {
+      const num = Math.round(n * 100) / 100
+      return num.toFixed(2)
+    },
     saleInsert () {
       this.loading = true
       this.$axios.post('sales', {
@@ -297,7 +308,8 @@ export default {
         total: this.total,
         metodo: this.metodoPago,
         almacen: this.almacenSelected,
-        productos: this.$store.productosVenta
+        productos: this.$store.productosVenta,
+        descuento: this.descuento
       }).then(response => {
         // console.log(response.data)
         Imprimir.nota(response.data)

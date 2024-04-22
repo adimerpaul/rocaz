@@ -32,14 +32,17 @@ class SaleController extends Controller{
             $client->nombre = $request->nombre;
             $client->save();
         }
+
+        $descuento = !isset($request->descuento) || $request->descuento == '' || $request->descuento == null ? 0 : $request->descuento;
+
         $sale = new Sale();
 
         $sale->client_id = $client->id;
         $sale->user_id = $request->user()->id;
         $sale->tipo_venta = 'INGRESO';
-//        $sale->descuento = $request->descuento;
+        $sale->descuento = $descuento;
         $sale->total = $request->total;
-        $sale->metodo = $request->metodo;
+        $sale->metodo = intval($request->metodo)-intval($descuento);
         $sale->estado='ACTIVO';
         $sale->fecha_emision = now();
         $sale->almacen = $almacen;
