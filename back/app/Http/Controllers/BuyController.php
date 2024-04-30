@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Buy;
 use App\Models\BuyDetail;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -37,6 +38,9 @@ class BuyController extends Controller{
                     'subtotal' => $producto['cantidadVenta'] * $producto['precioVenta']
                 ];
                 $total += $producto['cantidadVenta'] * $producto['precioVenta'];
+                $productoModel = Product::find($producto['id']);
+                $productoModel->stock1 += $producto['cantidadVenta'];
+                $productoModel->save();
             }
             BuyDetail::insert($insertBuy);
             $buy->subtotal = $total;

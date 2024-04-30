@@ -371,7 +371,7 @@ export default {
         descuento: this.descuento
       }).then(response => {
         // console.log(response.data)
-        Imprimir.nota(response.data)
+        Imprimir.notaCompra(response.data)
       }).finally(() => {
         this.loading = false
         this.saleDialog = false

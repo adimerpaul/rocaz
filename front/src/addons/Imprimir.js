@@ -147,6 +147,70 @@ Oruro</div>
     })
   }
 
+  static notaCompra (factura) {
+    console.log('factura', factura)
+    return new Promise((resolve, reject) => {
+      const ClaseConversor = conversor.conversorNumerosALetras
+      const miConversor = new ClaseConversor()
+      const a = miConversor.convertToText(parseInt(factura.total))
+      const opts = {
+        errorCorrectionLevel: 'M',
+        type: 'png',
+        quality: 0.95,
+        width: 100,
+        margin: 1,
+        color: {
+          dark: '#000000',
+          light: '#FFF'
+        }
+      }
+      const env = useCounterStore().env
+      QRCode.toDataURL(`Fecha: ${factura.fecha_emision} Monto: ${parseFloat(factura.total).toFixed(2)}`, opts).then(url => {
+        let cadena = `${this.head()}
+  <div style='padding-left: 0.5cm;padding-right: 0.5cm'>
+  <img src="logo.png" alt="logo" style="width: 100px; height: 50px; display: block; margin-left: auto; margin-right: auto;">
+      <div class='titulo'>${factura.tipo_venta === 'EGRESO' ? 'NOTA DE EGRESO' : 'NOTA DE COMPRA'}</div>
+      <div class='titulo2'>${env.razon} <br>
+      Casa Matriz<br>
+      No. Punto de Venta 0<br>
+${env.direccion}<br>
+Tel. ${env.telefono}<br>
+Oruro</div>
+<hr>
+<table>
+<tr><td class='titder'>NOMBRE/RAZÓN SOCIAL:</td><td class='contenido'>${factura.client ? factura.client.nombre : ''}</td>
+</tr><tr><td class='titder'>NIT/CI/CEX:</td><td class='contenido'>${factura.client ? factura.client.nit : ''}</td></tr>
+<!--<tr><td class='titder'>FECHA DE EMISIÓN:</td><td class='contenido'>${factura.fecha_emision}</td></tr>-->
+</table><hr><div class='titulo'>DETALLE</div>`
+        factura.buy_details.forEach(r => {
+          cadena += `<div style='font-size: 12px'><b>${r.product_id} ${r.producto} </b></div>`
+          cadena += `<div>${r.cantidad} ${parseFloat(r.precio).toFixed(2)} 0.00
+                    <span style='float:right'>${parseFloat(r.total).toFixed(2)}</span></div>`
+        })
+        cadena += `<hr>
+      <table style='font-size: 8px;'>
+      <tr><td class='titder' style='width: 60%'>SUBTOTAL Bs</td><td class='conte2'>${parseFloat(factura.total).toFixed(2)}</td></tr>
+      <tr><td class='titder' style='width: 60%'>Descuento Bs</td><td class='conte2'>${parseFloat(factura.descuento).toFixed(2)}</td></tr>
+      <tr><td class='titder' style='width: 60%'>TOTAL Bs</td><td class='conte2'>${parseFloat(factura.total - factura.descuento).toFixed(2)}</td></tr>
+      </table>
+      <br>
+      <div>Son ${a} ${((parseFloat(factura.total) - Math.floor(parseFloat(factura.total))) * 100).toFixed(2)} /100 Bolivianos</div><hr>
+      <div style='display: flex;justify-content: center;'>
+        <img  src="${url}" style="width: 75px; height: 75px; display: block; margin-left: auto; margin-right: auto;">
+      </div></div>
+      </div>
+</body>
+</html>`
+        document.getElementById('myElement').innerHTML = cadena
+        const d = new Printd()
+        d.print(document.getElementById('myElement'))
+        resolve(url)
+      }).catch(err => {
+        reject(err)
+      })
+    })
+  }
+
   static reportTotal (sales, title) {
     const montoIngreso = sales.filter(r => r.tipoVenta === 'Ingreso').reduce((a, b) => a + b.montoTotal, 0)
     const montoEgreso = sales.filter(r => r.tipoVenta === 'Egreso').reduce((a, b) => a + b.montoTotal, 0)
