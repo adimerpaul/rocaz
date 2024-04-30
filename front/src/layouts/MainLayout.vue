@@ -29,9 +29,7 @@
         <q-header class="bg-white">
           <q-list bordered padding class="text-black">
             <div class="q-pl-md q-pb-xs" style="line-height: 0.5">
-<!--              <div class="text-bold text-subtitle1 ">-->
-<!--                Rocaz-->
-<!--              </div>-->
+
               <div>
                 <div style="line-height: 1">
                   <b class="text-grey">Bienvenido:</b> <br>
@@ -52,12 +50,6 @@
                 </q-item-label>
               </q-item-section>
             </q-item>
-            <!--            <q-expansion-item expand-separator icon="o_engineering" label="Siat" >-->
-            <!--              <q-expansion-item dense exact :header-inset-level="0.3" expand-separator icon="o_psychology" label="Cuis" default-opened to="/cuis" hide-expand-icon  />-->
-            <!--              <q-expansion-item dense exact :header-inset-level="0.3" expand-separator icon="o_business_center" label="sincronizacion" default-opened to="/sincronizacion" hide-expand-icon  />-->
-            <!--              <q-expansion-item dense exact :header-inset-level="0.3" expand-separator icon="link" label="Cufd" default-opened to="/cufd" hide-expand-icon  />-->
-            <!--              <q-expansion-item dense exact :header-inset-level="0.3" expand-separator icon="list" label="Evento significativo" default-opened to="/eventoSignificativo" hide-expand-icon  />-->
-            <!--            </q-expansion-item>-->
             <q-item clickable v-ripple exact active-class="bg-primary text-white" to="/sale">
               <q-item-section avatar><q-icon name="o_shopping_cart" /></q-item-section>
               <q-item-section>
@@ -69,17 +61,17 @@
                 </q-item-label>
               </q-item-section>
             </q-item>
-<!--            <q-item clickable v-ripple exact active-class="bg-primary text-white" to="/compras">-->
-<!--              <q-item-section avatar><q-icon name="o_storefront" /></q-item-section>-->
-<!--              <q-item-section>-->
-<!--                <q-item-label>-->
-<!--                  Compras-->
-<!--                  <q-tooltip anchor="top middle" self="bottom middle">-->
-<!--                    Compra de productos-->
-<!--                  </q-tooltip>-->
-<!--                </q-item-label>-->
-<!--              </q-item-section>-->
-<!--            </q-item>-->
+            <q-item clickable v-ripple exact active-class="bg-primary text-white" to="/compra">
+              <q-item-section avatar><q-icon name="o_local_shipping" /></q-item-section>
+              <q-item-section>
+                <q-item-label>
+                  Compras
+                  <q-tooltip anchor="top middle" self="bottom middle">
+                    Compra de productos
+                  </q-tooltip>
+                </q-item-label>
+              </q-item-section>
+            </q-item>
             <q-item clickable v-ripple exact active-class="bg-primary text-white" to="/productos" >
               <q-item-section avatar><q-icon name="o_local_mall" /></q-item-section>
               <q-item-section>
@@ -134,42 +126,6 @@
                 </q-tooltip>
               </q-item-section>
             </q-item>
-            <!--            <q-item clickable v-ripple exact active-class="bg-primary text-white" to="/unidades" >-->
-            <!--              <q-item-section avatar><q-icon name="o_vaccines" /></q-item-section>-->
-            <!--              <q-item-section>-->
-            <!--                <q-item-label>Unidades</q-item-label>-->
-            <!--                <q-tooltip anchor="top middle" self="bottom middle">-->
-            <!--                  Administrar unidades-->
-            <!--                </q-tooltip>-->
-            <!--              </q-item-section>-->
-            <!--            </q-item>-->
-            <!--            <q-item clickable v-ripple exact active-class="bg-primary text-white" to="/agencias" >-->
-            <!--              <q-item-section avatar><q-icon name="o_apartment" /></q-item-section>-->
-            <!--              <q-item-section>-->
-            <!--                <q-item-label>Agencias</q-item-label>-->
-            <!--                <q-tooltip anchor="top middle" self="bottom middle">-->
-            <!--                  Administrar agencias-->
-            <!--                </q-tooltip>-->
-            <!--              </q-item-section>-->
-            <!--            </q-item>-->
-            <!--            <q-item clickable v-ripple exact active-class="bg-primary text-white" to="/subcategorias" >-->
-            <!--              <q-item-section avatar><q-icon name="o_category" /></q-item-section>-->
-            <!--              <q-item-section>-->
-            <!--                <q-item-label>Subcategorias</q-item-label>-->
-            <!--                <q-tooltip anchor="top middle" self="bottom middle">-->
-            <!--                  Administrar subcategorias-->
-            <!--                </q-tooltip>-->
-            <!--              </q-item-section>-->
-            <!--            </q-item>-->
-            <!--            <q-item clickable v-ripple exact active-class="bg-primary text-white" to="/productosPorVencer">-->
-            <!--              <q-item-section avatar><q-icon name="o_warning" /></q-item-section>-->
-            <!--              <q-item-section>-->
-            <!--                <q-item-label>Productos por vencer</q-item-label>-->
-            <!--                <q-tooltip anchor="top middle" self="bottom middle">-->
-            <!--                  Productos por vencer-->
-            <!--                </q-tooltip>-->
-            <!--              </q-item-section>-->
-            <!--            </q-item>-->
           </q-list>
         </q-header>
         <q-footer class="bg-white">

@@ -72,7 +72,7 @@ export default {
   },
   data () {
     return {
-      vista: 'lista',
+      vista: 'tabla',
       precio: 'PRECIO 1',
       almacenSelected: 'Todo',
       productDialog: false,
