@@ -16,6 +16,9 @@ return new class extends Migration
             $table->date('fecha');
             $table->time('hora');
             $table->double('total',11,2);
+            $table->double('subtotal',11,2);
+            $table->double('descuento',11,2);
+            $table->string('observacion', 500)->nullable();
             $table->string('estado')->default('ACTIVO');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');

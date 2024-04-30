@@ -26,6 +26,7 @@ export const useCounterStore = defineStore('counter', {
     pisoFlotante12mmConstante: 0.244,
     isLogin: !!localStorage.getItem('tokenRocaz'),
     productosVenta: [],
+    productosBuys: [],
     env: {
       razon: 'ROCAZ ECO HOME',
       direccion: '6 de octubre y caro',

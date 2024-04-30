@@ -13,6 +13,7 @@
 
         <q-toolbar-title>
           <q-img src="logo.png" style="width: 100px" />
+          <span class="text-white text-subtitle1 text-bold q-pl-md">{{ rutaTitle }}</span>
         </q-toolbar-title>
 
 <!--        <div>Quasar v{{ $q.version }}</div>-->
@@ -185,6 +186,39 @@ export default {
             this.$q.loading.hide()
           })
       })
+    }
+  },
+  computed: {
+    rutaTitle () {
+      // { path: '', component: () => import('pages/IndexPage/IndexPage.vue'), meta: { requiresAuth: true } },
+      // { path: '/productos', component: () => import('pages/productos/ProductosPage.vue'), meta: { requiresAuth: true } },
+      // { path: '/sale', component: () => import('pages/sales/SalePage.vue'), meta: { requiresAuth: true } },
+      // { path: '/clientes', component: () => import('pages/clientes/ClientIndex.vue'), meta: { requiresAuth: true } },
+      // { path: '/provedores', component: () => import('pages/clientes/ProveedorIndex.vue'), meta: { requiresAuth: true } },
+      // { path: '/users', component: () => import('../pages/users/UsersIndex.vue'), meta: { requiresAuth: true } },
+      // { path: '/compra', component: () => import('../pages/compra/CompraPage.vue'), meta: { requiresAuth: true } }
+      const ruta = this.$route.path
+      // return 'asa'
+      switch (ruta) {
+        case '/':
+          return 'Movimientos'
+        case '/productos':
+          return 'Productos'
+        case '/sale':
+          return 'Venta'
+        case '/clientes':
+          return 'Clientes'
+        case '/provedores':
+          return 'Provedores'
+        case '/users':
+          return 'Usuarios'
+        case '/compra':
+          return 'Compras'
+        case '/reportes':
+          return 'Reportes'
+        default:
+          return 'Movimientos'
+      }
     }
   }
 }

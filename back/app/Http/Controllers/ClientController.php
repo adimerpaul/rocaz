@@ -8,9 +8,17 @@ use Illuminate\Http\Request;
 class ClientController extends Controller{
     public function searchClient(Request $request){
         $nit = $request->nit;
-        error_log('Buscando cliente con NIT: '.$nit);
+//        error_log('Buscando cliente con NIT: '.$nit);
         $client = Client::where('nit', $nit)->first();
         return response()->json($client);
+    }
+    public function proveedores(){
+        $clients = Client::where('tipo', 'PROVEEDOR')->get();
+        return response()->json($clients);
+    }
+    public function clientes(){
+        $clients = Client::where('tipo', 'CLIENTE')->get();
+        return response()->json($clients);
     }
     public function index(Request $request)
     {

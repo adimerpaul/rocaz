@@ -32,7 +32,7 @@
             <q-select v-model="precio" :options="['PRECIO 1','PRECIO 2','PRECIO 3','PRECIO 4','PRECIO 5','PRECIO 6']" label="Precio" outlined dense class="bg-white" emit-value />
           </div>
           <div class="col-12 col-md-2 text-right">
-            <q-btn label="Calculos" color="green" icon="o_calculate"  no-caps rounded class="bg-white" @click="calculateDialog = true" />
+<!--            <q-btn label="Calculos" color="green" icon="o_calculate"  no-caps rounded class="bg-white" @click="calculateDialog = true" />-->
           </div>
           <div class="col-12">
             <ProductsComponents :products="products" @clickDetalleProducto="clickDetalleProducto" :precio="precio" :almacenSelected="almacenSelected" :vista="vista" />
@@ -43,20 +43,20 @@
         <q-card>
           <q-card-section class="q-pa-none q-ma-none ">
             <div class="row">
-              <div class="col-6 text-h6 q-pt-xs q-pl-lg">Canasta</div>
-              <div class="col-6 text-right"><q-btn class="text-subtitle1 text-blue-10 text-bold" style="text-decoration: underline;" label="Vaciar canasta" @click="vaciarCanasta" no-caps flat outline/></div>
+              <div class="col-6 text-h6 q-pt-xs q-pl-lg text-red">Compra</div>
+              <div class="col-6 text-right"><q-btn class="text-subtitle1 text-blue-10 text-bold" style="text-decoration: underline;" label="Vaciar " @click="vaciarCanasta" no-caps flat outline/></div>
             </div>
           </q-card-section>
           <q-separator></q-separator>
           <q-card-section class="q-pa-none q-ma-none" >
-            <div v-if="$store.productosVenta.length==0" class="flex flex-center q-pa-lg">
+            <div v-if="$store.productosBuys.length==0" class="flex flex-center q-pa-lg">
               <q-icon name="o_shopping_basket" color="grey" size="100px"/>
               <div class="q-pa-lg text-grey text-center noSelect">
                 Aún no tienes productos en tu canasta. Haz clic sobre un producto para agregarlo.
               </div>
             </div>
             <q-scroll-area v-else style="height: 400px;">
-              <q-table dense flat bordered hide-bottom hide-header :rows="$store.productosVenta" :columns="columnsProductosVenta" :rows-per-page-options="[0]">
+              <q-table dense flat bordered hide-bottom hide-header :rows="$store.productosBuys" :columns="columnsProductosVenta" :rows-per-page-options="[0]">
                 <template v-slot:body="props">
                   <q-tr :props="props">
                     <q-td key="borrar" :props="props" style="padding: 0px;margin: 0px" auto-width>
@@ -111,6 +111,7 @@
                   </q-tr>
                 </template>
               </q-table>
+<!--              <pre>{{$store.productosBuys}}</pre>-->
             </q-scroll-area>
           </q-card-section>
           <q-card-section >
@@ -133,7 +134,7 @@
                   <q-card-section>
                     <div class="row">
                       <div class="col-7 text-grey">Cantidades de referencia</div>
-                      <div class="col-5 text-right">{{$store.productosVenta.length}}</div>
+                      <div class="col-5 text-right">{{$store.productosBuys.length}}</div>
                       <div class="col-7 text-grey">
                         Ganancia
                         <q-icon name="o_info">
@@ -148,21 +149,21 @@
                 </q-card>
               </q-expansion-item>
             </q-list>
-            <q-btn @click="clickSale" class="full-width" no-caps label="Confirmar venta" :color="$store.productosVenta.length==0?'grey':'warning'" :disable="$store.productosVenta.length==0?true:false"/>
+            <q-btn @click="clickSale" class="full-width" no-caps label="Confirmar compra" :color="$store.productosBuys.length==0?'grey':'deep-orange'" :disable="$store.productosBuys.length==0?true:false"/>
           </q-card-section>
-<!--          <pre>{{$store.productosVenta}}</pre>-->
+<!--          <pre>{{$store.productosBuys}}</pre>-->
         </q-card>
       </div>
     </div>
     <q-dialog v-model="saleDialog" persistent>
       <q-card style="width: 750px; max-width: 90vw;">
         <q-card-section class="row items-center q-pb-none">
-          <div class="text-h6">Realizar venta</div>
+          <div class="text-h6">Realizar Compra</div>
           <q-space />
           <q-btn flat round dense icon="close" v-close-popup />
         </q-card-section>
         <q-form @submit.prevent="saleInsert">
-          <q-markup-table dense wrap-cells>
+          <q-markup-table dense wrap-cells flat bordered>
             <thead>
 <!--            "id": 4,-->
 <!--            "nombre": "Gypsum 239-G color",-->
@@ -178,7 +179,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="(product, index) in $store.productosVenta" :key="product.id">
+            <tr v-for="(product, index) in $store.productosBuys" :key="product.id">
               <td>{{index + 1}}</td>
               <td>{{product.nombre}}</td>
               <td>{{product.cantidadVenta}}</td>
@@ -194,6 +195,26 @@
             </tr>
             </tbody>
           </q-markup-table>
+          <div class="row q-pa-xs">
+            <div class="col-4">
+              <q-select v-model="proveedor_id" :options="proveedores" label="Proveedor" outlined dense class="bg-white" emit-value map-options
+                        option-value="id" option-label="nombre" @filter="fnFilter"
+                        use-input input-debounce="0" hide-selected fill-input
+              >
+                <template v-slot:no-option>
+                  <q-item>
+                    <q-item-section class="text-grey">
+                      No hay resultados
+                    </q-item-section>
+                  </q-item>
+                </template>
+              </q-select>
+<!--              <pre>{{proveedor_id}}</pre>-->
+            </div>
+            <div class="col-8">
+              <q-input outlined dense label="Observaciones" v-model="observacion"/>
+            </div>
+          </div>
 <!--          <q-card-section>-->
 <!--            <div class="row">-->
 <!--              <div class="col-6 col-md-4">-->
@@ -229,7 +250,7 @@
           <q-card-section>
             <div class="row">
               <div class="col-6">
-                <q-btn type="submit" class="full-width" icon="o_add_circle" label="Realizar venta" :loading="loading" no-caps color="green"  />
+                <q-btn type="submit" class="full-width" icon="o_add_circle" label="Realizar Compra" :loading="loading" no-caps color="positive"  />
               </div>
               <div class="col-6">
                 <q-btn class="full-width" icon="undo" v-close-popup label="Atras" no-caps color="red" :loading="loading" />
@@ -243,7 +264,7 @@
       <CalculatePage @close="calculateDialog = false" :products="products" />
     </q-dialog>
     <div id="myElement" class="hidden"></div>
-<!--    <pre>{{$store.productosVenta}}</pre>-->
+<!--    <pre>{{$store.productosBuys}}</pre>-->
   </q-page>
 </template>
 <script>
@@ -287,28 +308,66 @@ export default {
         nit: '',
         nombre: ''
       },
-      efectivo: ''
+      efectivo: '',
+      proveedores: [],
+      proveedoresAll: [],
+      proveedor_id: '',
+      observacion: ''
     }
   },
   mounted () {
+    this.proveedoresGet()
     this.categoriesGet()
     this.productsGet()
     this.medidasGet()
   },
   methods: {
+    fnFilter (val, update) {
+      if (val === '') {
+        update(() => {
+          this.proveedores = this.proveedoresAll
+        })
+      } else {
+        const needle = val.toLowerCase()
+        update(() => {
+          this.proveedores = this.proveedoresAll.filter(v => v.nombre.toLowerCase().indexOf(needle) > -1)
+        })
+      }
+    },
+    proveedoresGet () {
+      this.$axios.get('proveedores').then(response => {
+        this.proveedores = this.proveedores.concat(response.data)
+        this.proveedoresAll = response.data
+      })
+    },
     numero2digitosRedondeado (n) {
       const num = Math.round(n * 100) / 100
       return num.toFixed(2)
     },
     saleInsert () {
+      if (this.$store.productosBuys.length === 0) {
+        this.$q.notify({
+          color: 'red',
+          position: 'top',
+          message: 'No hay productos en la canasta',
+          icon: 'report_problem'
+        })
+        return
+      }
+      if (this.proveedor_id === '') {
+        this.$q.notify({
+          color: 'red',
+          position: 'top',
+          message: 'Seleccione un proveedor',
+          icon: 'report_problem'
+        })
+        return
+      }
       this.loading = true
-      this.$axios.post('sales', {
-        nit: this.client.nit,
-        nombre: this.client.nombre,
-        total: this.total,
-        metodo: this.metodoPago,
-        almacen: this.almacenSelected,
-        productos: this.$store.productosVenta,
+      this.$axios.post('buys', {
+        proveedor_id: this.proveedor_id,
+        observacion: this.observacion,
+        productos: this.$store.productosBuys,
         descuento: this.descuento
       }).then(response => {
         // console.log(response.data)
@@ -316,7 +375,7 @@ export default {
       }).finally(() => {
         this.loading = false
         this.saleDialog = false
-        this.$store.productosVenta = []
+        this.$store.productosBuys = []
       })
     },
     precioVenta (n) {
@@ -342,7 +401,7 @@ export default {
       if (n.cantidadVenta > 1) {
         n.cantidadVenta = parseInt(n.cantidadVenta) - 1
       } else if (n.cantidadVenta === 1) {
-        this.$store.productosVenta.splice(i, 1)
+        this.$store.productosBuys.splice(i, 1)
       }
     },
     addCantidad (n, i) {
@@ -351,13 +410,13 @@ export default {
       n.cantidadVenta = parseInt(n.cantidadVenta) + 1
     },
     deleteProductosVenta (product, index) {
-      this.$store.productosVenta.splice(index, 1)
+      this.$store.productosBuys.splice(index, 1)
     },
     redondeo (n) {
       return Math.round(n * 100) / 100
     },
     clickDetalleProducto (product) {
-      const search = this.$store.productosVenta.find(p => p.id === product.id)
+      const search = this.$store.productosBuys.find(p => p.id === product.id)
       if (search) {
         search.cantidadVenta += 1
       } else {
@@ -379,7 +438,7 @@ export default {
         if (this.precio === 'PRECIO 6') {
           product.precioVenta = product.precio6
         }
-        this.$store.productosVenta.push({
+        this.$store.productosBuys.push({
           id: product.id,
           nombre: product.nombre,
           cantidadVenta: 1,
@@ -399,7 +458,7 @@ export default {
       }
     },
     vaciarCanasta () {
-      this.$store.productosVenta = []
+      this.$store.productosBuys = []
     },
     searchProductsOrder (order) {
       if (order === '') {
@@ -470,11 +529,11 @@ export default {
       return Math.round((efectivo - total) * 100) / 100
     },
     total () {
-      const total = this.$store.productosVenta.reduce((acc, p) => acc + p.cantidadVenta * p.precioVenta, 0)
+      const total = this.$store.productosBuys.reduce((acc, p) => acc + p.cantidadVenta * p.precioVenta, 0)
       return Math.round(total * 100) / 100
     },
     totalganancia () {
-      return this.$store.productosVenta.reduce((acc, p) => acc + (p.cantidadVenta * p.precioVenta - p.costoUnitario) * p.cantidadVenta, 0)
+      return this.$store.productosBuys.reduce((acc, p) => acc + (p.cantidadVenta * p.precioVenta - p.costoUnitario) * p.cantidadVenta, 0)
     },
     columnsProductosVenta () {
       return [
