@@ -17,7 +17,7 @@
         </q-input>
       </div>
       <div class="col-12 col-md-5 flex flex-center ">
-        <q-btn label="Buscar" color="primary" @click="buyGet" class="full-width" icon="search" no-caps/>
+        <q-btn label="Buscar" color="primary" @click="buyGet" class="full-width" icon="search" no-caps :loading="loading"/>
 <!--        <q-btn label="Nuevo Venta" color="green"  icon="add_circle_outline" no-caps rounded to="/buy"/>-->
 <!--        <q-btn label="Nuevo Gasto" color="red"  icon="add_circle_outline" no-caps rounded @click="gastoDialog = true"/>-->
       </div>
@@ -31,7 +31,7 @@
 <!--        <CardComponent :monto="gasto" color="red" title="Gastos" icono="o_trending_down" />-->
 <!--      </div>-->
       <div class="col-12">
-        <q-table :columns="columns" :rows="buy" dense :rows-per-page-options="[0]" :filter="filter" :loading="loading" wrap-cells
+        <q-table :columns="columns" :rows="buys" dense :rows-per-page-options="[0]" :filter="filter" :loading="loading" wrap-cells
                  no-data-label="No hay ventas" no-results-label="No hay ventas"
         >
           <template v-slot:top-right>
@@ -100,7 +100,7 @@
             </q-tr>
           </template>
         </q-table>
-        <pre>{{buy}}</pre>
+        <pre>{{buys}}</pre>
       </div>
     </div>
   </q-page>
@@ -132,7 +132,7 @@ export default {
         { name: 'user', label: 'Usuario', align: 'left', field: (row) => row.user.name, sortable: true }
         // { name: 'lugar', label: 'lugar', align: 'left', field: (row) => row.user.lugar, sortable: true }
       ],
-      buy: [],
+      buys: [],
       loading: false,
       filter: ''
     }
@@ -185,7 +185,7 @@ export default {
         }
       })
         .then(response => {
-          this.buy = response.data
+          this.buys = response.data
           console.log(response.data)
         })
         .catch(error => {
@@ -198,28 +198,31 @@ export default {
   },
   computed: {
     balance () {
-      const total = this.buy.reduce((acc, buy) => {
-        // y que no se anulado
-        // return buy.tipo_venta === 'INGRESO' ? acc + buy.total : acc - buy.total
-        return buy.estado !== 'ANULADO' ? buy.tipo_venta === 'INGRESO' ? acc + buy.total : acc - buy.total : acc
-      }, 0)
-      return (Math.round(total * 100) / 100).toFixed(2)
+      let total = 0
+      this.buys.forEach(buy => {
+        if (buy.estado !== 'ANULADO') {
+          total += buy.total
+        }
+      })
+      return (Math.round(total * 100) / 100)
     },
     cantidad () {
-      const total = this.buy.reduce((acc, buy) => {
-        // y que no se anulado
-        return buy.estado !== 'ANULADO' ? acc + 1 : acc
-      }, 0)
-      return total
+      let total = 0
+      this.buys.forEach(buy => {
+        if (buy.estado !== 'ANULADO') {
+          total += 1
+        }
+      })
+      return (Math.round(total * 100) / 100)
     },
     ingreso () {
-      return this.buy.reduce((acc, buy) => {
+      return this.buys.reduce((acc, buy) => {
         // y que no sea anulado
         return buy.tipo_venta === 'INGRESO' && buy.estado !== 'ANULADO' ? acc + buy.total : acc
       }, 0)
     },
     gasto () {
-      return this.buy.reduce((acc, buy) => {
+      return this.buys.reduce((acc, buy) => {
         // return buy.tipo_venta === 'EGRESO' ? acc + buy.total : acc
         // y que su estado no se anulado
         return buy.tipo_venta === 'EGRESO' && buy.estado !== 'ANULADO' ? acc + buy.total : acc

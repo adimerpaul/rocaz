@@ -28,6 +28,12 @@ class BuyController extends Controller{
         $buys = $buys->orderBy('id', 'desc')->get();
         return response()->json($buys);
     }
+    public function buyAnular(Request $request){
+        $buy = Buy::find($request->id);
+        $buy->estado = 'ANULADO';
+        $buy->save();
+        return response()->json($buy);
+    }
 
     public function store(Request $request){
         try {

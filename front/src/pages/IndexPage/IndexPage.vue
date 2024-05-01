@@ -209,24 +209,27 @@ export default {
   },
   computed: {
     balance () {
-      return this.sales.reduce((acc, sale) => {
+      const total = this.sales.reduce((acc, sale) => {
         // y que no se anulado
         // return sale.tipo_venta === 'INGRESO' ? acc + sale.total : acc - sale.total
         return sale.estado !== 'ANULADO' ? sale.tipo_venta === 'INGRESO' ? acc + sale.total : acc - sale.total : acc
       }, 0)
+      return Math.round(total * 100) / 100
     },
     ingreso () {
-      return this.sales.reduce((acc, sale) => {
+      const total = this.sales.reduce((acc, sale) => {
         // y que no sea anulado
         return sale.tipo_venta === 'INGRESO' && sale.estado !== 'ANULADO' ? acc + sale.total : acc
       }, 0)
+      return Math.round(total * 100) / 100
     },
     gasto () {
-      return this.sales.reduce((acc, sale) => {
+      const total = this.sales.reduce((acc, sale) => {
         // return sale.tipo_venta === 'EGRESO' ? acc + sale.total : acc
         // y que su estado no se anulado
         return sale.tipo_venta === 'EGRESO' && sale.estado !== 'ANULADO' ? acc + sale.total : acc
       }, 0)
+      return Math.round(total * 100) / 100
     }
   }
 }

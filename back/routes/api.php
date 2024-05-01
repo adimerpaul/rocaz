@@ -41,6 +41,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::get('buys', [\App\Http\Controllers\BuyController::class, 'index']);
     Route::post('buys', [\App\Http\Controllers\BuyController::class, 'store']);
+    Route::post('buyAnular', [\App\Http\Controllers\BuyController::class, 'buyAnular']);
 
     Route::get('users', [\App\Http\Controllers\UserController::class, 'index']);
     Route::post('users', [\App\Http\Controllers\UserController::class, 'store']);
@@ -53,6 +54,5 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::get('sales', [\App\Http\Controllers\SaleController::class, 'index']);
     Route::post('sales', [\App\Http\Controllers\SaleController::class, 'store']);
-//    saleAnular
     Route::post('saleAnular', [\App\Http\Controllers\SaleController::class, 'saleAnular']);
 });

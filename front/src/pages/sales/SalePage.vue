@@ -313,6 +313,8 @@ export default {
       }).then(response => {
         // console.log(response.data)
         Imprimir.nota(response.data)
+        this.productsGet()
+        this.$alert.success('Venta realizada')
       }).finally(() => {
         this.loading = false
         this.saleDialog = false

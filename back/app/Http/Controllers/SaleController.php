@@ -63,12 +63,12 @@ class SaleController extends Controller{
             $detalle->save();
             $concepto .= $producto['cantidadVenta'].' '.$producto['nombre'].',';
 //            actulizar producto
-            if($almacen == 'TODO' || $almacen == 'Almacen 1') {
+            if($almacen == 'Todo' || $almacen == 'Almacen 1') {
                 $productoPrincipal = Product::find($producto['id']);
                 $productoPrincipal->stock1 = $productoPrincipal->stock1 - $producto['cantidadVenta'];
                 $productoPrincipal->save();
             }
-            if ($almacen == 'TODO' || $almacen == 'Almacen 2') {
+            if ($almacen == 'Almacen 2') {
                 $productoSecundario = Product::find($producto['id']);
                 $productoSecundario->stock2 = $productoSecundario->stock2 - $producto['cantidadVenta'];
                 $productoSecundario->save();
@@ -87,11 +87,11 @@ class SaleController extends Controller{
         $details = Detail::where('sale_id', $sale->id)->get();
         foreach ($details as $detail){
             $product = Product::find($detail->product_id);
-            if($sale->almacen == 'TODO' || $sale->almacen == 'Almacen 1') {
+            if($sale->almacen == 'Todo' || $sale->almacen == 'Almacen 1') {
                 $product->stock1 = $product->stock1 + $detail->cantidad;
                 $product->save();
             }
-            if($sale->almacen == 'TODO' || $sale->almacen == 'Almacen 2') {
+            if( $sale->almacen == 'Almacen 2') {
                 $product->stock2 = $product->stock2 + $detail->cantidad;
                 $product->save();
             }
