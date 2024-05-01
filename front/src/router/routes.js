@@ -9,7 +9,8 @@ const routes = [
       { path: '/clientes', component: () => import('pages/clientes/ClientIndex.vue'), meta: { requiresAuth: true } },
       { path: '/provedores', component: () => import('pages/clientes/ProveedorIndex.vue'), meta: { requiresAuth: true } },
       { path: '/users', component: () => import('../pages/users/UsersIndex.vue'), meta: { requiresAuth: true } },
-      { path: '/compra', component: () => import('../pages/compra/CompraPage.vue'), meta: { requiresAuth: true } }
+      { path: '/compra', component: () => import('../pages/compra/CompraPage.vue'), meta: { requiresAuth: true } },
+      { path: '/compraHistory', component: () => import('../pages/compra/CompraHistoryPage.vue'), meta: { requiresAuth: true } }
     ]
   },
   {

@@ -9,9 +9,26 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class BuyController extends Controller{
-    public function index(){
+    public function index(Request $request){
+        $search = $request->concepto == null ? '' : $request->concepto;
+        $fechaInicio = $request->fechaInicioSemana;
+        $fechaFin = $request->fechaFinSemana;
+        $buys = Buy::with(['client', 'user', 'buyDetails']);
 
+        // Verifica si se proporcionó una observación no nula
+        if ($request->has('observacion')) {
+            $buys->where('observacion', 'like', '%' . $search . '%');
+        }
+
+        // Aplica el filtro por fecha si ambos están presentes
+        if ($fechaInicio && $fechaFin) {
+            $buys->whereBetween('fecha', [$fechaInicio, $fechaFin]);
+        }
+
+        $buys = $buys->orderBy('id', 'desc')->get();
+        return response()->json($buys);
     }
+
     public function store(Request $request){
         try {
             DB::beginTransaction();
@@ -28,6 +45,7 @@ class BuyController extends Controller{
             $buy->save();
             $insertBuy = [];
             $total = 0;
+            $observacionText = '';
             foreach ($request->productos as $producto) {
                 $insertBuy[] = [
                     'buy_id' => $buy->id,
@@ -41,10 +59,14 @@ class BuyController extends Controller{
                 $productoModel = Product::find($producto['id']);
                 $productoModel->stock1 += $producto['cantidadVenta'];
                 $productoModel->save();
+                $observacionText .= $producto['cantidadVenta'] . ' ' . $producto['nombre'] . ', ';
             }
             BuyDetail::insert($insertBuy);
             $buy->subtotal = $total;
             $buy->total = $total - $request->descuento;
+            if ($request->observacion == null) {
+                $buy->observacion = 'Compra de ' . substr($observacionText, 0, -2);
+            }
             $buy->save();
             DB::commit();
             return response()->json(Buy::with(['client', 'user', 'buyDetails'])->find($buy->id));

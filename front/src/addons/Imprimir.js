@@ -183,9 +183,9 @@ Oruro</div>
 <!--<tr><td class='titder'>FECHA DE EMISIÓN:</td><td class='contenido'>${factura.fecha_emision}</td></tr>-->
 </table><hr><div class='titulo'>DETALLE</div>`
         factura.buy_details.forEach(r => {
-          cadena += `<div style='font-size: 12px'><b>${r.product_id} ${r.producto} </b></div>`
+          cadena += `<div style='font-size: 12px'><b>${r.product_id} ${r.nombre} </b></div>`
           cadena += `<div>${r.cantidad} ${parseFloat(r.precio).toFixed(2)} 0.00
-                    <span style='float:right'>${parseFloat(r.total).toFixed(2)}</span></div>`
+                    <span style='float:right'>${parseFloat(r.subtotal).toFixed(2)}</span></div>`
         })
         cadena += `<hr>
       <table style='font-size: 8px;'>

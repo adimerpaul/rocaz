@@ -370,12 +370,19 @@ export default {
         productos: this.$store.productosBuys,
         descuento: this.descuento
       }).then(response => {
+        this.$q.notify({
+          color: 'green',
+          position: 'top',
+          message: 'Compra realizada',
+          icon: 'cloud_done'
+        })
+        this.saleDialog = false
+        this.$store.productosBuys = []
+        this.productsGet()
         // console.log(response.data)
         Imprimir.notaCompra(response.data)
       }).finally(() => {
         this.loading = false
-        this.saleDialog = false
-        this.$store.productosBuys = []
       })
     },
     precioVenta (n) {

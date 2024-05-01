@@ -38,6 +38,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('searchClient', [\App\Http\Controllers\ClientController::class, 'searchClient']);
     Route::get('proveedores', [\App\Http\Controllers\ClientController::class, 'proveedores']);
     Route::get('clientes', [\App\Http\Controllers\ClientController::class, 'clientes']);
+
+    Route::get('buys', [\App\Http\Controllers\BuyController::class, 'index']);
     Route::post('buys', [\App\Http\Controllers\BuyController::class, 'store']);
 
     Route::get('users', [\App\Http\Controllers\UserController::class, 'index']);

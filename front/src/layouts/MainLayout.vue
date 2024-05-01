@@ -73,6 +73,17 @@
                 </q-item-label>
               </q-item-section>
             </q-item>
+            <q-item clickable v-ripple exact active-class="bg-primary text-white" to="/compraHistory">
+              <q-item-section avatar><q-icon name="o_file_copy" /></q-item-section>
+              <q-item-section>
+                <q-item-label>
+                  Historial compras
+                  <q-tooltip anchor="top middle" self="bottom middle">
+                    Historial de compras
+                  </q-tooltip>
+                </q-item-label>
+              </q-item-section>
+            </q-item>
             <q-item clickable v-ripple exact active-class="bg-primary text-white" to="/productos" >
               <q-item-section avatar><q-icon name="o_local_mall" /></q-item-section>
               <q-item-section>
