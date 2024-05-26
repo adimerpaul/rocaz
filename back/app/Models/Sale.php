@@ -23,7 +23,8 @@ class Sale extends Model
         'estado',
         'fecha_emision',
         'almacen',
-        'lugar'
+        'lugar',
+        'comentario'
     ];
     protected $hidden = [
         'created_at',

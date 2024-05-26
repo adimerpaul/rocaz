@@ -176,6 +176,9 @@
               <div class="col-12 col-md-3">
                 <q-input outlined dense label="Direccion" v-model="client.direccion" style="text-transform: uppercase" />
               </div>
+              <div class="col-12 col-md-12">
+                <q-input outlined dense label="Comentario" v-model="client.comentario" style="text-transform: uppercase" type="textarea"></q-input>
+              </div>
               <!--              <div class="col-4 col-md-4">-->
               <!--                <q-select v-model="almacenSelected" :options="['Todo','Almacen 1','Almacen 2']" label="Almacen" outlined dense class="bg-white" emit-value />-->
               <!--              </div>-->
@@ -313,6 +316,7 @@ export default {
         nombre: this.client.nombre,
         telefono: this.client.telefono,
         direccion: this.client.direccion,
+        comentario: this.client.comentario,
         total: this.total,
         metodo: this.metodoPago,
         almacen: this.almacenSelected,
@@ -467,6 +471,8 @@ export default {
       }).then(res => {
         if (res.data.nombre !== undefined) {
           this.client.nombre = res.data.nombre
+          this.client.telefono = res.data.telefono
+          this.client.direccion = res.data.direccion
         }
       }).finally(() => {
         this.loading = false

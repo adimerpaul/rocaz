@@ -124,6 +124,7 @@ Oruro</div>
                     <span style='float:right'>${parseFloat(r.total).toFixed(2)}</span></div>`
         })
         cadena += `<hr>
+<div>${factura.comentario === '' || factura.comentario === null ? '' : 'Comentario: ' + factura.comentario}</div>
       <table style='font-size: 8px;'>
       <tr><td class='titder' style='width: 60%'>SUBTOTAL Bs</td><td class='conte2'>${parseFloat(factura.total).toFixed(2)}</td></tr>
       <tr><td class='titder' style='width: 60%'>Descuento Bs</td><td class='conte2'>${parseFloat(factura.descuento).toFixed(2)}</td></tr>

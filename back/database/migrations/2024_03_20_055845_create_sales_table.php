@@ -29,6 +29,7 @@ return new class extends Migration
             $table->string("almacen")->nullable();
             $table->dateTime('fecha_emision')->nullable();
             $table->string("lugar")->nullable();
+            $table->text("comentario")->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

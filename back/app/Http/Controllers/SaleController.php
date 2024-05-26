@@ -43,6 +43,7 @@ class SaleController extends Controller{
         }
 
         $descuento = !isset($request->descuento) || $request->descuento == '' || $request->descuento == null ? 0 : $request->descuento;
+        $comentario = !isset($request->comentario) || $request->comentario == '' || $request->comentario == null ? '' : $request->comentario;
 
         $sale = new Sale();
 
@@ -51,6 +52,7 @@ class SaleController extends Controller{
         $sale->lugar = $request->user()->lugar;
         $sale->tipo_venta = 'INGRESO';
         $sale->descuento = $descuento;
+        $sale->comentario = $comentario;
         $sale->total = $request->total;
         $sale->metodo = intval($request->metodo)-intval($descuento);
         $sale->estado='ACTIVO';
