@@ -2,6 +2,9 @@ import QRCode from 'qrcode'
 import { useCounterStore } from 'stores/example-store'
 import { Printd } from 'printd'
 import conversor from 'conversor-numero-a-letras-es-ar'
+// const puppeteer = require('puppeteer')
+// import puppeteer from 'puppeteer'
+
 export class Imprimir {
   static factura (factura) {
     return new Promise((resolve, reject) => {
@@ -166,7 +169,7 @@ Oruro</div>
         }
       }
       const env = useCounterStore().env
-      QRCode.toDataURL(`Fecha: ${factura.fecha_emision} Monto: ${parseFloat(factura.total).toFixed(2)}`, opts).then(url => {
+      QRCode.toDataURL(`Fecha: ${factura.fecha_emision} Monto: ${parseFloat(factura.total).toFixed(2)}`, opts).then(async url => {
         let cadena = `${this.head()}
   <div style='padding-left: 0.5cm;padding-right: 0.5cm'>
   <img src="logo.png" alt="logo" style="width: 100px; height: 50px; display: block; margin-left: auto; margin-right: auto;">
