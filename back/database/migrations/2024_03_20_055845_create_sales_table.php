@@ -28,6 +28,7 @@ return new class extends Migration
             $table->string("estado")->nullable()->default('ACTIVO')->comment('ACTIVO ANULADO');
             $table->string("almacen")->nullable();
             $table->dateTime('fecha_emision')->nullable();
+            $table->string("lugar")->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

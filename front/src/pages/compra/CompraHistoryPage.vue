@@ -100,7 +100,7 @@
             </q-tr>
           </template>
         </q-table>
-        <pre>{{buys}}</pre>
+<!--        <pre>{{buys}}</pre>-->
       </div>
     </div>
   </q-page>
