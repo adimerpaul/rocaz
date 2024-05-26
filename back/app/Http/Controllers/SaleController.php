@@ -30,6 +30,15 @@ class SaleController extends Controller{
             $client = new Client();
             $client->nit = $nit;
             $client->nombre = $request->nombre;
+            $client->telefono = $request->telefono;
+            $client->direccion = $request->direccion;
+            $client->tipo = 'CLIENTE';
+            $client->save();
+        }else{
+            $client->nombre = $request->nombre;
+            $client->telefono = $request->telefono;
+            $client->direccion = $request->direccion;
+            $client->tipo = 'CLIENTE';
             $client->save();
         }
 

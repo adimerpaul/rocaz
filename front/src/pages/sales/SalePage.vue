@@ -162,6 +162,43 @@
           <q-btn flat round dense icon="close" v-close-popup />
         </q-card-section>
         <q-form @submit.prevent="saleInsert">
+          <q-card-section>
+            <div class="row">
+              <div class="col-6 col-md-3">
+                <q-input outlined dense label="NIT/CARNET" required @update:model-value="searchClient" v-model="client.nit" :loading="loading" :debounce="500" />
+              </div>
+              <div class="col-12 col-md-3">
+                <q-input outlined dense label="Nombre Razon Social" required v-model="client.nombre" style="text-transform: uppercase" />
+              </div>
+              <div class="col-12 col-md-3">
+                <q-input outlined dense label="Telefono" v-model="client.telefono" style="text-transform: uppercase" />
+              </div>
+              <div class="col-12 col-md-3">
+                <q-input outlined dense label="Direccion" v-model="client.direccion" style="text-transform: uppercase" />
+              </div>
+              <!--              <div class="col-4 col-md-4">-->
+              <!--                <q-select v-model="almacenSelected" :options="['Todo','Almacen 1','Almacen 2']" label="Almacen" outlined dense class="bg-white" emit-value />-->
+              <!--              </div>-->
+            </div>
+          </q-card-section>
+          <q-separator/>
+          <q-card-section>
+            <div class="row">
+              <div class="col-6 col-md-2">
+                <q-input outlined dense label="TOTAL A PAGAR:" readonly v-model="total" />
+              </div>
+              <div class="col-6 col-md-3">
+                <q-input outlined dense label="EFECTIVO BS."  v-model="efectivo" />
+              </div>
+              <div class="col-6 col-md-2">
+                <q-input outlined dense label="CAMBIO:" readonly v-model="cambio" />
+              </div>
+              <div class="col-6 col-md-3">
+                <q-select dense outlined v-model="metodoPago" label="Metodo de pago"
+                          :options="$metodos" hint="Metodo de pago del gasto" />
+              </div>
+            </div>
+          </q-card-section>
           <q-markup-table dense wrap-cells>
             <thead>
 <!--            "id": 4,-->
@@ -194,37 +231,6 @@
             </tr>
             </tbody>
           </q-markup-table>
-<!--          <q-card-section>-->
-<!--            <div class="row">-->
-<!--              <div class="col-6 col-md-4">-->
-<!--                <q-input outlined dense label="NIT/CARNET" required @update:model-value="searchClient" v-model="client.nit" :loading="loading" :debounce="500" />-->
-<!--              </div>-->
-<!--              <div class="col-12 col-md-4">-->
-<!--                <q-input outlined dense label="Nombre Razon Social" required v-model="client.nombre" style="text-transform: uppercase" />-->
-<!--              </div>-->
-<!--              <div class="col-4 col-md-4">-->
-<!--                <q-select v-model="almacenSelected" :options="['Todo','Almacen 1','Almacen 2']" label="Almacen" outlined dense class="bg-white" emit-value />-->
-<!--              </div>-->
-<!--            </div>-->
-<!--          </q-card-section>-->
-<!--          <q-separator/>-->
-<!--          <q-card-section>-->
-<!--            <div class="row">-->
-<!--              <div class="col-6 col-md-2">-->
-<!--                <q-input outlined dense label="TOTAL A PAGAR:" readonly v-model="total" />-->
-<!--              </div>-->
-<!--              <div class="col-6 col-md-3">-->
-<!--                <q-input outlined dense label="EFECTIVO BS."  v-model="efectivo" />-->
-<!--              </div>-->
-<!--              <div class="col-6 col-md-2">-->
-<!--                <q-input outlined dense label="CAMBIO:" readonly v-model="cambio" />-->
-<!--              </div>-->
-<!--              <div class="col-6 col-md-3">-->
-<!--                <q-select dense outlined v-model="metodoPago" label="Metodo de pago"-->
-<!--                          :options="$metodos" hint="Metodo de pago del gasto" />-->
-<!--              </div>-->
-<!--            </div>-->
-<!--          </q-card-section>-->
           <q-separator/>
           <q-card-section>
             <div class="row">
@@ -305,6 +311,8 @@ export default {
       this.$axios.post('sales', {
         nit: this.client.nit,
         nombre: this.client.nombre,
+        telefono: this.client.telefono,
+        direccion: this.client.direccion,
         total: this.total,
         metodo: this.metodoPago,
         almacen: this.almacenSelected,
