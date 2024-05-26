@@ -49,7 +49,9 @@
 <!--                    <q-tooltip>Anular venta</q-tooltip>-->
 <!--                  </q-btn>-->
 <!--                </q-btn-group>-->
-                <q-btn-dropdown dense icon="more_vert" align="right" label="Opciones" no-caps color="primary" size="10px" v-if="props.row.estado=='ACTIVO'">
+                <q-btn-dropdown dense icon="more_vert" align="right" label="Opciones" no-caps
+                                :color="props.row.tipo_venta=='INGRESO'?'green-9':'red-9'"
+                                size="10px" v-if="props.row.estado=='ACTIVO'">
                   <q-item clickable v-close-popup class="text-center">
                     <q-btn dense label="Anular" color="red-4" size="10px" class="full-width"
                            no-caps no-wrap icon="o_highlight_off" @click="saleAnular(props.row.id)">
@@ -80,9 +82,12 @@
                          :class="`bg-${props.row.tipo_venta=='INGRESO'?'green':'red'}-2`" dense flat
                          style="padding: 0px; margin: 0px; border-radius: 0px;position: absolute;top: 5px;left: 0px;"/>
                   <div style="padding-left: 15px">
-                    <div class="text-grey q-ml-xs" style="width: 400px; white-space: normal; overflow-wrap: break-word;line-height: 0.9;">{{ props.row.concepto }}</div>
+                    <div class="text-nlack q-ml-xs" style="width: 400px; white-space: normal; overflow-wrap: break-word;line-height: 0.9;">{{ props.row.concepto }}</div>
                   </div>
                 </div>
+              </q-td>
+              <q-td key="comentario" :props="props">
+                <div class="text-nlack" style="width: 400px; white-space: normal; overflow-wrap: break-word;line-height: 0.9;">{{ props.row.comentario }}</div>
               </q-td>
               <q-td key="montoTotal" :props="props">
                 <span class="text-grey">{{ props.row.total }} Bs</span>
@@ -90,7 +95,7 @@
               <q-td key="proveedorcliente" :props="props">
                 <div class="text-grey" v-if="props.row.client">{{ props.row.client.nombre }}</div>
               </q-td>
-              <q-td key="fechayhora" :props="props">
+              <q-td key="fechayhora" :props="props" style="width: 130px;">
                 <p>{{ $filters.dateDmYHis(props.row.fecha_emision) }}</p>
               </q-td>
               <q-td key="egresoingreso" :props="props">
@@ -132,6 +137,7 @@ export default {
       columns: [
         { name: 'opcion', label: 'Opcion', align: 'left', field: 'opcion' },
         { name: 'concepto', label: 'Concepto', align: 'left', field: 'concepto', sortable: true },
+        { name: 'comentario', label: 'Comentario', align: 'left', field: 'comentario', sortable: true },
         { name: 'montoTotal', label: 'Monto total', align: 'left', field: 'montoTotal', sortable: true },
         // { name: 'agencia', label: 'Agencia', align: 'left', field: 'agencia', sortable: true },
         // { name: 'metodoPago', label: 'Metodo de pago', align: 'left', field: 'metodoPago', sortable: true },
