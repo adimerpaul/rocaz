@@ -82,12 +82,12 @@
                          :class="`bg-${props.row.tipo_venta=='INGRESO'?'green':'red'}-2`" dense flat
                          style="padding: 0px; margin: 0px; border-radius: 0px;position: absolute;top: 5px;left: 0px;"/>
                   <div style="padding-left: 15px">
-                    <div class="text-nlack q-ml-xs" style="width: 400px; white-space: normal; overflow-wrap: break-word;line-height: 0.9;">{{ props.row.concepto }}</div>
+                    <div class=" q-ml-xs" style="width: 300px; white-space: normal; overflow-wrap: break-word;line-height: 0.9;">{{ props.row.concepto }}</div>
                   </div>
                 </div>
               </q-td>
               <q-td key="comentario" :props="props">
-                <div class="text-nlack" style="width: 400px; white-space: normal; overflow-wrap: break-word;line-height: 0.9;">{{ props.row.comentario }}</div>
+                <div class="" style="width: 300px; white-space: normal; overflow-wrap: break-word;line-height: 0.9;">{{ props.row.comentario }}</div>
               </q-td>
               <q-td key="montoTotal" :props="props">
                 <span class="text-grey">{{ props.row.total }} Bs</span>
@@ -95,8 +95,8 @@
               <q-td key="proveedorcliente" :props="props">
                 <div class="text-grey" v-if="props.row.client">{{ props.row.client.nombre }}</div>
               </q-td>
-              <q-td key="fechayhora" :props="props" style="width: 130px;">
-                <p>{{ $filters.dateDmYHis(props.row.fecha_emision) }}</p>
+              <q-td key="fechayhora" :props="props" style="min-width: 150px">
+                {{ $filters.dateDmYHis(props.row.fecha_emision) }}
               </q-td>
               <q-td key="egresoingreso" :props="props">
                 <q-chip :color="`${props.row.tipo_venta=='INGRESO'?'green':'red'}-5`" text-color="white" dense flat :label="props.row.tipo_venta"/>
