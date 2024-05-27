@@ -17,9 +17,12 @@
         <div class="col-12 col-md-2">
           <q-input v-model="fechaFinSemana" label="Fecha fin semana" type="date" outlined dense />
         </div>
+        <div class="col-12 col-md-2 flex flex-center">
+          <q-btn @click="reporteVentas" label="Generar" color="primary" no-caps icon-right="send" />
+        </div>
       </div>
       <div class="row">
-        <div class="col-12 col-md-6">
+        <div class="col-12 col-md-12">
             <Bar
               id="my-chart-id"
               :options="chartOptions"
@@ -53,9 +56,21 @@ export default {
       }
     }
   },
+  mounted () {
+    this.reporteVentas()
+  },
   methods: {
     reporteVentas () {
-      this.$router.push({ name: 'reporte-ventas' })
+      this.$axios.post('reportProductos', {
+        fechaInicioSemana: this.fechaInicioSemana,
+        fechaFinSemana: this.fechaFinSemana
+      }).then(response => {
+        console.log(response.data)
+        this.chartData = {
+          labels: response.data.labels,
+          datasets: [{ data: response.data.data }]
+        }
+      })
     }
   }
 }

@@ -55,4 +55,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('sales', [\App\Http\Controllers\SaleController::class, 'index']);
     Route::post('sales', [\App\Http\Controllers\SaleController::class, 'store']);
     Route::post('saleAnular', [\App\Http\Controllers\SaleController::class, 'saleAnular']);
+
+//    reportProductos
+    Route::post('reportProductos', [\App\Http\Controllers\SaleController::class, 'reportProductos']);
 });

@@ -110,4 +110,28 @@ class SaleController extends Controller{
         DB::commit();
         return response()->json($sale);
     }
+    public function reportProductos(Request $request){
+        $fechaInicioSemana = $request->fechaInicioSemana.' 00:00:00';
+        $fechaFinSemana = $request->fechaFinSemana.' 23:59:59';
+
+        $labels = [];
+        $data = [];
+        $productos = Sale::whereBetween('fecha_emision', [$fechaInicioSemana, $fechaFinSemana])
+            ->where('tipo_venta', 'INGRESO')
+            ->where('estado', 'ACTIVO')
+            ->with(['details'])
+            ->get();
+        foreach ($productos as $producto){
+            foreach ($producto->details as $detail){
+                $index = array_search($detail->producto, $labels);
+                if($index === false){
+                    array_push($labels, $detail->producto);
+                    array_push($data, $detail->cantidad);
+                }else{
+                    $data[$index] += $detail->cantidad;
+                }
+            }
+        }
+        return response()->json(['labels' => $labels, 'data' => $data]);
+    }
 }
