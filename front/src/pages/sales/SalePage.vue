@@ -165,7 +165,7 @@
           <q-card-section>
             <div class="row">
               <div class="col-6 col-md-3">
-                <q-input outlined dense label="NIT/CARNET" required @update:model-value="searchClient" v-model="client.nit" :loading="loading" :debounce="500" />
+                <q-input outlined dense label="Numero" required @update:model-value="searchClient" v-model="client.nit" :loading="loading" :debounce="500" />
               </div>
               <div class="col-12 col-md-3">
                 <q-input outlined dense label="Nombre Razon Social" required v-model="client.nombre" style="text-transform: uppercase" />
