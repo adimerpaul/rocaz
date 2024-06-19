@@ -20,13 +20,13 @@
         <q-btn label="Nuevo Venta" color="green"  icon="add_circle_outline" no-caps rounded to="/sale"/>
         <q-btn label="Nuevo Gasto" color="red"  icon="add_circle_outline" no-caps rounded @click="gastoDialog = true"/>
       </div>
-      <div class="col-12 col-md-4 q-pa-xs">
+      <div class="col-12 col-md-4 q-pa-xs" v-if="$store.user.type=='ADMINISTRADOR'">
         <CardComponent :monto="balance" color="grey" title="Balance" icono="o_trending_up" />
       </div>
-      <div class="col-12 col-md-4 q-pa-xs">
+      <div class="col-12 col-md-4 q-pa-xs" v-if="$store.user.type=='ADMINISTRADOR'">
         <CardComponent :monto="ingreso" color="green" title="Ventas" icono="o_trending_up" />
       </div>
-      <div class="col-12 col-md-4 q-pa-xs">
+      <div class="col-12 col-md-4 q-pa-xs" v-if="$store.user.type=='ADMINISTRADOR'">
         <CardComponent :monto="gasto" color="red" title="Gastos" icono="o_trending_down" />
       </div>
       <div class="col-12">
