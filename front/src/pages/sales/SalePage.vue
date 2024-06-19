@@ -213,6 +213,9 @@
                   </template>
                 </q-select>
               </div>
+              <div class="col-6 col-md-2 text-center">
+                <q-btn @click="cotizacion" no-caps label="Cotizar" color="indigo" icon="print" size="10px" />
+              </div>
             </div>
           </q-card-section>
           <q-markup-table dense wrap-cells>
@@ -318,6 +321,9 @@ export default {
     this.medidasGet()
   },
   methods: {
+    cotizacion () {
+      Imprimir.cotizacion(this.$store.productosVenta, this.client, this.total, this.descuento)
+    },
     numero2digitosRedondeado (n) {
       const num = Math.round(n * 100) / 100
       return num.toFixed(2)
@@ -493,6 +499,9 @@ export default {
     }
   },
   computed: {
+    Imprimir () {
+      return Imprimir
+    },
     cambio () {
       const efectivo = parseFloat(this.efectivo === '' ? 0 : this.efectivo)
       const total = parseFloat(this.total === '' ? 0 : this.total)

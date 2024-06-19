@@ -2,6 +2,7 @@ import QRCode from 'qrcode'
 import { useCounterStore } from 'stores/example-store'
 import { Printd } from 'printd'
 import conversor from 'conversor-numero-a-letras-es-ar'
+import moment from 'moment'
 // const puppeteer = require('puppeteer')
 // import puppeteer from 'puppeteer'
 
@@ -135,6 +136,77 @@ Oruro</div>
       </table>
       <br>
       <div>Son ${a} ${((parseFloat(factura.total) - Math.floor(parseFloat(factura.total))) * 100).toFixed(2)} /100 Bolivianos</div><hr>
+      <div style='display: flex;justify-content: center;'>
+        <img  src="${url}" style="width: 75px; height: 75px; display: block; margin-left: auto; margin-right: auto;">
+      </div></div>
+      </div>
+</body>
+</html>`
+        document.getElementById('myElement').innerHTML = cadena
+        const d = new Printd()
+        d.print(document.getElementById('myElement'))
+        resolve(url)
+      }).catch(err => {
+        reject(err)
+      })
+    })
+  }
+
+  static cotizacion (detalle, cliente, total, descuento) {
+    console.log('detalle', detalle)
+    console.log('cliente', cliente)
+    console.log('total', total)
+    console.log('descuento', descuento)
+    if (descuento === null || descuento === undefined || descuento === '') {
+      descuento = 0
+    }
+    return new Promise((resolve, reject) => {
+      const ClaseConversor = conversor.conversorNumerosALetras
+      const miConversor = new ClaseConversor()
+      const a = miConversor.convertToText(parseInt(total))
+      const hoy = moment().format('YYYY-MM-DD')
+      const opts = {
+        errorCorrectionLevel: 'M',
+        type: 'png',
+        quality: 0.95,
+        width: 100,
+        margin: 1,
+        color: {
+          dark: '#000000',
+          light: '#FFF'
+        }
+      }
+      const env = useCounterStore().env
+      QRCode.toDataURL(`Fecha: ${hoy} Monto: ${parseFloat(total).toFixed(2)}`, opts).then(url => {
+        let cadena = `${this.head()}
+  <div style='padding-left: 0.5cm;padding-right: 0.5cm'>
+  <img src="logo.png" alt="logo" style="width: 100px; height: 50px; display: block; margin-left: auto; margin-right: auto;">
+      <div class='titulo'>${'COTIZACION'}</div>
+      <div class='titulo2'>${env.razon} <br>
+      Casa Matriz<br>
+      No. Punto de Venta 0<br>
+${env.direccion}<br>
+Tel. ${env.telefono}<br>
+Oruro</div>
+<hr>
+<table>
+<tr><td class='titder'>NOMBRE/RAZÓN SOCIAL:</td><td class='contenido'>${cliente.nombre}</td>
+<tr><td class='titder'>FECHA DE EMISIÓN:</td><td class='contenido'>${hoy}</td></tr>
+</table><hr><div class='titulo'>DETALLE</div>`
+        detalle.forEach(r => {
+          cadena += `<div style='font-size: 12px'><b> ${r.nombre} </b></div>`
+          cadena += `<div><span style='font-size: 18px;font-weight: bold'>${r.cantidadVenta}</span> ${parseFloat(r.precioVenta).toFixed(2)} 0.00
+                    <span style='float:right'>${parseFloat(r.precioVenta * r.cantidadVenta).toFixed(2)}</span></div>`
+        })
+        cadena += `<hr>
+<div>${cliente.comentario === '' || cliente.comentario === null || cliente.comentario === undefined ? '' : 'Comentario: ' + cliente.comentario}</div>
+      <table style='font-size: 8px;'>
+      <tr><td class='titder' style='width: 60%'>SUBTOTAL Bs</td><td class='conte2'>${parseFloat(total).toFixed(2)}</td></tr>
+      <tr><td class='titder' style='width: 60%'>Descuento Bs</td><td class='conte2'>${parseFloat(descuento).toFixed(2)}</td></tr>
+      <tr><td class='titder' style='width: 60%'>TOTAL Bs</td><td class='conte2'>${parseFloat(total - descuento).toFixed(2)}</td></tr>
+      </table>
+      <br>
+      <div>Son ${a} ${((parseFloat(total) - Math.floor(parseFloat(total))) * 100).toFixed(2)} /100 Bolivianos</div><hr>
       <div style='display: flex;justify-content: center;'>
         <img  src="${url}" style="width: 75px; height: 75px; display: block; margin-left: auto; margin-right: auto;">
       </div></div>
