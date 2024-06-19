@@ -79,17 +79,26 @@
             <q-tab-panel name="Calculo 2 piso flotante 12 mm">
               <div class="text-h6 q-mb-md">Calculo 2 piso flotante 12 mm</div>
               <div class="row">
-                <div class="col-12 col-md-3">
-                  <q-input outlined v-model="$store.area2PisoFlotante12mm" label="Area (m2)" class="bg-orange" />
+                <div class="col-12 col-md-2">
+                  <q-input dense outlined v-model="$store.area2PisoFlotante12mm" label="Area (m2)" class="bg-orange" />
                 </div>
-                <div class="col-12 col-md-3">
-                  <q-input outlined v-model="$store.area2PisoFlotante12mmConstante" label="Constante" class="bg-white" readonly/>
+                <div class="col-12 col-md-2 hidden">
+                  <q-input dense outlined v-model="$store.area2PisoFlotante12mmConstante" label="Constante" class="bg-white" readonly/>
                 </div>
-                <div class="col-12 col-md-3">
-                  <q-input outlined :model-value="piezasArea2PisoFlotante12mm" label="Piezas" class="bg-blue" readonly/>
+                <div class="col-12 col-md-2">
+                  <q-input dense outlined :model-value="piezasArea2PisoFlotante12mm" label="Piezas" class="bg-blue" readonly/>
                 </div>
-                <div class="col-12 col-md-3">
-                  <q-input outlined :model-value="cajasArea2PisoFlotante12mm" label="Cajas" class="bg-green" readonly/>
+                <div class="col-12 col-md-2">
+                  <q-input dense outlined :model-value="cajasArea2PisoFlotante12mm" label="Cajas" class="bg-green" readonly/>
+                </div>
+                <div class="col-12 col-md-6">
+                  <q-select v-model="producto" :options="products" label="Producto"  outlined dense class="bg-white"
+                            option-value="id" option-label="nombre">
+                    <template v-slot:after>
+                      <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct(cajasArea2PisoFlotante8mm)"/>
+                    </template>
+                  </q-select>
+                  <!--                  <pre>{{products}}</pre>-->
                 </div>
               </div>
             </q-tab-panel>
