@@ -7,7 +7,7 @@
       <div class="col-6 col-md-2 q-pa-xs">
         <q-input v-model="fechaFinSemana" label="Fecha fin" dense outlined type="date" class="bg-white" @update:model-value="salesGet"/>
       </div>
-      <div class="col-12 col-md-3 q-pa-xs">
+      <div class="col-12 col-md-2 q-pa-xs">
         <q-input v-model="concepto" label="Buscar por concepto" dense outlined class="bg-white" debounce="300" clearable
                   placeholder="Buscar por concepto" @update:model-value="salesGet"
         >
@@ -16,7 +16,10 @@
           </template>
         </q-input>
       </div>
-      <div class="col-12 col-md-5 text-right">
+      <div class="col-12 col-md-2 text-right">
+        <q-btn label="Exportar" color="primary"  icon="get_app" no-caps rounded @click="exportar"/>
+      </div>
+      <div class="col-12 col-md-4 text-right">
         <q-btn label="Nuevo Venta" color="green"  icon="add_circle_outline" no-caps rounded to="/sale"/>
         <q-btn label="Nuevo Gasto" color="red"  icon="add_circle_outline" no-caps rounded @click="gastoDialog = true"/>
       </div>
@@ -126,6 +129,7 @@ import moment from 'moment'
 import CardComponent from 'components/CardComponent.vue'
 import DialogGasto from 'pages/IndexPage/DialogGasto.vue'
 import { Imprimir } from 'src/addons/Imprimir'
+import { Excel } from 'src/addons/Excel'
 export default {
   name: 'IndexPage',
   components: { DialogGasto, CardComponent },
@@ -157,6 +161,88 @@ export default {
     this.salesGet()
   },
   methods: {
+    exportar () {
+      // {
+      //   "id": 428,
+      //   "client_id": 28,
+      //   "user_id": 1,
+      //   "tipo_venta": "INGRESO",
+      //   "concepto": "1 Gypsum 238,1 Transversal 0,60,",
+      //   "descuento": 0,
+      //   "subtotal": null,
+      //   "total": 12,
+      //   "precio": null,
+      //   "metodo": "0",
+      //   "precio_colocado": null,
+      //   "estado": "ACTIVO",
+      //   "almacen": "Todo",
+      //   "fecha_emision": "2024-06-19 05:21:35",
+      //   "lugar": "ORURO",
+      //   "comentario": "",
+      //   "name": "AJATA",
+      //   "user": {
+      //   "id": 1,
+      //     "name": "Administrator",
+      //     "email": "admin@test.com",
+      //     "username": "admin",
+      //     "email_verified_at": null,
+      //     "lugar": "ORURO",
+      //     "type": "ADMINISTRADOR"
+      // },
+      //   "client": {
+      //   "id": 28,
+      //     "nombre": "AJATA",
+      //     "compania": null,
+      //     "nit": "0",
+      //     "email": null,
+      //     "telefono": null,
+      //     "direccion": null,
+      //     "tipo": "CLIENTE"
+      // },
+      //   "details": [
+      //   {
+      //     "id": 915,
+      //     "sale_id": 428,
+      //     "product_id": 1,
+      //     "cantidad": 1,
+      //     "precio": 9,
+      //     "descuento": null,
+      //     "subtotal": null,
+      //     "total": 9,
+      //     "producto": "Gypsum 238"
+      //   },
+      //   {
+      //     "id": 916,
+      //     "sale_id": 428,
+      //     "product_id": 7,
+      //     "cantidad": 1,
+      //     "precio": 3,
+      //     "descuento": null,
+      //     "subtotal": null,
+      //     "total": 3,
+      //     "producto": "Transversal 0,60"
+      //   }
+      // ]
+      // },
+      const data = [
+        {
+          sheet: 'Adults',
+          columns: [
+            { label: 'Proveedor / cliente', value: 'name' },
+            { label: 'Monto total', value: 'total' },
+            { label: 'Fecha y hora', value: 'fecha_emision' },
+            { label: 'Concepto', value: 'concepto' },
+            { label: 'Comentario', value: 'comentario' },
+            { label: 'Egreso / ingreso', value: 'tipo_venta' },
+            { label: 'Usuario', value: 'user.name' },
+            { label: 'Lugar', value: 'lugar' }
+          ],
+          content: this.sales
+        }
+      ]
+
+      Excel.export(data, 'ventas')
+    },
     reimprimirNota (sale) {
       Imprimir.nota(sale).then(r => {
         // console.log(r)
