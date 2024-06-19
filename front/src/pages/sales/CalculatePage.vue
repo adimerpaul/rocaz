@@ -53,17 +53,26 @@
             <q-tab-panel name="Calculo 2 piso flotante 8 mm">
               <div class="text-h6 q-mb-md">Calculo 2 piso flotante 8 mm</div>
               <div class="row">
-                <div class="col-12 col-md-3">
-                  <q-input outlined v-model="$store.area2PisoFlotante8mm" label="Area (m2)" class="bg-orange" />
+                <div class="col-12 col-md-2">
+                  <q-input outlined dense v-model="$store.area2PisoFlotante8mm" label="Area (m2)" class="bg-orange" />
                 </div>
-                <div class="col-12 col-md-3">
-                  <q-input outlined v-model="$store.area2PisoFlotante8mmConstante" label="Constante" class="bg-white" readonly/>
+                <div class="col-12 col-md-2 hidden">
+                  <q-input outlined dense v-model="$store.area2PisoFlotante8mmConstante" label="Constante" class="bg-white" readonly/>
                 </div>
-                <div class="col-12 col-md-3">
-                  <q-input outlined :model-value="piezasArea2PisoFlotante8mm" label="Piezas" class="bg-blue" readonly/>
+                <div class="col-12 col-md-2">
+                  <q-input outlined dense :model-value="piezasArea2PisoFlotante8mm" label="Piezas" class="bg-blue" readonly/>
                 </div>
-                <div class="col-12 col-md-3">
-                  <q-input outlined :model-value="cajasArea2PisoFlotante8mm" label="Cajas" class="bg-green" readonly/>
+                <div class="col-12 col-md-2">
+                  <q-input outlined dense :model-value="cajasArea2PisoFlotante8mm" label="Cajas" class="bg-green" readonly/>
+                </div>
+                <div class="col-12 col-md-6">
+                  <q-select v-model="producto" :options="products" label="Producto"  outlined dense class="bg-white"
+                            option-value="id" option-label="nombre">
+                    <template v-slot:after>
+                      <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct(cajasArea2PisoFlotante8mm)"/>
+                    </template>
+                  </q-select>
+<!--                  <pre>{{products}}</pre>-->
                 </div>
               </div>
             </q-tab-panel>
@@ -299,14 +308,33 @@
 
 <script>
 
+import { Alert } from 'src/addons/Alert'
+
 export default {
+  props: {
+    products: {
+      type: Array,
+      required: true
+    }
+  },
   data () {
     return {
+      producto: '',
       splitterModel: 20
       // area2PisoFlotante8mm: ''
     }
   },
   methods: {
+    addProduct (cajas) {
+      if (!this.producto) {
+        Alert.error('Seleccione un producto')
+        return false
+      }
+      this.$emit('addProduct', {
+        producto: this.producto,
+        cantidad: cajas
+      })
+    },
     redondear (value, decimals = 1) {
       return value.toFixed(decimals)
     }
@@ -314,19 +342,23 @@ export default {
   computed: {
     piezasArea2PisoFlotante8mm () {
       const calculate = this.$store.area2PisoFlotante8mm / this.$store.area2PisoFlotante8mmConstante
-      return calculate.toFixed(1)
+      const redondear = Math.ceil(calculate)
+      return redondear.toFixed(1)
     },
     cajasArea2PisoFlotante8mm () {
       const calculate = (this.$store.area2PisoFlotante8mm / this.$store.area2PisoFlotante8mmConstante) / 10
-      return calculate.toFixed(1)
+      const redondear = Math.ceil(calculate)
+      return redondear.toFixed(1)
     },
     piezasArea2PisoFlotante12mm () {
       const calculate = this.$store.area2PisoFlotante12mm / this.$store.area2PisoFlotante12mmConstante
-      return calculate.toFixed(1)
+      const redondear = Math.ceil(calculate)
+      return redondear.toFixed(1)
     },
     cajasArea2PisoFlotante12mm () {
       const calculate = (this.$store.area2PisoFlotante12mm / this.$store.area2PisoFlotante12mmConstante) / 10
-      return calculate.toFixed(1)
+      const redondear = Math.ceil(calculate)
+      return redondear.toFixed(1)
     },
     pvcTablillaPlacas () {
       const calculate = this.$store.pvcTablilla / this.$store.pvcTablillaConstante

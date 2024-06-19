@@ -99,12 +99,12 @@
                     </q-td>
                     <q-td key="cantidadVenta" :props="props">
                       <q-input dense outlined bottom-slots min="1" class="super-small" v-model="props.row.cantidadVenta" @update:model-value="cambioNumero(props.row,props.pageIndex)" :rules="ruleNumber" type="number" input-class="text-center" required>
-                        <template v-slot:prepend>
-                          <q-btn style="cursor: pointer" dense flat icon="remove_circle_outline" @click="removeCantidad(props.row,props.pageIndex)"/>
-                        </template>
-                        <template v-slot:append>
-                          <q-btn style="cursor: pointer" dense flat icon="add_circle_outline" @click="addCantidad(props.row,props.pageIndex)"/>
-                        </template>
+<!--                        <template v-slot:prepend>-->
+<!--                          <q-btn style="cursor: pointer" dense flat icon="remove_circle_outline" @click="removeCantidad(props.row,props.pageIndex)"/>-->
+<!--                        </template>-->
+<!--                        <template v-slot:append>-->
+<!--                          <q-btn style="cursor: pointer" dense flat icon="add_circle_outline" @click="addCantidad(props.row,props.pageIndex)"/>-->
+<!--                        </template>-->
                       </q-input>
                       <div class="text-grey">= Bs {{redondeo(props.row.cantidadVenta*props.row.precioVenta)}}</div>
                     </q-td>
@@ -265,7 +265,7 @@
       </q-card>
     </q-dialog>
     <q-dialog v-model="calculateDialog" position="left" full-height>
-      <CalculatePage @close="calculateDialog = false" :products="products" />
+      <CalculatePage @close="calculateDialog = false" :products="products" @addProduct="addProduct" />
     </q-dialog>
     <div id="myElement" class="hidden"></div>
 <!--    <pre>{{$store.productosVenta}}</pre>-->
@@ -321,6 +321,76 @@ export default {
     this.medidasGet()
   },
   methods: {
+    addProduct (data) {
+      const product = data.producto
+      const cantidad = parseInt(data.cantidad)
+      console.log(product)
+      console.log(cantidad)
+      // const search = this.$store.productosVenta.find(p => p.id === product.id)
+      // if (search) {
+      //   search.cantidadVenta += 1
+      // } else {
+      //   if (this.precio === 'PRECIO 1') {
+      //     product.precioVenta = product.precio1
+      //   }
+      //   if (this.precio === 'PRECIO 2') {
+      //     product.precioVenta = product.precio2
+      //   }
+      //   if (this.precio === 'PRECIO 3') {
+      //     product.precioVenta = product.precio3
+      //   }
+      //   if (this.precio === 'PRECIO 4') {
+      //     product.precioVenta = product.precio4
+      //   }
+      //   if (this.precio === 'PRECIO 5') {
+      //     product.precioVenta = product.precio5
+      //   }
+      //   if (this.precio === 'PRECIO 6') {
+      //     product.precioVenta = product.precio6
+      //   }
+      //   this.$store.productosVenta.push({
+      //     id: product.id,
+      //     nombre: product.nombre,
+      //     cantidadVenta: 1,
+      //     precioVenta: product.precioVenta,
+      //     costoUnitario: product.costoUnitario,
+      //     stock: product.stock,
+      //     image: product.image
+      //   })
+      // }
+      const search = this.$store.productosVenta.find(p => p.id === product.id)
+      if (search) {
+        search.cantidadVenta += cantidad
+      } else {
+        if (this.precio === 'PRECIO 1') {
+          product.precioVenta = product.precio1
+        }
+        if (this.precio === 'PRECIO 2') {
+          product.precioVenta = product.precio2
+        }
+        if (this.precio === 'PRECIO 3') {
+          product.precioVenta = product.precio3
+        }
+        if (this.precio === 'PRECIO 4') {
+          product.precioVenta = product.precio4
+        }
+        if (this.precio === 'PRECIO 5') {
+          product.precioVenta = product.precio5
+        }
+        if (this.precio === 'PRECIO 6') {
+          product.precioVenta = product.precio6
+        }
+        this.$store.productosVenta.push({
+          id: product.id,
+          nombre: product.nombre,
+          cantidadVenta: cantidad,
+          precioVenta: product.precioVenta,
+          costoUnitario: product.costoUnitario,
+          stock: product.stock,
+          image: product.image
+        })
+      }
+    },
     cotizacion () {
       Imprimir.cotizacion(this.$store.productosVenta, this.client, this.total, this.descuento)
     },
