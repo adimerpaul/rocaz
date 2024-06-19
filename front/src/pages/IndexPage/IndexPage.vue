@@ -75,6 +75,16 @@
                   <q-btn dense label="Anulado" color="grey-4" size="10px" no-caps no-wrap icon="o_highlight_off" />
                 </div>
               </q-td>
+              <q-td key="proveedorcliente" :props="props">
+                <div class="text-grey" v-if="props.row.client">{{ props.row.name==null?(props.row.client.id==28?'SN':props.row.client.nombre):props.row.name }}</div>
+<!--                <pre>{{ props.row }}</pre>-->
+              </q-td>
+              <q-td key="montoTotal" :props="props">
+                <span class="text-grey">{{ props.row.total }} Bs</span>
+              </q-td>
+              <q-td key="fechayhora" :props="props" style="min-width: 150px">
+                {{ $filters.dateDmYHis(props.row.fecha_emision) }}
+              </q-td>
               <q-td key="concepto" :props="props" class="">
                 <div>
 <!--                  {{ props.row.tipo_venta}}-->
@@ -88,15 +98,6 @@
               </q-td>
               <q-td key="comentario" :props="props">
                 <div class="" style="width: 300px; white-space: normal; overflow-wrap: break-word;line-height: 0.9;">{{ props.row.comentario }}</div>
-              </q-td>
-              <q-td key="montoTotal" :props="props">
-                <span class="text-grey">{{ props.row.total }} Bs</span>
-              </q-td>
-              <q-td key="proveedorcliente" :props="props">
-                <div class="text-grey" v-if="props.row.client">{{ props.row.client.nombre }}</div>
-              </q-td>
-              <q-td key="fechayhora" :props="props" style="min-width: 150px">
-                {{ $filters.dateDmYHis(props.row.fecha_emision) }}
               </q-td>
               <q-td key="egresoingreso" :props="props">
                 <q-chip :color="`${props.row.tipo_venta=='INGRESO'?'green':'red'}-5`" text-color="white" dense flat :label="props.row.tipo_venta"/>
@@ -136,13 +137,13 @@ export default {
       concepto: '',
       columns: [
         { name: 'opcion', label: 'Opcion', align: 'left', field: 'opcion' },
+        { name: 'proveedorcliente', label: 'Proveedor / cliente', align: 'left', field: 'proveedor / cliente', sortable: true },
+        { name: 'montoTotal', label: 'Monto total', align: 'left', field: 'montoTotal', sortable: true },
+        { name: 'fechayhora', label: 'Fecha y hora', align: 'left', field: 'fechayhora', sortable: true },
         { name: 'concepto', label: 'Concepto', align: 'left', field: 'concepto', sortable: true },
         { name: 'comentario', label: 'Comentario', align: 'left', field: 'comentario', sortable: true },
-        { name: 'montoTotal', label: 'Monto total', align: 'left', field: 'montoTotal', sortable: true },
         // { name: 'agencia', label: 'Agencia', align: 'left', field: 'agencia', sortable: true },
         // { name: 'metodoPago', label: 'Metodo de pago', align: 'left', field: 'metodoPago', sortable: true },
-        { name: 'proveedorcliente', label: 'Proveedor / cliente', align: 'left', field: 'proveedor / cliente', sortable: true },
-        { name: 'fechayhora', label: 'Fecha y hora', align: 'left', field: 'fechayhora', sortable: true },
         { name: 'egresoingreso', label: 'Egreso / ingreso', align: 'left', field: 'egreso / ingreso', sortable: true },
         { name: 'user', label: 'Usuario', align: 'left', field: (row) => row.user.name, sortable: true },
         { name: 'lugar', label: 'lugar', align: 'left', field: (row) => row.user.lugar, sortable: true }
