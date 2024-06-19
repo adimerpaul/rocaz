@@ -58,6 +58,7 @@ class SaleController extends Controller{
         $sale->estado='ACTIVO';
         $sale->fecha_emision = now();
         $sale->almacen = $almacen;
+        $sale->name = $client->nombre;
         $sale->save();
         $concepto = '';
         foreach ($request->productos as $producto){
