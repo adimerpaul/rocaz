@@ -198,7 +198,20 @@
               </div>
               <div class="col-6 col-md-3">
                 <q-select dense outlined v-model="metodoPago" label="Metodo de pago"
-                          :options="$metodos" hint="Metodo de pago del gasto" />
+                          :options="$metodos" hint="Metodo de pago del gasto" >
+                  <template v-slot:prepend>
+                    <q-icon name="o_payment" />
+                  </template>
+                  <template v-slot:option="scope">
+                    <q-item v-bind="scope.itemProps">
+                      <q-item-section :class="scope.opt == 'CREDITO' ? 'bg-red' : ''">
+                        <q-item-label>
+                          {{ scope.opt }}
+                        </q-item-label>
+                      </q-item-section>
+                    </q-item>
+                  </template>
+                </q-select>
               </div>
             </div>
           </q-card-section>
