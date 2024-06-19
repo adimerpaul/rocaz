@@ -51,6 +51,7 @@ class UserController extends Controller{
         $user->email = $request->email;
         $user->lugar = $request->lugar;
         $user->username = $request->username;
+        $user->type = $request->type;
         $user->save();
         return $user;
     }

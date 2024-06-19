@@ -11,10 +11,29 @@
       </template>
       <template v-slot:body-cell-option="props">
         <q-td :props="props" auto-width>
-          <q-btn-group>
-            <q-btn icon="edit" color="orange" @click="userEdit(props.row)"  width="250px" label="Editar" no-caps dense size="12px"></q-btn>
-            <q-btn icon="login" color="indigo" @click="updatePassword(props.row)"  width="250px" label="Password" no-caps dense size="12px"></q-btn>
-          </q-btn-group>
+<!--          <q-btn-group>-->
+<!--            <q-btn icon="edit" color="orange" @click="userEdit(props.row)"  width="250px" label="Editar" no-caps dense size="12px"></q-btn>-->
+<!--            <q-btn icon="login" color="indigo" @click="updatePassword(props.row)"  width="250px" label="Password" no-caps dense size="12px"></q-btn>-->
+<!--          </q-btn-group>-->
+          <q-btn-dropdown label="Opciones" auto-width size="10px" no-caps color="primary" auto-close>
+            <q-item clickable v-ripple @click="userEdit(props.row)">
+              <q-item-section avatar>
+                <q-icon name="edit" />
+              </q-item-section>
+              <q-item-section>Editar</q-item-section>
+            </q-item>
+            <q-item clickable v-ripple @click="updatePassword(props.row)">
+              <q-item-section avatar>
+                <q-icon name="login" />
+              </q-item-section>
+              <q-item-section>Password</q-item-section>
+            </q-item>
+          </q-btn-dropdown>
+        </q-td>
+      </template>
+      <template v-slot:body-cell-type="props">
+        <q-td :props="props" auto-width>
+          <q-chip dense size="10px" :label="props.row.type === 'ADMINISTRADOR' ? 'Administrador' : 'Usuarios'" :color="props.row.type === 'ADMINISTRADOR' ? 'green' : 'orange'" text-color="white" />
         </q-td>
       </template>
     </q-table>
@@ -34,6 +53,7 @@
             <q-input v-model="user.email" outlined label="Email" dense :rules="[val => !!val || 'Campo requerido']" />
             <q-input v-if="!user.id" v-model="user.password" outlined label="Password" dense type="password" :rules="[val => !!val || 'Campo requerido']" />
             <q-select v-model="user.lugar" outlined label="Lugar" dense :options="['ORURO', 'COCHABAMBA']" />
+            <q-select v-model="user.type" outlined label="Lugar" dense :options="['USUARIO', 'ADMINISTRADOR']" :rules="[val => !!val || 'Campo requerido']" />
             <q-card-actions align="right">
               <q-btn label="Cancelar" color="negative" @click="userDialog = false" no-caps :loading="loading" />
               <q-btn :label="user.id ? 'Actualizar' : 'Guardar'" color="primary" type="submit" :loading="loading" no-caps />
@@ -62,7 +82,8 @@ export default {
         { name: 'name', label: 'Nombre', align: 'left', field: 'name' },
         { name: 'username', label: 'Nombre usuario', align: 'left', field: 'username' },
         { name: 'email', label: 'Email', align: 'left', field: 'email' },
-        { name: 'lugar', label: 'Lugar', align: 'left', field: 'lugar' }
+        { name: 'lugar', label: 'Lugar', align: 'left', field: 'lugar' },
+        { name: 'type', label: 'Tipo', align: 'left', field: 'type' }
       ]
     }
   },
