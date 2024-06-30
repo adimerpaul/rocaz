@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Buy;
 use App\Models\BuyDetail;
 use App\Models\Product;
+use App\Models\Sale;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -32,6 +33,12 @@ class BuyController extends Controller{
         $buy = Buy::find($request->id);
         $buy->estado = 'ANULADO';
         $buy->save();
+        $sale_id = $buy->sale_id;
+        if ($sale_id != null) {
+            $sale = Sale::find($sale_id);
+            $sale->estado = 'ANULADO';
+            $sale->save();
+        }
         return response()->json($buy);
     }
 
@@ -73,7 +80,16 @@ class BuyController extends Controller{
             if ($request->observacion == null) {
                 $buy->observacion = 'Compra de ' . substr($observacionText, 0, -2);
             }
+
+            $gastoController = new GastoController();
+            $request->merge(['client_id' => $request->proveedor_id]);
+            $request->merge(['concepto' => $buy->observacion]);
+            $request->merge(['monto' => $total]);
+            $request->merge(['metodo' => 'EFECTIVO']);
+            $sale=$gastoController->registrarGasto($request);
+            $buy->sale_id = $sale->id;
             $buy->save();
+
             DB::commit();
             return response()->json(Buy::with(['client', 'user', 'buyDetails'])->find($buy->id));
         }catch (\Exception $e){
