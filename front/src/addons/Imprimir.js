@@ -87,7 +87,7 @@ Oruro</div>
     })
   }
 
-  static nota (factura) {
+  static nota (factura, imprimir = true) {
     console.log('factura', factura)
     return new Promise((resolve, reject) => {
       const ClaseConversor = conversor.conversorNumerosALetras
@@ -143,8 +143,10 @@ Oruro</div>
 </body>
 </html>`
         document.getElementById('myElement').innerHTML = cadena
-        const d = new Printd()
-        d.print(document.getElementById('myElement'))
+        if (imprimir) {
+          const d = new Printd()
+          d.print(document.getElementById('myElement'))
+        }
         resolve(url)
       }).catch(err => {
         reject(err)

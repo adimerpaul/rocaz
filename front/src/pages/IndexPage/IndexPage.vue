@@ -67,6 +67,12 @@
                       <q-tooltip>Imprimir nota</q-tooltip>
                     </q-btn>
                   </q-item>
+                  <q-item clickable v-close-popup class="text-center">
+                    <q-btn dense label="Descargar" color="blue-4" size="10px" class="full-width"
+                           no-caps no-wrap icon="get_app" @click="descargarDpf(props.row)">
+                      <q-tooltip>Descargar nota</q-tooltip>
+                    </q-btn>
+                  </q-item>
 <!--                  <q-item clickable v-close-popup class="text-center">-->
 <!--                    <q-btn dense label="Modificar" color="orange-4" size="10px" class="full-width"-->
 <!--                           no-caps no-wrap icon="o_edit" @click="modificarNota(props.row)">-->
@@ -121,10 +127,11 @@
   <q-dialog v-model="gastoDialog" position="right" maximized>
     <DialogGasto @gastoCreated="gastoCreated"/>
   </q-dialog>
-  <div id="myElement" class="hidden"></div>
+  <div id="myElement" ></div>
 </template>
 
 <script>
+import html2pdf from 'html2pdf.js'
 import moment from 'moment'
 import CardComponent from 'components/CardComponent.vue'
 import DialogGasto from 'pages/IndexPage/DialogGasto.vue'
@@ -162,68 +169,6 @@ export default {
   },
   methods: {
     exportar () {
-      // {
-      //   "id": 428,
-      //   "client_id": 28,
-      //   "user_id": 1,
-      //   "tipo_venta": "INGRESO",
-      //   "concepto": "1 Gypsum 238,1 Transversal 0,60,",
-      //   "descuento": 0,
-      //   "subtotal": null,
-      //   "total": 12,
-      //   "precio": null,
-      //   "metodo": "0",
-      //   "precio_colocado": null,
-      //   "estado": "ACTIVO",
-      //   "almacen": "Todo",
-      //   "fecha_emision": "2024-06-19 05:21:35",
-      //   "lugar": "ORURO",
-      //   "comentario": "",
-      //   "name": "AJATA",
-      //   "user": {
-      //   "id": 1,
-      //     "name": "Administrator",
-      //     "email": "admin@test.com",
-      //     "username": "admin",
-      //     "email_verified_at": null,
-      //     "lugar": "ORURO",
-      //     "type": "ADMINISTRADOR"
-      // },
-      //   "client": {
-      //   "id": 28,
-      //     "nombre": "AJATA",
-      //     "compania": null,
-      //     "nit": "0",
-      //     "email": null,
-      //     "telefono": null,
-      //     "direccion": null,
-      //     "tipo": "CLIENTE"
-      // },
-      //   "details": [
-      //   {
-      //     "id": 915,
-      //     "sale_id": 428,
-      //     "product_id": 1,
-      //     "cantidad": 1,
-      //     "precio": 9,
-      //     "descuento": null,
-      //     "subtotal": null,
-      //     "total": 9,
-      //     "producto": "Gypsum 238"
-      //   },
-      //   {
-      //     "id": 916,
-      //     "sale_id": 428,
-      //     "product_id": 7,
-      //     "cantidad": 1,
-      //     "precio": 3,
-      //     "descuento": null,
-      //     "subtotal": null,
-      //     "total": 3,
-      //     "producto": "Transversal 0,60"
-      //   }
-      // ]
-      // },
       const data = [
         {
           sheet: 'Adults',
@@ -246,6 +191,20 @@ export default {
     reimprimirNota (sale) {
       Imprimir.nota(sale).then(r => {
         // console.log(r)
+      })
+    },
+    descargarDpf (sale) {
+      Imprimir.nota(sale, false).then(r => {
+        const element = document.getElementById('myElement')
+        const options = {
+          margin: 1,
+          filename: sale.concepto + '.pdf',
+          image: { type: 'jpeg', quality: 0.98 },
+          html2canvas: { scale: 2 },
+          jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+        }
+
+        html2pdf().set(options).from(element).save()
       })
     },
     saleAnular (id) {
