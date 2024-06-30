@@ -127,7 +127,7 @@
   <q-dialog v-model="gastoDialog" position="right" maximized>
     <DialogGasto @gastoCreated="gastoCreated"/>
   </q-dialog>
-  <div id="myElement" ></div>
+  <div id="myElement" class="hidden"></div>
 </template>
 
 <script>
@@ -194,6 +194,8 @@ export default {
       })
     },
     descargarDpf (sale) {
+      const element = document.getElementById('myElement')
+      element.classList.remove('hidden')
       Imprimir.nota(sale, false).then(r => {
         const element = document.getElementById('myElement')
         const options = {
@@ -203,8 +205,10 @@ export default {
           html2canvas: { scale: 2 },
           jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
         }
-
         html2pdf().set(options).from(element).save()
+        setTimeout(() => {
+          element.classList.add('hidden')
+        }, 300)
       })
     },
     saleAnular (id) {

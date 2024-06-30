@@ -154,11 +154,11 @@ Oruro</div>
     })
   }
 
-  static cotizacion (detalle, cliente, total, descuento) {
-    console.log('detalle', detalle)
-    console.log('cliente', cliente)
-    console.log('total', total)
-    console.log('descuento', descuento)
+  static cotizacion (detalle, cliente, total, descuento, imprimir = true) {
+    // console.log('detalle', detalle)
+    // console.log('cliente', cliente)
+    // console.log('total', total)
+    // console.log('descuento', descuento)
     if (descuento === null || descuento === undefined || descuento === '') {
       descuento = 0
     }
@@ -216,8 +216,10 @@ Oruro</div>
 </body>
 </html>`
         document.getElementById('myElement').innerHTML = cadena
-        const d = new Printd()
-        d.print(document.getElementById('myElement'))
+        if (imprimir) {
+          const d = new Printd()
+          d.print(document.getElementById('myElement'))
+        }
         resolve(url)
       }).catch(err => {
         reject(err)

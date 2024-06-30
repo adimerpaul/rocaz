@@ -215,6 +215,7 @@
               </div>
               <div class="col-6 col-md-2 text-center">
                 <q-btn @click="cotizacion" no-caps label="Cotizar" color="indigo" icon="print" size="10px" />
+                <q-btn @click="cotizacionPdf" no-caps label="Cotizar PDF" color="indigo" icon="print" size="10px" />
               </div>
             </div>
           </q-card-section>
@@ -275,6 +276,7 @@
 import ProductsComponents from 'components/ProductsComponents.vue'
 import { Imprimir } from 'src/addons/Imprimir'
 import CalculatePage from 'pages/sales/CalculatePage.vue'
+import html2pdf from 'html2pdf.js'
 export default {
   name: 'ProductosPage',
   components: {
@@ -390,6 +392,25 @@ export default {
           image: product.image
         })
       }
+    },
+    cotizacionPdf () {
+      const element = document.getElementById('myElement')
+      element.classList.remove('hidden')
+      Imprimir.cotizacion(this.$store.productosVenta, this.client, this.total, this.descuento, false).then(() => {
+        const element = document.getElementById('myElement')
+        const options = {
+          margin: 1,
+          filename: 'cotizacion.pdf',
+          image: { type: 'jpeg', quality: 0.98 },
+          html2canvas: { scale: 2 },
+          jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+        }
+        html2pdf().set(options).from(element).save()
+        setTimeout(() => {
+          element.classList.add('hidden')
+        }, 300)
+        // element.classList.add('hidden')
+      })
     },
     cotizacion () {
       Imprimir.cotizacion(this.$store.productosVenta, this.client, this.total, this.descuento)
