@@ -129,7 +129,7 @@
                 </q-tooltip>
               </q-item-section>
             </q-item>
-            <q-item clickable v-ripple exact active-class="bg-primary text-white" to="/users" >
+            <q-item clickable v-ripple exact active-class="bg-primary text-white" to="/users" v-if="$store.user?.type === 'ADMINISTRADOR'">
               <q-item-section avatar><q-icon name="o_manage_accounts" /></q-item-section>
               <q-item-section>
                 <q-item-label>Usuarios</q-item-label>
