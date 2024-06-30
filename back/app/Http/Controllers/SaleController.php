@@ -14,11 +14,23 @@ class SaleController extends Controller{
         $fechaInicioSemana = $request->fechaInicioSemana.' 00:00:00';
         $fechaFinSemana = $request->fechaFinSemana.' 23:59:59';
         $concepto = $request->concepto;
-        $sales = Sale::whereBetween('fecha_emision', [$fechaInicioSemana, $fechaFinSemana])
-            ->where('concepto', 'LIKE', "%$concepto%")
-            ->with(['user', 'client', 'details'])
-            ->orderBy('id', 'desc')
-            ->get();
+
+        $user = $request->user();
+        if ($user->type == 'ADMINISTRADOR') {
+            $sales = Sale::whereBetween('fecha_emision', [$fechaInicioSemana, $fechaFinSemana])
+                ->where('concepto', 'LIKE', "%$concepto%")
+                ->with(['user', 'client', 'details'])
+                ->orderBy('id', 'desc')
+                ->get();
+        } else {
+            $sales = Sale::whereBetween('fecha_emision', [$fechaInicioSemana, $fechaFinSemana])
+                ->where('concepto', 'LIKE', "%$concepto%")
+                ->with(['user', 'client', 'details'])
+                ->orderBy('id', 'desc')
+                ->where('user_id', $user->id)
+                ->get();
+        }
+
         return response()->json($sales);
     }
     public function store(Request $request){
