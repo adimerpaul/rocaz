@@ -16,12 +16,16 @@
           </template>
         </q-input>
       </div>
-      <div class="col-12 col-md-2 text-right">
-        <q-btn label="Exportar" color="primary"  icon="get_app" no-caps rounded @click="exportar"/>
+      <div class="col-12 col-md-2 q-pa-xs">
+        <q-select v-model="user" label="Usuario" dense outlined class="bg-white" :options="users" map-options emit-value @update:model-value="salesGet" v-if="$store.user.type=='ADMINISTRADOR'"/>
+<!--        <pre>{{user}}</pre>-->
       </div>
-      <div class="col-12 col-md-4 text-right">
-        <q-btn label="Nuevo Venta" color="green"  icon="add_circle_outline" no-caps rounded to="/sale"/>
-        <q-btn label="Nuevo Gasto" color="red"  icon="add_circle_outline" no-caps rounded @click="gastoDialog = true"/>
+      <div class="col-12 col-md-1 text-right">
+        <q-btn class="" flat dense label="Exportar" color="primary"  icon="get_app" no-caps rounded @click="exportar" size="10px"/>
+      </div>
+      <div class="col-12 col-md-3 text-right">
+        <q-btn dense label="Nuevo Venta" color="green"  icon="add_circle_outline" no-caps rounded to="/sale"/>
+        <q-btn dense label="Nuevo Gasto" color="red"  icon="add_circle_outline" no-caps rounded @click="gastoDialog = true"/>
       </div>
       <div class="col-12 col-md-4 q-pa-xs" v-if="$store.user.type=='ADMINISTRADOR'">
         <CardComponent :monto="balance" color="grey" title="Balance" icono="o_trending_up" />
@@ -161,13 +165,28 @@ export default {
       ],
       sales: [],
       loading: false,
-      filter: ''
+      filter: '',
+      users: [],
+      user: 0
     }
   },
   mounted () {
+    this.usersGet()
     this.salesGet()
   },
   methods: {
+    usersGet () {
+      this.users = [{ label: 'Todos', value: 0 }]
+      this.$axios.get('usuarios')
+        .then(response => {
+          response.data.forEach(user => {
+            this.users.push({ label: user.name, value: user.id })
+          })
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
     exportar () {
       const data = [
         {
@@ -248,7 +267,8 @@ export default {
         params: {
           fechaInicioSemana: this.fechaInicioSemana,
           fechaFinSemana: this.fechaFinSemana,
-          concepto: this.concepto
+          concepto: this.concepto,
+          user: this.user
         }
       })
         .then(response => {

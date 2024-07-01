@@ -44,6 +44,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('buyAnular', [\App\Http\Controllers\BuyController::class, 'buyAnular']);
 
     Route::get('users', [\App\Http\Controllers\UserController::class, 'index']);
+    Route::get('usuarios', [\App\Http\Controllers\UserController::class, 'usuarios']);
     Route::post('users', [\App\Http\Controllers\UserController::class, 'store']);
     Route::put('users/{user}', [\App\Http\Controllers\UserController::class, 'update']);
     Route::put('updatePassword/{user}', [\App\Http\Controllers\UserController::class, 'updatePassword']);

@@ -14,7 +14,7 @@ class SaleController extends Controller{
         $fechaInicioSemana = $request->fechaInicioSemana.' 00:00:00';
         $fechaFinSemana = $request->fechaFinSemana.' 23:59:59';
         $concepto = $request->concepto;
-
+        $user_id = $request->user;
         $user = $request->user();
         if ($user->type == 'ADMINISTRADOR') {
             $sales = Sale::whereBetween('fecha_emision', [$fechaInicioSemana, $fechaFinSemana])
@@ -28,6 +28,14 @@ class SaleController extends Controller{
                 ->with(['user', 'client', 'details'])
                 ->orderBy('id', 'desc')
                 ->where('user_id', $user->id)
+                ->get();
+        }
+        if ($user_id != null && $user_id != '' && $user_id != 0) {
+            $sales = Sale::whereBetween('fecha_emision', [$fechaInicioSemana, $fechaFinSemana])
+                ->where('concepto', 'LIKE', "%$concepto%")
+                ->with(['user', 'client', 'details'])
+                ->orderBy('id', 'desc')
+                ->where('user_id', $user_id)
                 ->get();
         }
 
