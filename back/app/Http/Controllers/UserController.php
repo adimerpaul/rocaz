@@ -42,7 +42,8 @@ class UserController extends Controller{
         return User::all();
     }
     public function usuarios(){
-        return User::where('id','!=',1)->get();
+//        return User::where('id','!=',1)->get();
+        return User::all();
     }
     public function store(Request $request){
         $request->merge(['password'=>Hash::make($request->password)]);
