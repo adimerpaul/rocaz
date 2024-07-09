@@ -105,15 +105,18 @@
                          :class="`bg-${props.row.tipo_venta=='INGRESO'?'green':'red'}-2`" dense flat
                          style="padding: 0px; margin: 0px; border-radius: 0px;position: absolute;top: 5px;left: 0px;"/>
                   <div style="padding-left: 15px">
-                    <div class=" q-ml-xs" style="width: 300px; white-space: normal; overflow-wrap: break-word;line-height: 0.9;">{{ props.row.concepto }}</div>
+                    <div class=" q-ml-xs" style="width: 200px; white-space: normal; overflow-wrap: break-word;line-height: 0.9;">{{ props.row.concepto }}</div>
                   </div>
                 </div>
               </q-td>
               <q-td key="comentario" :props="props">
-                <div class="" style="width: 300px; white-space: normal; overflow-wrap: break-word;line-height: 0.9;">{{ props.row.comentario }}</div>
+                <div class="" style="width: 200px; white-space: normal; overflow-wrap: break-word;line-height: 0.9;">{{ props.row.comentario }}</div>
               </q-td>
               <q-td key="egresoingreso" :props="props">
                 <q-chip :color="`${props.row.tipo_venta=='INGRESO'?'green':'red'}-5`" text-color="white" dense flat :label="props.row.tipo_venta"/>
+              </q-td>
+              <q-td key="metodo" :props="props">
+                <q-chip :color="`${props.row.metodo=='EFECTIVO'?'blue':'orange'}-5`" text-color="white" dense flat :label="props.row.metodo"/>
               </q-td>
               <q-td key="user" :props="props">
                 <p>{{ props.row.user?.name }}</p>
@@ -160,6 +163,7 @@ export default {
         // { name: 'agencia', label: 'Agencia', align: 'left', field: 'agencia', sortable: true },
         // { name: 'metodoPago', label: 'Metodo de pago', align: 'left', field: 'metodoPago', sortable: true },
         { name: 'egresoingreso', label: 'Egreso / ingreso', align: 'left', field: 'egreso / ingreso', sortable: true },
+        { name: 'metodo', label: 'Metodo', align: 'left', field: 'metodo', sortable: true },
         { name: 'user', label: 'Usuario', align: 'left', field: (row) => row.user.name, sortable: true },
         { name: 'lugar', label: 'lugar', align: 'left', field: (row) => row.user.lugar, sortable: true }
       ],

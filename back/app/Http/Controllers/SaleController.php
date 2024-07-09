@@ -74,7 +74,7 @@ class SaleController extends Controller{
         $sale->descuento = $descuento;
         $sale->comentario = $comentario;
         $sale->total = $request->total;
-        $sale->metodo = intval($request->metodo)-intval($descuento);
+        $sale->metodo = $request->metodo;
         $sale->estado='ACTIVO';
         $sale->fecha_emision = now();
         $sale->almacen = $almacen;
