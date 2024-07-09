@@ -16,28 +16,31 @@ class SaleController extends Controller{
         $concepto = $request->concepto;
         $user_id = $request->user;
         $user = $request->user();
+        $type = $request->type == 'todo' ? '%' : strtoupper($request->type);
         if ($user->type == 'ADMINISTRADOR') {
             $sales = Sale::whereBetween('fecha_emision', [$fechaInicioSemana, $fechaFinSemana])
                 ->where('concepto', 'LIKE', "%$concepto%")
+                ->where('tipo_venta', 'LIKE', $type)
                 ->with(['user', 'client', 'details'])
                 ->orderBy('id', 'desc')
                 ->get();
         } else {
             $sales = Sale::whereBetween('fecha_emision', [$fechaInicioSemana, $fechaFinSemana])
                 ->where('concepto', 'LIKE', "%$concepto%")
+                ->where('tipo_venta', 'LIKE', $type)
                 ->with(['user', 'client', 'details'])
                 ->orderBy('id', 'desc')
                 ->where('user_id', $user->id)
                 ->get();
         }
-        if ($user_id != null && $user_id != '' && $user_id != 0) {
-            $sales = Sale::whereBetween('fecha_emision', [$fechaInicioSemana, $fechaFinSemana])
-                ->where('concepto', 'LIKE', "%$concepto%")
-                ->with(['user', 'client', 'details'])
-                ->orderBy('id', 'desc')
-                ->where('user_id', $user_id)
-                ->get();
-        }
+//        if ($user_id != null && $user_id != '' && $user_id != 0) {
+//            $sales = Sale::whereBetween('fecha_emision', [$fechaInicioSemana, $fechaFinSemana])
+//                ->where('concepto', 'LIKE', "%$concepto%")
+//                ->with(['user', 'client', 'details'])
+//                ->orderBy('id', 'desc')
+//                ->where('user_id', $user_id)
+//                ->get();
+//        }
 
         return response()->json($sales);
     }

@@ -28,13 +28,13 @@
         <q-btn dense label="Nuevo Gasto" color="red"  icon="add_circle_outline" no-caps rounded @click="gastoDialog = true"/>
       </div>
       <div class="col-12 col-md-4 q-pa-xs" v-if="$store.user.type=='ADMINISTRADOR'">
-        <CardComponent :monto="balance" color="grey" title="Balance" icono="o_trending_up" />
+        <CardComponent class="cursor-pointer" :monto="balance" color="grey" title="Balance" icono="o_trending_up" @click="salesGet('todo')"/>
       </div>
       <div class="col-12 col-md-4 q-pa-xs" v-if="$store.user.type=='ADMINISTRADOR'">
-        <CardComponent :monto="ingreso" color="green" title="Ventas" icono="o_trending_up" />
+        <CardComponent class="cursor-pointer" :monto="ingreso" color="green" title="Ventas" icono="o_trending_up" @click="salesGet('ingreso')"/>
       </div>
       <div class="col-12 col-md-4 q-pa-xs" v-if="$store.user.type=='ADMINISTRADOR'">
-        <CardComponent :monto="gasto" color="red" title="Gastos" icono="o_trending_down" />
+        <CardComponent class="cursor-pointer" :monto="gasto" color="red" title="Gastos" icono="o_trending_down" @click="salesGet('egreso')"/>
       </div>
       <div class="col-12">
         <q-table :columns="columns" :rows="sales" dense :rows-per-page-options="[0]" :filter="filter" :loading="loading" wrap-cells
@@ -265,14 +265,15 @@ export default {
       this.sales.unshift(gasto)
       this.gastoDialog = false
     },
-    salesGet () {
+    salesGet (type = 'todo') {
       this.loading = true
       this.$axios.get('sales', {
         params: {
           fechaInicioSemana: this.fechaInicioSemana,
           fechaFinSemana: this.fechaFinSemana,
           concepto: this.concepto,
-          user: this.user
+          user: this.user,
+          type
         }
       })
         .then(response => {
