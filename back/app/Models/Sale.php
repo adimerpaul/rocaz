@@ -25,7 +25,8 @@ class Sale extends Model
         'almacen',
         'lugar',
         'comentario',
-        'name'
+        'name',
+        'ganancia'
     ];
     protected $hidden = [
         'created_at',

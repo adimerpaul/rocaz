@@ -27,13 +27,16 @@
         <q-btn dense label="Nuevo Venta" color="green"  icon="add_circle_outline" no-caps rounded to="/sale"/>
         <q-btn dense label="Nuevo Gasto" color="red"  icon="add_circle_outline" no-caps rounded @click="gastoDialog = true"/>
       </div>
-      <div class="col-12 col-md-4 q-pa-xs" v-if="$store.user.type=='ADMINISTRADOR'">
+      <div class="col-12 col-md-3 q-pa-xs" v-if="$store.user.type=='ADMINISTRADOR'">
+        <CardComponent class="cursor-pointer" :monto="ganancia" color="blue" title="Ganancia" icono="o_trending_up" @click="salesGet('todo')"/>
+      </div>
+      <div class="col-12 col-md-3 q-pa-xs" v-if="$store.user.type=='ADMINISTRADOR'">
         <CardComponent class="cursor-pointer" :monto="balance" color="grey" title="Balance" icono="o_trending_up" @click="salesGet('todo')"/>
       </div>
-      <div class="col-12 col-md-4 q-pa-xs" v-if="$store.user.type=='ADMINISTRADOR'">
+      <div class="col-12 col-md-3 q-pa-xs" v-if="$store.user.type=='ADMINISTRADOR'">
         <CardComponent class="cursor-pointer" :monto="ingreso" color="green" title="Ventas" icono="o_trending_up" @click="salesGet('ingreso')"/>
       </div>
-      <div class="col-12 col-md-4 q-pa-xs" v-if="$store.user.type=='ADMINISTRADOR'">
+      <div class="col-12 col-md-3 q-pa-xs" v-if="$store.user.type=='ADMINISTRADOR'">
         <CardComponent class="cursor-pointer" :monto="gasto" color="red" title="Gastos" icono="o_trending_down" @click="salesGet('egreso')"/>
       </div>
       <div class="col-12">
@@ -94,6 +97,9 @@
               </q-td>
               <q-td key="montoTotal" :props="props">
                 <span class="text-grey">{{ props.row.total }} Bs</span>
+                <span v-if="$store.user.type=='ADMINISTRADOR'">
+                  -<span :class="`text-${props.row.tipo_venta=='INGRESO'?'green':'red'}`">{{ props.row.ganancia }} Bs</span>
+                </span>
               </q-td>
               <q-td key="fechayhora" :props="props" style="min-width: 150px">
                 {{ $filters.dateDmYHis(props.row.fecha_emision) }}
@@ -289,6 +295,14 @@ export default {
     }
   },
   computed: {
+    ganancia () {
+      const total = this.sales.reduce((acc, sale) => {
+        // return sale.tipo_venta === 'INGRESO' ? acc + sale.ganancia : acc
+        // y que no sea anulado
+        return sale.tipo_venta === 'INGRESO' && sale.estado !== 'ANULADO' ? acc + sale.ganancia : acc
+      }, 0)
+      return Math.round(total * 100) / 100
+    },
     balance () {
       const total = this.sales.reduce((acc, sale) => {
         // y que no se anulado

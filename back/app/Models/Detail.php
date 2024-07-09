@@ -18,6 +18,7 @@ class Detail extends Model
         'subtotal',
         'total',
         'producto',
+        'ganancia'
     ];
     protected $hidden = ['created_at', 'updated_at','deleted_at'];
 }

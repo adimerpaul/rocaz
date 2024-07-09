@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Models\Sale;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use function Laravel\Prompts\error;
 
 class SaleController extends Controller{
     public function index(Request $request){
@@ -84,6 +85,7 @@ class SaleController extends Controller{
         $sale->name = $client->nombre;
         $sale->save();
         $concepto = '';
+        $totalGanancia=0;
         foreach ($request->productos as $producto){
 
             $detalle = new Detail();
@@ -92,10 +94,20 @@ class SaleController extends Controller{
             $detalle->cantidad = $producto['cantidadVenta'];
             $detalle->precio = $producto['precioVenta'];
             $detalle->producto = $producto['nombre'];
-//            $detalle->descuento = $producto['descuento'];
-//            $detalle->subtotal = $producto['subtotal'];
-            $detalle->total = round($producto['cantidadVenta'] * $producto['precioVenta'], 2);
+
+            $productoCosto = Product::find($producto['id']);
+            $costo = $productoCosto->costo;
+            $costoTotal = $producto['cantidadVenta'] * $costo;
+
+            $total = round($producto['cantidadVenta'] * $producto['precioVenta'], 2);
+
+            $detalle->ganancia = $total - $costoTotal;
+            $totalGanancia += $detalle->ganancia;
+
+            $detalle->total = $total;
             $detalle->save();
+
+
             $concepto .= $producto['cantidadVenta'].' '.$producto['nombre'].',';
 //            actulizar producto
             if($almacen == 'Todo' || $almacen == 'Almacen 1') {
@@ -109,7 +121,9 @@ class SaleController extends Controller{
                 $productoSecundario->save();
             }
         }
+        $concepto = substr($concepto, 0, -1);
         $sale->concepto = $concepto;
+        $sale->ganancia = $totalGanancia;
         $sale->save();
         DB::commit();
         return Sale::with(['user', 'client', 'details'])->find($sale->id);

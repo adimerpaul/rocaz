@@ -44,6 +44,13 @@
                 <div style="line-height: 1">
                   <b class="text-grey">Bienvenido:</b> <br>
                   <a class="text-caption text-primary">{{ $store.user?.name }}</a>
+                  <br>
+                  <q-chip
+                    dense
+                    color="primary"
+                    text-color="white"
+                    :label="$store.user?.type"
+                    />
                 </div>
               </div>
             </div>
