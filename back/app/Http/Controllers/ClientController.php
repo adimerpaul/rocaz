@@ -50,7 +50,9 @@ class ClientController extends Controller{
         }
 
         // Aplicar la paginación después de ejecutar la consulta
-        $clients = $clientsQuery->paginate($pagination);
+//        $clients = $clientsQuery->paginate($pagination);
+        $clients = $clientsQuery->get();
+
 
         return $clients;
     }
