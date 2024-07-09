@@ -186,24 +186,7 @@ export default {
     },
     clickDetalleProducto (product) {
       this.productAction = 'show'
-      this.product = {
-        id: product.id,
-        codigo: product.codigo,
-        nombre: product.nombre,
-        image: product.image,
-        ubicacion: product.ubicacion,
-        minStock: product.minStock,
-        stock1: product.stock1,
-        stock2: product.stock2,
-        precio1: product.precio1,
-        precio2: product.precio2,
-        precio3: product.precio3,
-        precio4: product.precio4,
-        precio5: product.precio5,
-        precio6: product.precio6,
-        category_id: product.category_id,
-        medida_id: product.medida_id
-      }
+      this.product = { ...product }
       this.productDialog = true
     },
     productSaved (product) {

@@ -25,7 +25,8 @@ class Product extends Model
         'precio5',
         'precio6',
         'category_id',
-        'medida_id'
+        'medida_id',
+        'costo'
     ];
     public function category(){
         return $this->belongsTo(Category::class);

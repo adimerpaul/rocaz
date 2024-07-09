@@ -70,6 +70,9 @@
           <div class="col-6 col-md-4">
             <q-input v-model="product.precio6" label="Precio 6" outlined dense step="0.01" type="number" hint=""/>
           </div>
+          <div class="col-6 col-md-4">
+            <q-input v-model="product.costo" label="Costo" outlined dense step="0.01" type="number" hint=""/>
+          </div>
           <div class="col-6 col-md-8">
             <q-select v-model="product.category_id" :options="categories" label="Categoría" outlined dense emit-value map-options :option-label="item => item.name" :option-value="item => item.id"
                       :rules="[(val) => val !== null && val !== undefined || 'Selecciona una categoría']">
@@ -197,6 +200,16 @@
               <div class="col-6">
                 <div class="text-grey text-caption text-right">{{ product.category?.name }}</div>
               </div>
+              <div class="col-6">
+                <div class="text-bold text-grey">
+                  <q-icon name="o_local_mall" class="text-grey" size="20px" />
+                  Costo
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="text-grey text-caption text-right">{{ product.costo }}</div>
+              </div>
+<!--              <pre>{{product}}</pre>-->
             </q-card-section>
           </q-card>
           <div class="row q-pa-xs">

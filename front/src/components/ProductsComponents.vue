@@ -36,6 +36,14 @@
           </template>
         </q-input>
       </template>
+      <template v-slot:body-cell-costo="props">
+        <q-td :props="props">
+<!--          si es costo cero en bold rojo-->
+          <div :class="`text-${props.row.costo === 0?'red text-bold':'black'}`">
+            {{ props.row.costo }} Bs.
+          </div>
+        </q-td>
+      </template>
     </q-table>
 <!--    <pre>-->
 <!--      {{products}}-->
@@ -80,7 +88,8 @@ export default {
         // { name: 'category_id', label: 'Category Id', align: 'left', field: row => row.category_id },
         // { name: 'medida_id', label: 'Medida Id', align: 'left', field: row => row.medida_id },
         { name: 'stock', label: 'Stock', align: 'left', field: row => row.stock },
-        { name: 'category', label: 'Category', align: 'left', field: row => row.category?.name }
+        { name: 'category', label: 'Category', align: 'left', field: row => row.category?.name },
+        { name: 'costo', label: 'Costo', align: 'left', field: row => row.costo }
       ]
     }
   },

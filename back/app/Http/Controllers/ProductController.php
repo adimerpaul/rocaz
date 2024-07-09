@@ -33,6 +33,7 @@ class ProductController extends Controller{
         $productRequest['precio5'] = $productRequest['precio5'] == '' ? 0 : $productRequest['precio5'];
         $productRequest['precio6'] = $productRequest['precio6'] == '' ? 0 : $productRequest['precio6'];
         $productRequest['category_id'] = $productRequest['category_id'] == '' ? null : $productRequest['category_id'];
+        $productRequest['costo'] = $productRequest['costo'] == '' ? 0 : $productRequest['costo'];
 //        error_log(json_encode($productRequest));
         $product = Product::create($productRequest);
         return response()->json($product, 201);
@@ -53,7 +54,7 @@ class ProductController extends Controller{
         $productRequest = json_decode($request->product, true);
         $product=Product::find($productRequest['id']);
         if ($request->hasFile('file')) {
-            error_log('entro');
+//            error_log('entro');
             $fileName = $this->uploadFileResize($file);
             $productRequest['image'] = $fileName;
         }
@@ -67,6 +68,7 @@ class ProductController extends Controller{
         $productRequest['precio5'] = $productRequest['precio5'] == '' ? 0 : $productRequest['precio5'];
         $productRequest['precio6'] = $productRequest['precio6'] == '' ? 0 : $productRequest['precio6'];
         $productRequest['category_id'] = $productRequest['category_id'] == '' ? null : $productRequest['category_id'];
+        $productRequest['costo'] = $productRequest['costo'] == '' ? 0 : $productRequest['costo'];
         $product->update($productRequest);
 
         return response()->json($product, 200);
