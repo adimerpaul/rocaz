@@ -94,6 +94,7 @@ class SaleController extends Controller{
             $detalle->cantidad = $producto['cantidadVenta'];
             $detalle->precio = $producto['precioVenta'];
             $detalle->producto = $producto['nombre'];
+            $detalle->visible = $producto['visible'];
 
             $productoCosto = Product::find($producto['id']);
             $costo = $productoCosto->costo;

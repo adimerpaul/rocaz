@@ -68,11 +68,12 @@
                       <!--                        </div>-->
                       <!--                        <div class="col-9">-->
                       <div>
-                        <q-img :src="props.row.image.includes('http')?props.row.image:`${$url}../images/${props.row.image}`"
-                               width="40px" height="40px"
-                               style="padding: 0px; margin: 0px; border-radius: 0px;position: absolute; top: 20px; left: 8px"
-                        />
-                        <div style="padding-left: 42px">
+<!--                        <q-img :src="props.row.image.includes('http')?props.row.image:`${$url}../images/${props.row.image}`"-->
+<!--                               width="40px" height="40px"-->
+<!--                               style="padding: 0px; margin: 0px; border-radius: 0px;position: absolute; top: 20px; left: 8px"-->
+<!--                        />-->
+<!--                        style="padding-left: 42px"-->
+                        <div >
                           <div class="text-caption" style="max-width: 170px; white-space: normal; overflow-wrap: break-word;line-height: 0.9;">
                             {{props.row.nombre}}
                           </div>
@@ -81,6 +82,9 @@
                             <template v-slot:prepend>
                               <q-icon name="edit" size="xs" />
                               <div style="font-size: 10px">Bs.</div>
+                            </template>
+                            <template v-slot:after>
+                              <q-checkbox v-model="props.row.visible" dense color="primary" />
                             </template>
                           </q-input>
                         </div>
@@ -524,7 +528,8 @@ export default {
           precioVenta: product.precioVenta,
           costoUnitario: product.costoUnitario,
           stock: product.stock,
-          image: product.image
+          image: product.image,
+          visible: true
         })
       }
     },

@@ -88,7 +88,7 @@ Oruro</div>
   }
 
   static nota (factura, imprimir = true) {
-    console.log('factura', factura)
+    // console.log('factura', factura)
     return new Promise((resolve, reject) => {
       const ClaseConversor = conversor.conversorNumerosALetras
       const miConversor = new ClaseConversor()
@@ -123,9 +123,34 @@ Oruro</div>
 <tr><td class='titder'>FECHA DE EMISIÓN:</td><td class='contenido'>${factura.fecha_emision}</td></tr>
 </table><hr><div class='titulo'>DETALLE</div>`
         factura.details.forEach(r => {
+          console.log('r', r)
           cadena += `<div style='font-size: 12px'><b> ${r.producto} </b></div>`
-          cadena += `<div><span style='font-size: 18px;font-weight: bold'>${r.cantidad}</span> ${parseFloat(r.precio).toFixed(2)} 0.00
-                    <span style='float:right'>${parseFloat(r.total).toFixed(2)}</span></div>`
+          if (r.visible === 1) {
+            cadena += `<div>
+                    <span style='font-size: 18px;font-weight: bold'>
+                        ${r.cantidad}
+                    </span>
+                    <span>
+                    ${parseFloat(r.precio).toFixed(2)}
+                    </span>
+                    0.00
+                    <span style='float:right'>
+                        ${parseFloat(r.precio * r.cantidad).toFixed(2)}
+                    </span>
+                    </div>`
+          } else {
+            cadena += `<div>
+                    <span style='font-size: 18px;font-weight: bold'>
+                        ${r.cantidad}
+                    </span>
+                    <span>
+                    -
+                    </span>
+                    0.00
+                    <span style='float:right'>
+                        -
+                    </span>`
+          }
         })
         cadena += `<hr>
 <div>${factura.comentario === '' || factura.comentario === null ? '' : 'Comentario: ' + factura.comentario}</div>
