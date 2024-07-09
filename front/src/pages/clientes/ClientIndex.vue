@@ -96,7 +96,7 @@ export default {
     return {
       clients: [],
       client: {},
-      type: 'TODO',
+      type: 'CLIENTE',
       search: '',
       clientOption: '',
       clientDialog: false,

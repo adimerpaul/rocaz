@@ -169,15 +169,15 @@
               </div>
               <div class="col-12 col-md-3">
                 <q-input outlined dense label="Nombre Razon Social" required v-model="client.nombre" style="text-transform: uppercase" list="users" />
-<!--                  <datalist id="users">-->
+                  <datalist id="users">
 <!--                    <option value="Edge"/>-->
 <!--                    <option value="Firefox"/>-->
 <!--                    <option value="Chrome"/>-->
 <!--                    <option value="Opera"/>-->
 <!--                    <option value="Safari"/>-->
-                    <div v-for="c in clients" :value="c.name" :key="c.id"/>
-<!--                  </datalist>-->
-                <pre>{{clients}}</pre>
+                    <option v-for="c in clients" :value="c.nombre" :key="c.id"/>
+                  </datalist>
+<!--                <pre>{{clients}}</pre>-->
               </div>
               <div class="col-12 col-md-3">
                 <q-input outlined dense label="Telefono" v-model="client.telefono" style="text-transform: uppercase" />
@@ -335,7 +335,11 @@ export default {
   },
   methods: {
     clientsGet () {
-      this.$axios.get('clients').then(response => {
+      this.$axios.get('clients', {
+        params: {
+          type: 'CLIENTE'
+        }
+      }).then(response => {
         this.clients = this.clients.concat(response.data)
       })
     },

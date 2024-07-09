@@ -96,7 +96,7 @@ export default {
     return {
       clients: [],
       client: {},
-      type: 'TODO',
+      type: 'PROVEEDOR',
       search: '',
       clientOption: '',
       clientDialog: false,
@@ -188,13 +188,13 @@ export default {
           page: this.current
         }
       }).then(response => {
-        // this.clients = response.data.data
-        response.data.data.forEach(r => {
-          if (r.tipo === 'PROVEEDOR') {
-            this.clients.push(r)
-          }
-        })
-        this.total = response.data.last_page
+        this.clients = response.data
+        // response.data.data.forEach(r => {
+        //   if (r.tipo === 'PROVEEDOR') {
+        //     this.clients.push(r)
+        //   }
+        // })
+        // this.total = response.data.last_page
       }).catch(error => {
         this.$alert.error(error.response.data.message)
       }).finally(() => {
