@@ -68,18 +68,19 @@
                       <!--                        </div>-->
                       <!--                        <div class="col-9">-->
                       <div>
-                        <q-img :src="props.row.image.includes('http')?props.row.image:`${$url}../images/${props.row.image}`"
-                               width="40px" height="40px"
-                               style="padding: 0px; margin: 0px; border-radius: 0px;position: absolute; top: 20px; left: 8px"
-                        />
-                        <div style="padding-left: 42px">
+<!--                        <q-img :src="props.row.image.includes('http')?props.row.image:`${$url}../images/${props.row.image}`"-->
+<!--                               width="40px" height="40px"-->
+<!--                               style="padding: 0px; margin: 0px; border-radius: 0px;position: absolute; top: 20px; left: 8px"-->
+<!--                        />-->
+<!--                        style="padding-left: 42px"-->
+                        <div >
                           <div class="text-caption" style="max-width: 170px; white-space: normal; overflow-wrap: break-word;line-height: 0.9;">
                             {{props.row.nombre}}
                           </div>
                           <div class="text-grey">Disponible: {{props.row.stock}}</div>
                           <q-input v-model="props.row.precioVenta" style="width: 170px" class="super-small" step="0.01" type="number" @update:model-value="precioVenta(props.row)" dense outlined>
                             <template v-slot:prepend>
-                              <q-icon name="edit" size="xs" />
+<!--                              <q-icon name="edit" size="xs" />-->
                               <div style="font-size: 10px">Bs.</div>
                             </template>
                           </q-input>

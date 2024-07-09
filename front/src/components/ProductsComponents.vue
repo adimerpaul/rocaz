@@ -44,6 +44,15 @@
           </div>
         </q-td>
       </template>
+      <template v-slot:body-cell-stock="props">
+        <q-td :props="props">
+          <div :class="`text-${(props.row.stock)<=props.row.minStock?'red':(props.row.stock)<=props.row.minStock*2?'yellow-9':'green'}`">
+            {{ almacenSelected === 'Todo' ? props.row.stock:
+            almacenSelected === 'Almacen 1' ? props.row.stock1 : props.row.stock2
+            }}
+          </div>
+        </q-td>
+      </template>
     </q-table>
 <!--    <pre>-->
 <!--      {{products}}-->

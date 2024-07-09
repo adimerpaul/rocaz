@@ -17,6 +17,15 @@
         </q-toolbar-title>
 
 <!--        <div>Quasar v{{ $q.version }}</div>-->
+<!--        boton cion salir-->
+        <q-btn
+          flat
+          dense
+          round
+          icon="o_logout"
+          aria-label="Salir"
+          @click="logout"
+          class="q-mr-md"></q-btn>
       </q-toolbar>
     </q-header>
 

@@ -71,6 +71,7 @@ class BuyController extends Controller{
                 $total += $producto['cantidadVenta'] * $producto['precioVenta'];
                 $productoModel = Product::find($producto['id']);
                 $productoModel->stock1 += $producto['cantidadVenta'];
+                $productoModel->costo = $producto['precioVenta'];
                 $productoModel->save();
                 $observacionText .= $producto['cantidadVenta'] . ' ' . $producto['nombre'] . ', ';
             }
