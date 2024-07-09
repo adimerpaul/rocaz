@@ -21,10 +21,10 @@
         <q-btn label="Crear producto" color="green" icon="add_circle_outline" no-caps rounded @click="clickProducto" :loading="loading" />
       </div>
       <div class="col-12 col-md-6 q-pa-xs">
-        <cardComponent :color="'grey'" :title="'Total de referencias'" :monto="1000" :icono="'o_store'" />
+        <cardComponent :color="'grey'" :title="'Cantidad de productos'" :monto="products.length" icono="o_shopping_cart" />
       </div>
       <div class="col-12 col-md-6 q-pa-xs">
-        <cardComponent :color="'green'" :title="'Costo total de inventario'" :monto="1000" :icono="'o_trending_up'" />
+        <cardComponent :color="'green'" title="Ganancias" :monto="ganancias" icono="o_attach_money" />
       </div>
       <div class="col-4 col-md-2">
         <q-select v-model="categoriSelected" :options="categories" label="Categoría" outlined dense class="bg-white"
@@ -238,6 +238,13 @@ export default {
         this.products = response.data
         this.productsAll = response.data
       })
+    }
+  },
+  computed: {
+    ganancias () {
+      return this.products.reduce((acc, product) => {
+        return acc + (product.stock * product.precio1)
+      }, 0)
     }
   }
 }
