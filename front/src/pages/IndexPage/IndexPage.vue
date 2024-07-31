@@ -2,14 +2,14 @@
   <q-page class="q-pa-xs bg-grey-3">
     <div class="row">
       <div class="col-6 col-md-2 q-pa-xs">
-        <q-input v-model="fechaInicioSemana" label="Fecha inicio" dense outlined type="date" class="bg-white" @update:model-value="salesGet"/>
+        <q-input v-model="fechaInicioSemana" label="Fecha inicio" dense outlined type="date" class="bg-white" @update:model-value="salesGet('todo')"/>
       </div>
       <div class="col-6 col-md-2 q-pa-xs">
-        <q-input v-model="fechaFinSemana" label="Fecha fin" dense outlined type="date" class="bg-white" @update:model-value="salesGet"/>
+        <q-input v-model="fechaFinSemana" label="Fecha fin" dense outlined type="date" class="bg-white" @update:model-value="salesGet('todo')"/>
       </div>
       <div class="col-12 col-md-2 q-pa-xs">
         <q-input v-model="concepto" label="Buscar por concepto" dense outlined class="bg-white" debounce="300" clearable
-                  placeholder="Buscar por concepto" @update:model-value="salesGet"
+                  placeholder="Buscar por concepto" @update:model-value="salesGet('todo')"
         >
           <template v-slot:prepend>
             <q-icon name="search" />
