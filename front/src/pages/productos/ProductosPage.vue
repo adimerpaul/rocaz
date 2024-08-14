@@ -242,9 +242,13 @@ export default {
   },
   computed: {
     ganancias () {
-      return this.products.reduce((acc, product) => {
-        return acc + (product.stock * product.precio1)
+      if (this.products.length === 0) {
+        return 0
+      }
+      const total = this.products.reduce((acc, product) => {
+        return acc + (product?.stock * product?.costo)
       }, 0)
+      return total.toFixed(2)
     }
   }
 }

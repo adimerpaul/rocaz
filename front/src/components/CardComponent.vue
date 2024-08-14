@@ -21,19 +21,15 @@ export default {
   name: 'CardComponent',
   props: {
     monto: {
-      type: Number,
       required: true
     },
     color: {
-      type: String,
       default: 'green'
     },
     title: {
-      type: String,
       default: 'Ventas'
     },
     icono: {
-      type: String,
       default: 'o_trending_up'
     }
   }
