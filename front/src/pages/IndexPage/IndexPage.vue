@@ -95,10 +95,13 @@
                 <div class="text-grey" v-if="props.row.client">{{ props.row.name==null?(props.row.client.id==28?'SN':props.row.client.nombre):props.row.name }}</div>
 <!--                <pre>{{ props.row }}</pre>-->
               </q-td>
-              <q-td key="montoTotal" :props="props">
-                <span class="text-grey">{{ props.row.total }} Bs</span>
+              <q-td key="montoTotal" :props="props" style="min-width: 120px">
+<!--                <pre>{{props.row.descuento}}</pre>-->
+<!--                si descuento es mayor que cero mostrar en color rojo-->
+                <span :class="`text-${props.row.descuento>0?'red':'green'}`">{{ props.row.descuento }}Bs -</span>
+                <span class="text-black">{{ props.row.total-props.row.descuento }}Bs</span>
                 <span v-if="$store.user.type=='ADMINISTRADOR'">
-                  -<span :class="`text-${props.row.tipo_venta=='INGRESO'?'green':'red'}`">{{ props.row.ganancia }} Bs</span>
+                  -<span :class="`text-${props.row.tipo_venta=='INGRESO'?'green':'red'}`">{{ props.row.ganancia }}Bs</span>
                 </span>
               </q-td>
               <q-td key="fechayhora" :props="props" style="min-width: 150px">
@@ -297,11 +300,13 @@ export default {
   computed: {
     ganancia () {
       const total = this.sales.reduce((acc, sale) => {
-        // return sale.tipo_venta === 'INGRESO' ? acc + sale.ganancia : acc
-        // y que no sea anulado
         return sale.tipo_venta === 'INGRESO' && sale.estado !== 'ANULADO' ? acc + sale.ganancia : acc
       }, 0)
-      return Math.round(total * 100) / 100
+      const totalDescuento = this.sales.reduce((acc, sale) => {
+        return sale.tipo_venta === 'INGRESO' && sale.estado !== 'ANULADO' ? acc + sale.descuento : acc
+      }, 0)
+      // return Math.round(total * 100) / 100
+      return Math.round((total - totalDescuento) * 100) / 100
     },
     balance () {
       const total = this.sales.reduce((acc, sale) => {
