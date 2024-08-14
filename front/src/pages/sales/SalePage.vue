@@ -172,16 +172,16 @@
                 <q-input outlined dense label="Numero" required @update:model-value="searchClient" v-model="client.nit" :loading="loading" :debounce="500" />
               </div>
               <div class="col-12 col-md-3">
-                <q-input outlined dense label="Nombre Razon Social" required v-model="client.nombre" style="text-transform: uppercase" list="users" />
+                <q-input outlined dense label="Nombre Razon Social" required v-model="client.nombre"  list="users" />
                   <datalist id="users">
                     <option v-for="c in clients" :value="c.nombre" :key="c.id"/>
                   </datalist>
               </div>
               <div class="col-12 col-md-3">
-                <q-input outlined dense label="Telefono" v-model="client.telefono" style="text-transform: uppercase" />
+                <q-input outlined dense label="Telefono" v-model="client.telefono"  />
               </div>
               <div class="col-12 col-md-3">
-                <q-input outlined dense label="Direccion" v-model="client.direccion" style="text-transform: uppercase" />
+                <q-input outlined dense label="Direccion" v-model="client.direccion"  />
               </div>
               <div class="col-12 col-md-12">
                 <q-input outlined dense label="Comentario" v-model="client.comentario" style="text-transform: uppercase" type="textarea"></q-input>
