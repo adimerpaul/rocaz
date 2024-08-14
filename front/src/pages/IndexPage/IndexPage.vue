@@ -17,7 +17,7 @@
         </q-input>
       </div>
       <div class="col-12 col-md-2 q-pa-xs">
-        <q-select v-model="user" label="Usuario" dense outlined class="bg-white" :options="users" map-options emit-value @update:model-value="salesGet" v-if="$store.user.type=='ADMINISTRADOR'"/>
+        <q-select v-model="user" label="Usuario" dense outlined class="bg-white" :options="users" map-options emit-value @update:model-value="salesGet('todo')" v-if="$store.user.type=='ADMINISTRADOR'"/>
 <!--        <pre>{{user}}</pre>-->
       </div>
       <div class="col-12 col-md-1 text-right">

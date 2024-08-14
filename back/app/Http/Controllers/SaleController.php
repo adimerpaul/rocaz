@@ -11,17 +11,21 @@ use Illuminate\Support\Facades\DB;
 use function Laravel\Prompts\error;
 
 class SaleController extends Controller{
-    public function index(Request $request){
+    public function index(Request $request) {
         $fechaInicioSemana = $request->fechaInicioSemana.' 00:00:00';
         $fechaFinSemana = $request->fechaFinSemana.' 23:59:59';
         $concepto = $request->concepto;
         $user_id = $request->user;
         $user = $request->user();
         $type = $request->type == 'todo' ? '%' : strtoupper($request->type);
+
         if ($user->type == 'ADMINISTRADOR') {
             $sales = Sale::whereBetween('fecha_emision', [$fechaInicioSemana, $fechaFinSemana])
                 ->where('concepto', 'LIKE', "%$concepto%")
                 ->where('tipo_venta', 'LIKE', $type)
+                ->when($user_id, function ($query, $user_id) {
+                    return $query->where('user_id', $user_id);
+                })
                 ->with(['user', 'client', 'details'])
                 ->orderBy('id', 'desc')
                 ->get();
@@ -29,19 +33,11 @@ class SaleController extends Controller{
             $sales = Sale::whereBetween('fecha_emision', [$fechaInicioSemana, $fechaFinSemana])
                 ->where('concepto', 'LIKE', "%$concepto%")
                 ->where('tipo_venta', 'LIKE', $type)
+                ->where('user_id', $user->id)
                 ->with(['user', 'client', 'details'])
                 ->orderBy('id', 'desc')
-                ->where('user_id', $user->id)
                 ->get();
         }
-//        if ($user_id != null && $user_id != '' && $user_id != 0) {
-//            $sales = Sale::whereBetween('fecha_emision', [$fechaInicioSemana, $fechaFinSemana])
-//                ->where('concepto', 'LIKE', "%$concepto%")
-//                ->with(['user', 'client', 'details'])
-//                ->orderBy('id', 'desc')
-//                ->where('user_id', $user_id)
-//                ->get();
-//        }
 
         return response()->json($sales);
     }
