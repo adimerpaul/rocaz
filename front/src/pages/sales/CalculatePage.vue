@@ -67,12 +67,11 @@
                 </div>
                 <div class="col-12 col-md-6">
                   <q-select v-model="producto" :options="products" label="Producto"  outlined dense class="bg-white"
-                            option-value="id" option-label="nombre">
+                            option-value="id" option-label="nombre" use-input @filter="filterProducts" clearable>
                     <template v-slot:after>
-                      <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct(cajasArea2PisoFlotante8mm)"/>
+                      <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct(piezasArea2PisoFlotante8mm)"/>
                     </template>
                   </q-select>
-<!--                  <pre>{{products}}</pre>-->
                 </div>
               </div>
             </q-tab-panel>
@@ -93,9 +92,9 @@
                 </div>
                 <div class="col-12 col-md-6">
                   <q-select v-model="producto" :options="products" label="Producto"  outlined dense class="bg-white"
-                            option-value="id" option-label="nombre">
+                            option-value="id" option-label="nombre" use-input @filter="filterProducts" clearable>
                     <template v-slot:after>
-                      <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct(cajasArea2PisoFlotante8mm)"/>
+                      <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct(piezasArea2PisoFlotante12mm)"/>
                     </template>
                   </q-select>
                   <!--                  <pre>{{products}}</pre>-->
@@ -106,13 +105,14 @@
               <div class="text-h6">Calculo PVC tablilla rocaz</div>
 <!--              <div class="row">-->
 <!--                <div class="col-12 col-md-3">-->
-                  <q-markup-table>
+                  <q-markup-table wrap-cells>
                     <thead>
                       <tr>
                         <th>Detalle</th>
                         <th>M2</th>
                         <th>Factor</th>
                         <th>Placas</th>
+                        <th style="width: 10px">Producto</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -127,6 +127,14 @@
                         <td>
                           <q-input :model-value="pvcTablillaPlacas" outlined label="Placas" readonly/>
                         </td>
+                        <td>
+                          <q-select v-model="producto" :options="products" label="Producto"  outlined dense class="bg-white"
+                                    option-value="id" option-label="nombre" use-input @filter="filterProducts" clearable style="width: 180px">
+                            <template v-slot:after>
+                              <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct(pvcTablillaPlacas)"/>
+                            </template>
+                          </q-select>
+                        </td>
                       </tr>
                       <tr>
                         <td class="text-bold">CORINSA</td>
@@ -138,6 +146,14 @@
                         </td>
                         <td>
                           <q-input :model-value="pvcTablillaConrinzaPlaca" outlined label="Placas" readonly/>
+                        </td>
+                        <td>
+                          <q-select v-model="producto" :options="products" label="Producto"  outlined dense class="bg-white"
+                                    option-value="id" option-label="nombre" use-input @filter="filterProducts" clearable style="width: 180px">
+                            <template v-slot:after>
+                              <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct(pvcTablillaConrinzaPlaca)"/>
+                            </template>
+                          </q-select>
                         </td>
                       </tr>
                       <tr>
@@ -151,6 +167,14 @@
                         <td>
                           <q-input :model-value="pvcTablilla1_8" outlined label="Placas" readonly/>
                         </td>
+                        <td>
+                          <q-select v-model="producto" :options="products" label="Producto"  outlined dense class="bg-white"
+                                    option-value="id" option-label="nombre" use-input @filter="filterProducts" clearable style="width: 180px">
+                            <template v-slot:after>
+                              <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct(pvcTablilla1_8)"/>
+                            </template>
+                          </q-select>
+                        </td>
                       </tr>
                       <tr>
                         <td class="text-bold">SOLERA</td>
@@ -163,6 +187,14 @@
                         <td>
                           <q-input :model-value="pvcTablilla3_6" outlined label="Placas" readonly/>
                         </td>
+                        <td>
+                          <q-select v-model="producto" :options="products" label="Producto"  outlined dense class="bg-white"
+                                    option-value="id" option-label="nombre" use-input @filter="filterProducts" clearable style="width: 180px">
+                            <template v-slot:after>
+                              <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct(pvcTablilla3_6)"/>
+                            </template>
+                          </q-select>
+                        </td>
                       </tr>
                       <tr>
                         <td class="text-bold">ANGULAR</td>
@@ -174,6 +206,14 @@
                         </td>
                         <td>
                           <q-input :model-value="pvcTablilla5_4" outlined label="Placas" readonly/>
+                        </td>
+                        <td>
+                          <q-select v-model="producto" :options="products" label="Producto"  outlined dense class="bg-white"
+                                    option-value="id" option-label="nombre" use-input @filter="filterProducts" clearable style="width: 180px">
+                            <template v-slot:after>
+                              <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct(pvcTablilla5_4)"/>
+                            </template>
+                          </q-select>
                         </td>
                       </tr>
                     </tbody>
@@ -190,6 +230,7 @@
                   <th>M2</th>
                   <th>Factor</th>
                   <th>Placas</th>
+                  <th style="width: 10px">Producto</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -204,6 +245,14 @@
                   <td>
                     <q-input :model-value="cieloFalsoPlaca" outlined label="Placas" readonly/>
                   </td>
+                  <td>
+                    <q-select v-model="producto" :options="products" label="Producto"  outlined dense class="bg-white"
+                              option-value="id" option-label="nombre" use-input @filter="filterProducts" clearable style="width: 180px">
+                      <template v-slot:after>
+                        <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct(cieloFalsoPlaca)"/>
+                      </template>
+                    </q-select>
+                  </td>
                 </tr>
                 <tr>
                   <td class="text-bold">CORINSA</td>
@@ -215,6 +264,14 @@
                   </td>
                   <td>
                     <q-input :model-value="cieloFalsoCorinsa" outlined label="Placas" readonly/>
+                  </td>
+                  <td>
+                    <q-select v-model="producto" :options="products" label="Producto"  outlined dense class="bg-white"
+                              option-value="id" option-label="nombre" use-input @filter="filterProducts" clearable style="width: 180px">
+                      <template v-slot:after>
+                        <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct(cieloFalsoCorinsa)"/>
+                      </template>
+                    </q-select>
                   </td>
                 </tr>
                 <tr>
@@ -228,6 +285,14 @@
                   <td>
                     <q-input :model-value="cieloFalsoOmega" outlined label="Placas" readonly/>
                   </td>
+                  <td>
+                    <q-select v-model="producto" :options="products" label="Producto"  outlined dense class="bg-white"
+                              option-value="id" option-label="nombre" use-input @filter="filterProducts" clearable style="width: 180px">
+                      <template v-slot:after>
+                        <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct(cieloFalsoOmega)"/>
+                      </template>
+                    </q-select>
+                  </td>
                 </tr>
                 <tr>
                   <td class="text-bold">SOLERA</td>
@@ -239,6 +304,14 @@
                   </td>
                   <td>
                     <q-input :model-value="cieloFalsoSolera" outlined label="Placas" readonly/>
+                  </td>
+                  <td>
+                    <q-select v-model="producto" :options="products" label="Producto"  outlined dense class="bg-white"
+                              option-value="id" option-label="nombre" use-input @filter="filterProducts" clearable style="width: 180px">
+                      <template v-slot:after>
+                        <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct(cieloFalsoSolera)"/>
+                      </template>
+                    </q-select>
                   </td>
                 </tr>
                 <tr>
@@ -252,6 +325,14 @@
                   <td>
                     <q-input :model-value="cieloFalsoAngular" outlined label="Placas" readonly/>
                   </td>
+                  <td>
+                    <q-select v-model="producto" :options="products" label="Producto"  outlined dense class="bg-white"
+                              option-value="id" option-label="nombre" use-input @filter="filterProducts" clearable style="width: 180px">
+                      <template v-slot:after>
+                        <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct(cieloFalsoAngular)"/>
+                      </template>
+                    </q-select>
+                  </td>
                 </tr>
                 </tbody>
               </q-markup-table>
@@ -262,14 +343,22 @@
                 <div class="col-12 col-md-3">
                   <q-input outlined v-model="$store.pisoFlotante8mm" label="Area (m2)" class="bg-orange" />
                 </div>
-                <div class="col-12 col-md-3">
-                  <q-input outlined :model-value="redondear($store.pisoFlotante8mmConstante,3)" label="Constante" class="bg-white" readonly/>
-                </div>
-                <div class="col-12 col-md-3">
+<!--                <div class="col-12 col-md-3">-->
+<!--                  <q-input outlined :model-value="redondear($store.pisoFlotante8mmConstante,3)" label="Constante" class="bg-white" readonly/>-->
+<!--                </div>-->
+                <div class="col-12 col-md-2">
                   <q-input outlined :model-value="redondear($store.pisoFlotante8mm/$store.pisoFlotante8mmConstante)" label="Piezas" class="bg-blue" readonly/>
                 </div>
-                <div class="col-12 col-md-3">
+                <div class="col-12 col-md-2">
                   <q-input outlined :model-value="redondear($store.pisoFlotante8mm/$store.pisoFlotante8mmConstante/10)" label="Cajas" class="bg-green" readonly/>
+                </div>
+                <div class="col-12 col-md-5">
+                  <q-select v-model="producto" :options="products" label="Producto"  outlined dense class="bg-white"
+                            option-value="id" option-label="nombre" use-input @filter="filterProducts" clearable>
+                    <template v-slot:after>
+                      <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct(redondear($store.pisoFlotante8mm/$store.pisoFlotante8mmConstante))"/>
+                    </template>
+                  </q-select>
                 </div>
               </div>
             </q-tab-panel>
@@ -279,14 +368,22 @@
                 <div class="col-12 col-md-3">
                   <q-input outlined v-model="$store.pisoFlotanteSPC" label="Area (m2)" class="bg-orange" />
                 </div>
-                <div class="col-12 col-md-3">
-                  <q-input outlined :model-value="redondear($store.pisoFlotanteSPCConstante,3)" label="Constante" class="bg-white" readonly/>
-                </div>
-                <div class="col-12 col-md-3">
+<!--                <div class="col-12 col-md-3">-->
+<!--                  <q-input outlined :model-value="redondear($store.pisoFlotanteSPCConstante,3)" label="Constante" class="bg-white" readonly/>-->
+<!--                </div>-->
+                <div class="col-12 col-md-2">
                   <q-input outlined :model-value="redondear($store.pisoFlotanteSPC/$store.pisoFlotanteSPCConstante)" label="Piezas" class="bg-blue" readonly/>
                 </div>
-                <div class="col-12 col-md-3">
+                <div class="col-12 col-md-2">
                   <q-input outlined :model-value="redondear($store.pisoFlotanteSPC/$store.pisoFlotanteSPCConstante/8)" label="Cajas" class="bg-green" readonly/>
+                </div>
+                <div class="col-12 col-md-5">
+                  <q-select v-model="producto" :options="products" label="Producto"  outlined dense class="bg-white"
+                            option-value="id" option-label="nombre" use-input @filter="filterProducts" clearable>
+                    <template v-slot:after>
+                      <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct(redondear($store.pisoFlotanteSPC/$store.pisoFlotanteSPCConstante))"/>
+                    </template>
+                  </q-select>
                 </div>
               </div>
             </q-tab-panel>
@@ -296,14 +393,22 @@
                 <div class="col-12 col-md-3">
                   <q-input outlined v-model="$store.pisoFlotante12mm" label="Area (m2)" class="bg-orange" />
                 </div>
-                <div class="col-12 col-md-3">
-                  <q-input outlined :model-value="redondear($store.pisoFlotante12mmConstante,3)" label="Constante" class="bg-white" readonly/>
-                </div>
-                <div class="col-12 col-md-3">
+<!--                <div class="col-12 col-md-3">-->
+<!--                  <q-input outlined :model-value="redondear($store.pisoFlotante12mmConstante,3)" label="Constante" class="bg-white" readonly/>-->
+<!--                </div>-->
+                <div class="col-12 col-md-2">
                   <q-input outlined :model-value="redondear($store.pisoFlotante12mm/$store.pisoFlotante12mmConstante)" label="Piezas" class="bg-blue" readonly/>
                 </div>
-                <div class="col-12 col-md-3">
+                <div class="col-12 col-md-2">
                   <q-input outlined :model-value="redondear($store.pisoFlotante12mm/$store.pisoFlotante12mmConstante/10)" label="Cajas" class="bg-green" readonly/>
+                </div>
+                <div class="col-12 col-md-5">
+                  <q-select v-model="producto" :options="products" label="Producto"  outlined dense class="bg-white"
+                            option-value="id" option-label="nombre" use-input @filter="filterProducts" clearable>
+                    <template v-slot:after>
+                      <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct(redondear($store.pisoFlotante12mm/$store.pisoFlotante12mmConstante))"/>
+                    </template>
+                  </q-select>
                 </div>
               </div>
             </q-tab-panel>
@@ -321,7 +426,7 @@ import { Alert } from 'src/addons/Alert'
 
 export default {
   props: {
-    products: {
+    productsAll: {
       type: Array,
       required: true
     }
@@ -329,11 +434,27 @@ export default {
   data () {
     return {
       producto: '',
+      products: [],
       splitterModel: 20
       // area2PisoFlotante8mm: ''
     }
   },
+  mounted () {
+    this.products = [...this.productsAll]
+  },
   methods: {
+    filterProducts (val, update) {
+      if (val === '') {
+        update(() => {
+          this.products = [...this.productsAll]
+        })
+        return
+      }
+      const needle = val.toLowerCase()
+      update(() => {
+        this.products = this.productsAll.filter(v => v.nombre.toLowerCase().indexOf(needle) > -1)
+      })
+    },
     addProduct (cajas) {
       if (!this.producto) {
         Alert.error('Seleccione un producto')

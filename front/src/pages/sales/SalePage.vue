@@ -273,7 +273,7 @@
       </q-card>
     </q-dialog>
     <q-dialog v-model="calculateDialog" position="left" full-height>
-      <CalculatePage @close="calculateDialog = false" :products="products" @addProduct="addProduct" />
+      <CalculatePage @close="calculateDialog = false" :productsAll="products" @addProduct="addProduct" />
     </q-dialog>
     <div id="myElement" class="hidden"></div>
 <!--    <pre>{{$store.productosVenta}}</pre>-->
@@ -343,7 +343,9 @@ export default {
     },
     addProduct (data) {
       const product = data.producto
-      const cantidad = parseInt(data.cantidad)
+      // const cantidad = parseInt(data.cantidad)
+      // cantidad redondeado a su superior
+      const cantidad = Math.ceil(data.cantidad)
       console.log(product)
       console.log(cantidad)
       // const search = this.$store.productosVenta.find(p => p.id === product.id)
