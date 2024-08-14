@@ -80,12 +80,12 @@
                       <q-tooltip>Descargar nota</q-tooltip>
                     </q-btn>
                   </q-item>
-<!--                  <q-item clickable v-close-popup class="text-center">-->
-<!--                    <q-btn dense label="Modificar" color="orange-4" size="10px" class="full-width"-->
-<!--                           no-caps no-wrap icon="o_edit" @click="modificarNota(props.row)">-->
-<!--                      <q-tooltip>Modificar nota</q-tooltip>-->
-<!--                    </q-btn>-->
-<!--                  </q-item>-->
+                  <q-item clickable v-close-popup class="text-center">
+                    <q-btn dense label="Comentario Credito" color="orange-4" size="10px" class="full-width"
+                           no-caps no-wrap icon="o_edit" @click="modificarComentarioMetodo(props.row)">
+                      <q-tooltip>Comentario Credito</q-tooltip>
+                    </q-btn>
+                  </q-item>
                 </q-btn-dropdown>
                 <div v-else>
                   <q-btn dense label="Anulado" color="grey-4" size="10px" no-caps no-wrap icon="o_highlight_off" />
@@ -143,6 +143,44 @@
   <q-dialog v-model="gastoDialog" position="right" maximized>
     <DialogGasto @gastoCreated="gastoCreated"/>
   </q-dialog>
+  <q-dialog v-model="comentarioMetodoDialog" >
+    <q-card style="width: 400px">
+      <q-card-section class="row items-center q-pb-none">
+        <div class="text-h6">Modificar Credito</div>
+        <q-space />
+        <q-btn flat round dense icon="close" @click="comentarioMetodoDialog = false"/>
+      </q-card-section>
+      <q-card-section>
+<!--        <q-card>-->
+<!--          <q-card-section>-->
+            <q-input v-model="sale.comentario" label="Comentario" outlined dense type="textarea"/>
+<!--          </q-card-section>-->
+<!--          <q-card-section>-->
+<!--            <q-select v-model="sale.metodo" label="Metodo" outlined dense :de-->
+            <q-select dense outlined v-model="sale.metodo" label="Metodo de pago"
+                      :options="$metodos" hint="Metodo de pago del gasto" >
+              <template v-slot:prepend>
+                <q-icon name="o_payment" />
+              </template>
+              <template v-slot:option="scope">
+                <q-item v-bind="scope.itemProps">
+                  <q-item-section :class="scope.opt == 'CREDITO' ? 'bg-red text-white' : ''">
+                    <q-item-label>
+                      {{ scope.opt }}
+                    </q-item-label>
+                  </q-item-section>
+                </q-item>
+              </template>
+            </q-select>
+<!--          </q-card-section>-->
+          <q-card-actions align="right">
+            <q-btn label="Cancelar" color="red" @click="comentarioMetodoDialog = false" :loading="loading"/>
+            <q-btn label="Guardar" color="green" @click="updateSaleComentarioEfectivo" :loading="loading"/>
+          </q-card-actions>
+<!--        </q-card>-->
+      </q-card-section>
+    </q-card>
+  </q-dialog>
   <div id="myElement" class="hidden"></div>
 </template>
 
@@ -180,7 +218,9 @@ export default {
       loading: false,
       filter: '',
       users: [],
-      user: 0
+      user: 0,
+      comentarioMetodoDialog: false,
+      sale: {}
     }
   },
   mounted () {
@@ -188,6 +228,21 @@ export default {
     this.salesGet()
   },
   methods: {
+    updateSaleComentarioEfectivo () {
+      this.loading = true
+      this.$axios.post('updateSaleComentarioEfectivo', this.sale)
+        .then(response => {
+          this.salesGet()
+          this.comentarioMetodoDialog = false
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+    modificarComentarioMetodo (sale) {
+      this.comentarioMetodoDialog = true
+      this.sale = { ...sale }
+    },
     usersGet () {
       this.users = [{ label: 'Todos', value: 0 }]
       this.$axios.get('usuarios')

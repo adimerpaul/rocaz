@@ -11,6 +11,13 @@ use Illuminate\Support\Facades\DB;
 use function Laravel\Prompts\error;
 
 class SaleController extends Controller{
+    function updateSaleComentarioEfectivo(Request $request){
+        $sale = Sale::find($request->id);
+        $sale->comentario = $request->comentario;
+        $sale->metodo = $request->metodo;
+        $sale->save();
+        return response()->json($sale);
+    }
     public function index(Request $request) {
         $fechaInicioSemana = $request->fechaInicioSemana.' 00:00:00';
         $fechaFinSemana = $request->fechaFinSemana.' 23:59:59';
