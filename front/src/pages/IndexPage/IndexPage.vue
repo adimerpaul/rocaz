@@ -20,11 +20,18 @@
         <q-select v-model="user" label="Usuario" dense outlined class="bg-white" :options="users" map-options emit-value @update:model-value="salesGet('todo')" v-if="$store.user.type=='ADMINISTRADOR'"/>
 <!--        <pre>{{user}}</pre>-->
       </div>
-      <div class="col-12 col-md-1 text-right">
-        <q-btn class="" flat dense label="Exportar" color="primary"  icon="get_app" no-caps rounded @click="exportar" size="10px"/>
+      <div class="col-12 col-md-2 q-pa-xs">
+        <q-select v-model="metodo" label="Metodo" dense outlined class="bg-white"
+                  :options="[ 'Todos',...$metodos]"
+                  @update:model-value="salesGet('todo')" v-if="$store.user.type=='ADMINISTRADOR'"/>
+        <!--        <pre>{{user}}</pre>-->
       </div>
-      <div class="col-12 col-md-3 text-right">
-        <q-btn dense label="Nuevo Venta" color="green"  icon="add_circle_outline" no-caps rounded to="/sale"/>
+<!--      <div class="col-12 col-md-1 text-right">-->
+<!--        <q-btn class="" flat dense label="Exportar" color="primary"  icon="get_app" no-caps rounded @click="exportar" size="10px"/>-->
+<!--      </div>-->
+      <div class="col-12 col-md-2 text-right">
+<!--        <q-btn dense label="Nuevo Venta" color="green"  icon="add_circle_outline" no-caps rounded to="/sale"/>-->
+                <q-btn class="" flat dense label="Exportar" color="primary"  icon="get_app" no-caps rounded @click="exportar" size="10px"/>
         <q-btn dense label="Nuevo Gasto" color="red"  icon="add_circle_outline" no-caps rounded @click="gastoDialog = true"/>
       </div>
       <div class="col-12 col-md-3 q-pa-xs" v-if="$store.user.type=='ADMINISTRADOR'">
@@ -196,6 +203,7 @@ export default {
   components: { DialogGasto, CardComponent },
   data () {
     return {
+      metodo: 'Todos',
       gastoDialog: false,
       fechaInicioSemana: moment().startOf('isoWeek').format('YYYY-MM-DD'),
       fechaFinSemana: moment().endOf('isoWeek').format('YYYY-MM-DD'),
@@ -337,6 +345,7 @@ export default {
           fechaFinSemana: this.fechaFinSemana,
           concepto: this.concepto,
           user: this.user,
+          metodo: this.metodo,
           type
         }
       })

@@ -25,6 +25,7 @@ class SaleController extends Controller{
         $user_id = $request->user;
         $user = $request->user();
         $type = $request->type == 'todo' ? '%' : strtoupper($request->type);
+        $metodo = $request->metodo == 'Todos' ? '%' : strtoupper($request->metodo);
 
         if ($user->type == 'ADMINISTRADOR') {
             $sales = Sale::whereBetween('fecha_emision', [$fechaInicioSemana, $fechaFinSemana])
@@ -32,6 +33,9 @@ class SaleController extends Controller{
                 ->where('tipo_venta', 'LIKE', $type)
                 ->when($user_id, function ($query, $user_id) {
                     return $query->where('user_id', $user_id);
+                })
+                ->when($metodo, function ($query, $metodo) {
+                    return $query->where('metodo', 'LIKE', $metodo);
                 })
                 ->with(['user', 'client', 'details'])
                 ->orderBy('id', 'desc')
