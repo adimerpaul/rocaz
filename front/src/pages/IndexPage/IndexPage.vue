@@ -105,9 +105,11 @@
               <q-td key="montoTotal" :props="props" style="min-width: 120px">
 <!--                <pre>{{props.row.descuento}}</pre>-->
 <!--                si descuento es mayor que cero mostrar en color rojo-->
-                <span :class="`text-${props.row.descuento>0?'red':'green'}`">{{ props.row.descuento }}Bs -</span>
+                <span :class="`text-${props.row.descuento>0?'red':'green'}`" v-if="props.row.descuento > 0">
+                  {{ props.row.descuento }}Bs -
+                </span>
                 <span class="text-black">{{ props.row.total-props.row.descuento }}Bs</span>
-                <span v-if="$store.user.type=='ADMINISTRADOR'">
+                <span v-if="$store.user.type=='ADMINISTRADOR' && props.row.ganancia > 0">
                   -<span :class="`text-${props.row.tipo_venta=='INGRESO'?'green':'red'}`">{{ props.row.ganancia }}Bs</span>
                 </span>
               </q-td>
