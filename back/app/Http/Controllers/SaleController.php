@@ -162,25 +162,43 @@ class SaleController extends Controller{
     public function reportProductos(Request $request){
         $fechaInicioSemana = $request->fechaInicioSemana.' 00:00:00';
         $fechaFinSemana = $request->fechaFinSemana.' 23:59:59';
-
-        $labels = [];
-        $data = [];
-        $productos = Sale::whereBetween('fecha_emision', [$fechaInicioSemana, $fechaFinSemana])
-            ->where('tipo_venta', 'INGRESO')
+//        $labels = [];
+//        $data = [];
+        $sales = Sale::whereBetween('fecha_emision', [$fechaInicioSemana, $fechaFinSemana])
+//            ->where('tipo_venta', 'INGRESO')
             ->where('estado', 'ACTIVO')
-            ->with(['details'])
+            ->with(['details', 'client'])
             ->get();
-        foreach ($productos as $producto){
-            foreach ($producto->details as $detail){
-                $index = array_search($detail->producto, $labels);
-                if($index === false){
-                    array_push($labels, $detail->producto);
-                    array_push($data, $detail->cantidad);
-                }else{
-                    $data[$index] += $detail->cantidad;
-                }
+        $sumIngresos = 0;
+        $sumEgresos = 0;
+        $sumGanancia = 0;
+        $resIngresos = [];
+        $resEgresos = [];
+        foreach ($sales as $sale){
+            if ($sale->tipo_venta=='INGRESO'){
+                $sumIngresos = $sumIngresos + $sale->total;
+                $resIngresos[] = $sale;
+            }else{
+                $sumEgresos = $sumEgresos + $sale->total;
+                $resEgresos[] = $sale;
             }
+            $sumGanancia = $sumGanancia + $sale->ganancia;
+//            foreach ($sale->details as $detail){
+//                $index = array_search($detail->sale, $labels);
+//                if($index === false){
+//                    array_push($labels, $detail->sale);
+//                    array_push($data, $detail->cantidad);
+//                }else{
+//                    $data[$index] += $detail->cantidad;
+//                }
+//            }
         }
-        return response()->json(['labels' => $labels, 'data' => $data]);
+        return [
+            'ingresos' => round($sumIngresos, 2),
+            'egresos' => round($sumEgresos, 2),
+            'ganancia' => round($sumGanancia, 2),
+            'resIngresos' => $resIngresos,
+            'resEgresos' => $resEgresos
+        ];
     }
 }
