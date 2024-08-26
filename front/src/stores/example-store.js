@@ -31,7 +31,22 @@ export const useCounterStore = defineStore('counter', {
       razon: 'ROCAZ ECO HOME',
       direccion: '6 de octubre y caro',
       telefono: '69592090'
-    }
+    },
+    productoCal1: '',
+    productoCal2: '',
+    productoCal3: '',
+    productoCal4: '',
+    productoCal5: '',
+    productoCal6: '',
+    productoCal7: '',
+    productoCal8: '',
+    productoCal9: '',
+    productoCal10: '',
+    productoCal11: '',
+    productoCal12: '',
+    productoCal13: '',
+    productoCal14: '',
+    productoCal15: ''
   }),
   getters: {
     doubleCount: (state) => state.counter * 2

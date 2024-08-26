@@ -187,7 +187,7 @@
                 <q-input outlined dense label="Comentario" v-model="client.comentario" style="text-transform: uppercase" type="textarea"></q-input>
               </div>
               <!--              <div class="col-4 col-md-4">-->
-              <!--                <q-select v-model="almacenSelected" :options="['Todo','Almacen 1','Almacen 2']" label="Almacen" outlined dense class="bg-white" emit-value />-->
+              <!--                <q-select v-model="almacenSelected" :options="['Todos','Almacen 1','Almacen 2']" label="Almacen" outlined dense class="bg-white" emit-value />-->
               <!--              </div>-->
             </div>
           </q-card-section>
@@ -417,7 +417,8 @@ export default {
           precioVenta: product.precioVenta,
           costoUnitario: product.costoUnitario,
           stock: product.stock,
-          image: product.image
+          image: product.image,
+          visible: true
         })
       }
     },
@@ -553,6 +554,7 @@ export default {
       this.totalSale = 0
       this.$store.productosVenta.forEach(row => {
         this.totalSale = this.totalSale + (parseFloat(row.precioVenta) * parseFloat(row.cantidadVenta))
+        this.totalSale2 = this.totalSale
       })
       this.totalSale = this.totalSale.toFixed(2)
     },

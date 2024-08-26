@@ -66,10 +66,10 @@
                   <q-input outlined dense :model-value="cajasArea2PisoFlotante8mm" label="Cajas" class="bg-green" readonly/>
                 </div>
                 <div class="col-12 col-md-6">
-                  <q-select v-model="producto" :options="products" label="Producto"  outlined dense class="bg-white"
+                  <q-select v-model="$store.productoCal1" :options="products" label="Producto"  outlined dense class="bg-white"
                             option-value="id" option-label="nombre" use-input @filter="filterProducts" clearable>
                     <template v-slot:after>
-                      <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct(piezasArea2PisoFlotante8mm)"/>
+                      <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct(piezasArea2PisoFlotante8mm, $store.productoCal1)"/>
                     </template>
                   </q-select>
                 </div>
@@ -91,10 +91,10 @@
                   <q-input dense outlined :model-value="cajasArea2PisoFlotante12mm" label="Cajas" class="bg-green" readonly/>
                 </div>
                 <div class="col-12 col-md-6">
-                  <q-select v-model="producto" :options="products" label="Producto"  outlined dense class="bg-white"
+                  <q-select v-model="$store.productoCal2" :options="products" label="Producto"  outlined dense class="bg-white"
                             option-value="id" option-label="nombre" use-input @filter="filterProducts" clearable>
                     <template v-slot:after>
-                      <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct(piezasArea2PisoFlotante12mm)"/>
+                      <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct(piezasArea2PisoFlotante12mm,$store.productoCal2)"/>
                     </template>
                   </q-select>
                   <!--                  <pre>{{products}}</pre>-->
@@ -128,10 +128,10 @@
                           <q-input :model-value="pvcTablillaPlacas" outlined label="Placas" readonly/>
                         </td>
                         <td>
-                          <q-select v-model="producto" :options="products" label="Producto"  outlined dense class="bg-white"
+                          <q-select v-model="$store.productoCal3" :options="products" label="Producto"  outlined dense class="bg-white"
                                     option-value="id" option-label="nombre" use-input @filter="filterProducts" clearable style="width: 180px">
                             <template v-slot:after>
-                              <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct(pvcTablillaPlacas)"/>
+                              <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct(pvcTablillaPlacas, $store.productoCal3)"/>
                             </template>
                           </q-select>
                         </td>
@@ -148,10 +148,10 @@
                           <q-input :model-value="pvcTablillaConrinzaPlaca" outlined label="Placas" readonly/>
                         </td>
                         <td>
-                          <q-select v-model="producto" :options="products" label="Producto"  outlined dense class="bg-white"
+                          <q-select v-model="$store.productoCal4" :options="products" label="Producto"  outlined dense class="bg-white"
                                     option-value="id" option-label="nombre" use-input @filter="filterProducts" clearable style="width: 180px">
                             <template v-slot:after>
-                              <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct(pvcTablillaConrinzaPlaca)"/>
+                              <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct(pvcTablillaConrinzaPlaca, $store.productoCal4)"/>
                             </template>
                           </q-select>
                         </td>
@@ -168,10 +168,10 @@
                           <q-input :model-value="pvcTablilla1_8" outlined label="Placas" readonly/>
                         </td>
                         <td>
-                          <q-select v-model="producto" :options="products" label="Producto"  outlined dense class="bg-white"
+                          <q-select v-model="$store.productoCal5" :options="products" label="Producto"  outlined dense class="bg-white"
                                     option-value="id" option-label="nombre" use-input @filter="filterProducts" clearable style="width: 180px">
                             <template v-slot:after>
-                              <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct(pvcTablilla1_8)"/>
+                              <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct(pvcTablilla1_8, $store.productoCal5)"/>
                             </template>
                           </q-select>
                         </td>
@@ -188,10 +188,10 @@
                           <q-input :model-value="pvcTablilla3_6" outlined label="Placas" readonly/>
                         </td>
                         <td>
-                          <q-select v-model="producto" :options="products" label="Producto"  outlined dense class="bg-white"
+                          <q-select v-model="$store.productoCal6" :options="products" label="Producto"  outlined dense class="bg-white"
                                     option-value="id" option-label="nombre" use-input @filter="filterProducts" clearable style="width: 180px">
                             <template v-slot:after>
-                              <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct(pvcTablilla3_6)"/>
+                              <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct(pvcTablilla3_6, $store.productoCal6)"/>
                             </template>
                           </q-select>
                         </td>
@@ -208,10 +208,10 @@
                           <q-input :model-value="pvcTablilla5_4" outlined label="Placas" readonly/>
                         </td>
                         <td>
-                          <q-select v-model="producto" :options="products" label="Producto"  outlined dense class="bg-white"
+                          <q-select v-model="$store.productoCal7" :options="products" label="Producto"  outlined dense class="bg-white"
                                     option-value="id" option-label="nombre" use-input @filter="filterProducts" clearable style="width: 180px">
                             <template v-slot:after>
-                              <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct(pvcTablilla5_4)"/>
+                              <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct(pvcTablilla5_4, $store.productoCal7)"/>
                             </template>
                           </q-select>
                         </td>
@@ -246,10 +246,10 @@
                     <q-input :model-value="cieloFalsoPlaca" outlined label="Placas" readonly/>
                   </td>
                   <td>
-                    <q-select v-model="producto" :options="products" label="Producto"  outlined dense class="bg-white"
+                    <q-select v-model="$store.productoCal8" :options="products" label="Producto"  outlined dense class="bg-white"
                               option-value="id" option-label="nombre" use-input @filter="filterProducts" clearable style="width: 180px">
                       <template v-slot:after>
-                        <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct(cieloFalsoPlaca)"/>
+                        <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct(cieloFalsoPlaca, $store.productoCal8)"/>
                       </template>
                     </q-select>
                   </td>
@@ -266,10 +266,10 @@
                     <q-input :model-value="cieloFalsoCorinsa" outlined label="Placas" readonly/>
                   </td>
                   <td>
-                    <q-select v-model="producto" :options="products" label="Producto"  outlined dense class="bg-white"
+                    <q-select v-model="$store.productoCal9" :options="products" label="Producto"  outlined dense class="bg-white"
                               option-value="id" option-label="nombre" use-input @filter="filterProducts" clearable style="width: 180px">
                       <template v-slot:after>
-                        <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct(cieloFalsoCorinsa)"/>
+                        <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct(cieloFalsoCorinsa, $store.productoCal9)"/>
                       </template>
                     </q-select>
                   </td>
@@ -286,10 +286,10 @@
                     <q-input :model-value="cieloFalsoOmega" outlined label="Placas" readonly/>
                   </td>
                   <td>
-                    <q-select v-model="producto" :options="products" label="Producto"  outlined dense class="bg-white"
+                    <q-select v-model="$store.productoCal10" :options="products" label="Producto"  outlined dense class="bg-white"
                               option-value="id" option-label="nombre" use-input @filter="filterProducts" clearable style="width: 180px">
                       <template v-slot:after>
-                        <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct(cieloFalsoOmega)"/>
+                        <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct(cieloFalsoOmega, $store.productoCal10)"/>
                       </template>
                     </q-select>
                   </td>
@@ -306,10 +306,10 @@
                     <q-input :model-value="cieloFalsoSolera" outlined label="Placas" readonly/>
                   </td>
                   <td>
-                    <q-select v-model="producto" :options="products" label="Producto"  outlined dense class="bg-white"
+                    <q-select v-model="$store.productoCal11" :options="products" label="Producto"  outlined dense class="bg-white"
                               option-value="id" option-label="nombre" use-input @filter="filterProducts" clearable style="width: 180px">
                       <template v-slot:after>
-                        <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct(cieloFalsoSolera)"/>
+                        <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct(cieloFalsoSolera, $store.productoCal11)"/>
                       </template>
                     </q-select>
                   </td>
@@ -326,10 +326,10 @@
                     <q-input :model-value="cieloFalsoAngular" outlined label="Placas" readonly/>
                   </td>
                   <td>
-                    <q-select v-model="producto" :options="products" label="Producto"  outlined dense class="bg-white"
+                    <q-select v-model="$store.productoCal12" :options="products" label="Producto"  outlined dense class="bg-white"
                               option-value="id" option-label="nombre" use-input @filter="filterProducts" clearable style="width: 180px">
                       <template v-slot:after>
-                        <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct(cieloFalsoAngular)"/>
+                        <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct(cieloFalsoAngular, $store.productoCal12)"/>
                       </template>
                     </q-select>
                   </td>
@@ -353,10 +353,10 @@
                   <q-input outlined :model-value="redondear($store.pisoFlotante8mm/$store.pisoFlotante8mmConstante/10)" label="Cajas" class="bg-green" readonly/>
                 </div>
                 <div class="col-12 col-md-5">
-                  <q-select v-model="producto" :options="products" label="Producto"  outlined dense class="bg-white"
+                  <q-select v-model="$store.productoCal13" :options="products" label="Producto"  outlined dense class="bg-white"
                             option-value="id" option-label="nombre" use-input @filter="filterProducts" clearable>
                     <template v-slot:after>
-                      <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct(redondear($store.pisoFlotante8mm/$store.pisoFlotante8mmConstante))"/>
+                      <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct(redondear($store.pisoFlotante8mm/$store.pisoFlotante8mmConstante), $store.productoCal13)"/>
                     </template>
                   </q-select>
                 </div>
@@ -378,10 +378,10 @@
                   <q-input outlined :model-value="redondear($store.pisoFlotanteSPC/$store.pisoFlotanteSPCConstante/8)" label="Cajas" class="bg-green" readonly/>
                 </div>
                 <div class="col-12 col-md-5">
-                  <q-select v-model="producto" :options="products" label="Producto"  outlined dense class="bg-white"
+                  <q-select v-model="$store.productoCal14" :options="products" label="Producto"  outlined dense class="bg-white"
                             option-value="id" option-label="nombre" use-input @filter="filterProducts" clearable>
                     <template v-slot:after>
-                      <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct(redondear($store.pisoFlotanteSPC/$store.pisoFlotanteSPCConstante))"/>
+                      <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct(redondear($store.pisoFlotanteSPC/$store.pisoFlotanteSPCConstante), $store.productoCal14)"/>
                     </template>
                   </q-select>
                 </div>
@@ -403,10 +403,10 @@
                   <q-input outlined :model-value="redondear($store.pisoFlotante12mm/$store.pisoFlotante12mmConstante/10)" label="Cajas" class="bg-green" readonly/>
                 </div>
                 <div class="col-12 col-md-5">
-                  <q-select v-model="producto" :options="products" label="Producto"  outlined dense class="bg-white"
+                  <q-select v-model="$store.productoCal15" :options="products" label="Producto"  outlined dense class="bg-white"
                             option-value="id" option-label="nombre" use-input @filter="filterProducts" clearable>
                     <template v-slot:after>
-                      <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct(redondear($store.pisoFlotante12mm/$store.pisoFlotante12mmConstante))"/>
+                      <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct(redondear($store.pisoFlotante12mm/$store.pisoFlotante12mmConstante), $store.productoCal15)"/>
                     </template>
                   </q-select>
                 </div>
@@ -455,13 +455,13 @@ export default {
         this.products = this.productsAll.filter(v => v.nombre.toLowerCase().indexOf(needle) > -1)
       })
     },
-    addProduct (cajas) {
-      if (!this.producto) {
+    addProduct (cajas, product) {
+      if (!product) {
         Alert.error('Seleccione un producto')
         return false
       }
       this.$emit('addProduct', {
-        producto: this.producto,
+        producto: product,
         cantidad: cajas
       })
     },
