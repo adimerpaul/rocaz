@@ -93,6 +93,7 @@ class SaleController extends Controller{
         $sale->save();
         $concepto = '';
         $totalGanancia=0;
+        $totalGastoProducto = 0;
         foreach ($request->productos as $producto){
 
             $detalle = new Detail();
@@ -106,6 +107,8 @@ class SaleController extends Controller{
             $productoCosto = Product::find($producto['id']);
             $costo = $productoCosto->costo;
             $costoTotal = $producto['cantidadVenta'] * $costo;
+
+            $totalGastoProducto= $totalGastoProducto + $costoTotal;
 
             $total = round($producto['cantidadVenta'] * $producto['precioVenta'], 2);
 
@@ -131,7 +134,7 @@ class SaleController extends Controller{
         }
         $concepto = substr($concepto, 0, -1);
         $sale->concepto = $concepto;
-        $sale->ganancia = $totalGanancia;
+        $sale->ganancia = $sale->total - $totalGastoProducto;
         $sale->save();
         DB::commit();
         return Sale::with(['user', 'client', 'details'])->find($sale->id);

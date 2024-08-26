@@ -133,7 +133,7 @@ Oruro</div>
                     <span>
                     ${parseFloat(r.precio).toFixed(2)}
                     </span>
-                    0.00
+
                     <span style='float:right'>
                         ${parseFloat(r.precio * r.cantidad).toFixed(2)}
                     </span>

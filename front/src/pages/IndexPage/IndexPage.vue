@@ -109,8 +109,8 @@
                   {{ props.row.descuento }}Bs -
                 </span>
                 <span class="text-black">{{ props.row.total-props.row.descuento }}Bs</span>
-                <span v-if="$store.user.type=='ADMINISTRADOR' && props.row.ganancia > 0">
-                  -<span :class="`text-${props.row.tipo_venta=='INGRESO'?'green':'red'}`">{{ props.row.ganancia }}Bs</span>
+                <span v-if="$store.user.type=='ADMINISTRADOR'">
+                  / <span :class="`text-${props.row.tipo_venta=='INGRESO'?'green':'red'}`">{{ props.row.ganancia }}Bs</span>
                 </span>
               </q-td>
               <q-td key="fechayhora" :props="props" style="min-width: 150px">
