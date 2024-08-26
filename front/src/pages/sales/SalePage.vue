@@ -251,10 +251,16 @@
             </tr>
             <tr>
               <td colspan="2" class="text-right text-bold">
-                <q-input label="Descuento" v-model="descuento" dense outlined/>
+                <q-input label="Descuento" v-model="descuento" dense outlined @update:modelValue="totalSale2 = totalSale -descuento"/>
               </td>
               <td colspan="2" class="text-right text-bold">Total</td>
-              <td class="text-right text-bold">{{numero2digitosRedondeado(total-descuento)}} Bs.</td>
+              <td class="text-right text-bold">
+                <div>
+<!--                  {{totalSale2}}-->
+                  <q-input v-model="totalSale2" outlined dense label="Total Bs."/>
+                </div>
+<!--                {{numero2digitosRedondeado(total-descuento)}} Bs.xxx-->
+              </td>
             </tr>
             </tbody>
           </q-markup-table>
@@ -292,6 +298,8 @@ export default {
   },
   data () {
     return {
+      totalSale: 0,
+      totalSale2: 0,
       descuento: '',
       vista: 'tabla',
       calculateDialog: false,
@@ -447,7 +455,7 @@ export default {
         telefono: this.client.telefono,
         direccion: this.client.direccion,
         comentario: this.client.comentario,
-        total: this.total,
+        total: this.totalSale2,
         metodo: this.metodoPago,
         almacen: this.almacenSelected,
         productos: this.$store.productosVenta,
@@ -542,6 +550,11 @@ export default {
         nit: '0',
         nombre: 'SN'
       }
+      this.totalSale = 0
+      this.$store.productosVenta.forEach(row => {
+        this.totalSale = this.totalSale + (parseFloat(row.precioVenta) * parseFloat(row.cantidadVenta))
+      })
+      this.totalSale = this.totalSale.toFixed(2)
     },
     vaciarCanasta () {
       this.$store.productosVenta = []
