@@ -119,7 +119,7 @@ Oruro</div>
 <hr>
 <table>
 <tr><td class='titder'>NOMBRE/RAZÓN SOCIAL:</td><td class='contenido'>${factura.client ? (factura.name == null ? factura.client.nombre : factura.name) : ''}</td>
-</tr><tr><td class='titder'>NIT/CI/CEX:</td><td class='contenido'>${factura.client ? factura.client.nit : ''}</td></tr>
+</tr><tr><!-- td class='titder'>NIT/CI/CEX:</td><td class='contenido'>${factura.client ? factura.client.nit : ''}</td --></tr>
 <tr><td class='titder'>FECHA DE EMISIÓN:</td><td class='contenido'>${factura.fecha_emision}</td></tr>
 </table><hr><div class='titulo'>DETALLE</div>`
         factura.details.forEach(r => {

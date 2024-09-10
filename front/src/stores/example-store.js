@@ -29,8 +29,13 @@ export const useCounterStore = defineStore('counter', {
     productosBuys: [],
     env: {
       razon: 'ROCAZ ECO HOME',
-      direccion: '6 de octubre y caro',
-      telefono: '69592090'
+      direccion: 'Velasco Galvarro esquina Caro\n' +
+          '–\n' +
+          'Caro, Velasco Galvarro y Pagador',
+      telefono: ' 69592090\n' +
+          '– 70481871\n' +
+          '-\n' +
+          '71881768\n'
     },
     productoCal1: '',
     productoCal2: '',
