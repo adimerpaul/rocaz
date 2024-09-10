@@ -251,7 +251,8 @@
             </tr>
             <tr>
               <td colspan="2" class="text-right text-bold">
-                <q-input label="Descuento" v-model="descuento" dense outlined @update:modelValue="totalSale2 = totalSale -descuento"/>
+<!--                @update:modelValue="totalSale2 = totalSale -descuento"-->
+                <q-input label="Descuento" v-model="descuento" dense outlined />
               </td>
               <td colspan="2" class="text-right text-bold">Total</td>
               <td class="text-right text-bold">
@@ -546,6 +547,7 @@ export default {
     },
     clickSale () {
       this.saleDialog = true
+      this.descuento = ''
       this.efectivo = ''
       this.client = {
         nit: '0',

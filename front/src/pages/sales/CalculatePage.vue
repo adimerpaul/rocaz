@@ -491,8 +491,8 @@ export default {
     },
     piezasArea2PisoFlotante12mm () {
       const calculate = this.$store.area2PisoFlotante12mm / this.$store.area2PisoFlotante12mmConstante
-      const redondear = Math.ceil(calculate)
-      return redondear.toFixed(1)
+      const redondear = (calculate)
+      return redondear.toFixed(0)
     },
     cajasArea2PisoFlotante12mm () {
       const calculate = (this.$store.area2PisoFlotante12mm / this.$store.area2PisoFlotante12mmConstante) / 7
