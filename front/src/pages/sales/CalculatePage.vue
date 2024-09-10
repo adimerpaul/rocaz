@@ -255,7 +255,7 @@
                   </td>
                 </tr>
                 <tr>
-                  <td class="text-bold">CORINSA</td>
+                  <td class="text-bold">Angular</td>
                   <td>
                     <q-input :model-value="cieloFalsoDesmontableRaiz" outlined label="PVC tablilla" readonly/>
                   </td>
@@ -275,7 +275,7 @@
                   </td>
                 </tr>
                 <tr>
-                  <td class="text-bold">OMEGA</td>
+                  <td class="text-bold">Tranversal 3.60</td>
                   <td>
                     <q-input v-model="$store.cieloFalsoDesmontable" outlined label="PVC tablilla" readonly/>
                   </td>
@@ -295,7 +295,7 @@
                   </td>
                 </tr>
                 <tr>
-                  <td class="text-bold">SOLERA</td>
+                  <td class="text-bold">Tranversal 1.20</td>
                   <td>
                     <q-input v-model="$store.cieloFalsoDesmontable" outlined label="PVC tablilla" readonly/>
                   </td>
@@ -315,7 +315,7 @@
                   </td>
                 </tr>
                 <tr>
-                  <td class="text-bold">ANGULAR</td>
+                  <td class="text-bold">Tranversal 0.60</td>
                   <td>
                     <q-input v-model="$store.cieloFalsoDesmontable" outlined label="PVC tablilla" readonly/>
                   </td>
@@ -343,11 +343,11 @@
                 <div class="col-12 col-md-3">
                   <q-input outlined v-model="$store.pisoFlotante8mm" label="Area (m2)" class="bg-orange" />
                 </div>
-<!--                <div class="col-12 col-md-3">-->
-<!--                  <q-input outlined :model-value="redondear($store.pisoFlotante8mmConstante,3)" label="Constante" class="bg-white" readonly/>-->
-<!--                </div>-->
+                <div class="col-12 col-md-3 hidden">
+                  <q-input outlined :model-value="redondear($store.pisoFlotante8mmConstante,3)" label="Constante" class="bg-white" readonly/>
+                </div>
                 <div class="col-12 col-md-2">
-                  <q-input outlined :model-value="redondear($store.pisoFlotante8mm/$store.pisoFlotante8mmConstante)" label="Piezas" class="bg-blue" readonly/>
+                  <q-input outlined :model-value="(($store.pisoFlotante8mm/$store.pisoFlotante8mmConstante)).toFixed()" label="Piezas" class="bg-blue" readonly/>
                 </div>
                 <div class="col-12 col-md-2">
                   <q-input outlined :model-value="redondear($store.pisoFlotante8mm/$store.pisoFlotante8mmConstante/10)" label="Cajas" class="bg-green" readonly/>
@@ -356,7 +356,7 @@
                   <q-select v-model="$store.productoCal13" :options="products" label="Producto"  outlined dense class="bg-white"
                             option-value="id" option-label="nombre" use-input @filter="filterProducts" clearable>
                     <template v-slot:after>
-                      <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct(redondear($store.pisoFlotante8mm/$store.pisoFlotante8mmConstante), $store.productoCal13)"/>
+                      <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct((($store.pisoFlotante8mm/$store.pisoFlotante8mmConstante)).toFixed(), $store.productoCal13)"/>
                     </template>
                   </q-select>
                 </div>
@@ -486,7 +486,7 @@ export default {
     },
     cajasArea2PisoFlotante8mm () {
       const calculate = (this.$store.area2PisoFlotante8mm / this.$store.area2PisoFlotante8mmConstante) / 10
-      const redondear = Math.ceil(calculate)
+      const redondear = (calculate)
       return redondear.toFixed(1)
     },
     piezasArea2PisoFlotante12mm () {
@@ -495,8 +495,8 @@ export default {
       return redondear.toFixed(1)
     },
     cajasArea2PisoFlotante12mm () {
-      const calculate = (this.$store.area2PisoFlotante12mm / this.$store.area2PisoFlotante12mmConstante) / 10
-      const redondear = Math.ceil(calculate)
+      const calculate = (this.$store.area2PisoFlotante12mm / this.$store.area2PisoFlotante12mmConstante) / 7
+      const redondear = (calculate)
       return redondear.toFixed(1)
     },
     pvcTablillaPlacas () {
