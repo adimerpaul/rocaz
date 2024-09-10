@@ -1,5 +1,5 @@
 <template>
-  <q-card style="width: 900px;max-width: 100%">
+  <q-card style="width: 900px;max-width: 100%" @keyup="handleKeyUp">
     <q-card-section class="row items-center">
       <div class="text-h6">Calculos</div>
       <q-icon name="calculate" />
@@ -441,8 +441,17 @@ export default {
   },
   mounted () {
     this.products = [...this.productsAll]
+    window.addEventListener('keyup', this.handleKeyUp)
+  },
+  beforeUnmount () {
+    window.removeEventListener('keyup', this.handleKeyUp)
   },
   methods: {
+    handleKeyUp (e) {
+      if (e.key === 'x' || e.key === 'X') {
+        this.$emit('close')
+      }
+    },
     filterProducts (val, update) {
       if (val === '') {
         update(() => {
