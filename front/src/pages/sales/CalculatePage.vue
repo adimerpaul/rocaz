@@ -448,7 +448,7 @@ export default {
   },
   methods: {
     handleKeyUp (e) {
-      if (e.key === 'x' || e.key === 'X') {
+      if (e.key === 'x' || e.key === 'X' || e.key === 'Escape') {
         this.$emit('close')
       }
     },

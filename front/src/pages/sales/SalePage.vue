@@ -279,9 +279,12 @@
         </q-form>
       </q-card>
     </q-dialog>
-    <q-dialog v-model="calculateDialog" position="left" full-height>
-      <CalculatePage @close="calculateDialog = false" :productsAll="products" @addProduct="addProduct" />
-    </q-dialog>
+<!--    <q-dialog v-model="calculateDialog" position="left" full-height>-->
+      <CalculatePage @close="calculateDialog = false" :productsAll="products" @addProduct="addProduct"
+                     style="position: absolute; top: 0; left: 0; right: 0; bottom: 0;"
+                     v-if="calculateDialog"
+      />
+<!--    </q-dialog>-->
     <div id="myElement" class="hidden"></div>
 <!--    <pre>{{$store.productosVenta}}</pre>-->
   </q-page>
