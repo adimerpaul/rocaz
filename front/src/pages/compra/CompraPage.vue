@@ -125,7 +125,7 @@
               >
                 <template v-slot:header>
                   <q-item-section>
-                    Total
+                    Total ( {{ $store.productosBuys.length }} )
                   </q-item-section>
                   <q-item-section side>
                     <div class="text-right text-grey-8 text-bold"> <u> Bs {{total}}</u></div>
