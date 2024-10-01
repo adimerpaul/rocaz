@@ -647,7 +647,7 @@ export default {
       // return this.$store.productosVenta.reduce((acc, p) => acc + (p.cantidadVenta * p.precioVenta - p.costoUnitario) * p.cantidadVenta, 0)
       let ganancia = 0
       this.$store.productosVenta.forEach(p => {
-        ganancia += (p.cantidadVenta * p.precioVenta - p.costoUnitario) * p.cantidadVenta
+        ganancia += (p.precioVenta - p.costoUnitario) * p.cantidadVenta
       })
       return Math.round(ganancia * 100) / 100
     },
