@@ -154,7 +154,7 @@
             </q-list>
             <q-btn @click="clickSale" class="full-width" no-caps label="Confirmar venta" :color="$store.productosVenta.length==0?'grey':'warning'" :disable="$store.productosVenta.length==0?true:false"/>
           </q-card-section>
-          <pre>{{$store.productosVenta}}</pre>
+<!--          <pre>{{$store.productosVenta}}</pre>-->
         </q-card>
       </div>
     </div>
