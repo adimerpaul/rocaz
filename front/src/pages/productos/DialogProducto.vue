@@ -304,6 +304,8 @@ export default {
           this.$emit('productDeleted', id)
         }).finally(() => {
           this.loading = false
+        }).catch(err => {
+          this.$alert.error(err.response.data)
         })
       })
     },

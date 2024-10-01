@@ -92,7 +92,7 @@ Oruro</div>
     return new Promise((resolve, reject) => {
       const ClaseConversor = conversor.conversorNumerosALetras
       const miConversor = new ClaseConversor()
-      const a = miConversor.convertToText(parseInt(factura.total))
+      const a = miConversor.convertToText(parseInt(factura.total - factura.descuento))
       const opts = {
         errorCorrectionLevel: 'M',
         type: 'png',
