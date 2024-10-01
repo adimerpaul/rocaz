@@ -154,7 +154,7 @@
             </q-list>
             <q-btn @click="clickSale" class="full-width" no-caps label="Confirmar venta" :color="$store.productosVenta.length==0?'grey':'warning'" :disable="$store.productosVenta.length==0?true:false"/>
           </q-card-section>
-<!--          <pre>{{$store.productosVenta}}</pre>-->
+          <pre>{{$store.productosVenta}}</pre>
         </q-card>
       </div>
     </div>
@@ -359,7 +359,7 @@ export default {
       // cantidad redondeado a su superior
       const cantidad = Math.ceil(data.cantidad)
       console.log(product)
-      console.log(cantidad)
+      // console.log(cantidad)
       // const search = this.$store.productosVenta.find(p => p.id === product.id)
       // if (search) {
       //   search.cantidadVenta += 1
@@ -419,7 +419,7 @@ export default {
           nombre: product.nombre,
           cantidadVenta: cantidad,
           precioVenta: product.precioVenta,
-          costoUnitario: product.costoUnitario,
+          costoUnitario: product.costo,
           stock: product.stock,
           image: product.image,
           visible: true
@@ -541,7 +541,7 @@ export default {
           nombre: product.nombre,
           cantidadVenta: 1,
           precioVenta: product.precioVenta,
-          costoUnitario: product.costoUnitario,
+          costoUnitario: product.costo,
           stock: product.stock,
           image: product.image,
           visible: true
@@ -644,7 +644,12 @@ export default {
       return Math.round(total * 100) / 100
     },
     totalganancia () {
-      return this.$store.productosVenta.reduce((acc, p) => acc + (p.cantidadVenta * p.precioVenta - p.costoUnitario) * p.cantidadVenta, 0)
+      // return this.$store.productosVenta.reduce((acc, p) => acc + (p.cantidadVenta * p.precioVenta - p.costoUnitario) * p.cantidadVenta, 0)
+      let ganancia = 0
+      this.$store.productosVenta.forEach(p => {
+        ganancia += (p.cantidadVenta * p.precioVenta - p.costoUnitario) * p.cantidadVenta
+      })
+      return Math.round(ganancia * 100) / 100
     },
     columnsProductosVenta () {
       return [

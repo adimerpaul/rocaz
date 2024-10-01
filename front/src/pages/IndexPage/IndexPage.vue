@@ -366,7 +366,7 @@ export default {
   computed: {
     ganancia () {
       const total = this.sales.reduce((acc, sale) => {
-        return sale.tipo_venta === 'INGRESO' && sale.estado !== 'ANULADO' ? acc + sale.ganancia : acc
+        return sale.estado !== 'ANULADO' ? sale.tipo_venta === 'INGRESO' ? acc + (sale.total - sale.descuento) : acc - (sale.total - sale.descuento) : acc
       }, 0)
       const totalDescuento = this.sales.reduce((acc, sale) => {
         return sale.tipo_venta === 'INGRESO' && sale.estado !== 'ANULADO' ? acc + sale.descuento : acc
@@ -378,14 +378,14 @@ export default {
       const total = this.sales.reduce((acc, sale) => {
         // y que no se anulado
         // return sale.tipo_venta === 'INGRESO' ? acc + sale.total : acc - sale.total
-        return sale.estado !== 'ANULADO' ? sale.tipo_venta === 'INGRESO' ? acc + sale.total : acc - sale.total : acc
+        return sale.estado !== 'ANULADO' ? sale.tipo_venta === 'INGRESO' ? acc + (sale.total - sale.descuento) : acc - (sale.total - sale.descuento) : acc
       }, 0)
       return Math.round(total * 100) / 100
     },
     ingreso () {
       const total = this.sales.reduce((acc, sale) => {
         // y que no sea anulado
-        return sale.tipo_venta === 'INGRESO' && sale.estado !== 'ANULADO' ? acc + sale.total : acc
+        return sale.tipo_venta === 'INGRESO' && sale.estado !== 'ANULADO' ? acc + (sale.total - sale.descuento) : acc
       }, 0)
       return Math.round(total * 100) / 100
     },
