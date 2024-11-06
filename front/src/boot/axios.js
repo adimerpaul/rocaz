@@ -26,7 +26,7 @@ export default boot(({ app, router }) => {
   app.config.globalProperties.$store = useCounterStore()
   app.config.globalProperties.$filters = {
     dateDmYHis (value) {
-      const meses = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Set', 'Nov', 'Dic']
+      const meses = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Set', 'Oct', 'Nov', 'Dic']
       const mes = meses[moment(String(value)).format('MM') - 1]
       if (!value) return ''
       const date = moment(String(value)).format('DD') + '-' + mes + '-' + moment(String(value)).format('YYYY') + '|' + moment(String(value)).format('HH:mm')
