@@ -243,7 +243,7 @@
                     <q-input v-model="$store.cieloFalsoDesmontableConstantePlaca" outlined label="Constante" readonly/>
                   </td>
                   <td>
-                    <q-input :model-value="cieloFalsoPlaca" outlined label="Placas" readonly/>
+                    <q-input :model-value="cieloFalsoPlaca" outlined label="Placas" readonly bg-color="primary"/>
                   </td>
                   <td>
                     <q-select v-model="$store.productoCal8" :options="products" label="Producto"  outlined dense class="bg-white"
@@ -263,7 +263,7 @@
                     <q-input v-model="cieloFalsoDesmontableCorinsaConstante" outlined label="Constante" readonly/>
                   </td>
                   <td>
-                    <q-input :model-value="cieloFalsoCorinsa" outlined label="Placas" readonly/>
+                    <q-input :model-value="cieloFalsoCorinsa" outlined label="Placas" readonly bg-color="primary"/>
                   </td>
                   <td>
                     <q-select v-model="$store.productoCal9" :options="products" label="Producto"  outlined dense class="bg-white"
@@ -283,7 +283,7 @@
                     <q-input :model-value="cieloFalsoDesmontableOmegaConstante" outlined label="Constante" readonly/>
                   </td>
                   <td>
-                    <q-input :model-value="cieloFalsoOmega" outlined label="Placas" readonly/>
+                    <q-input :model-value="cieloFalsoOmega" outlined label="Placas" readonly bg-color="primary"/>
                   </td>
                   <td>
                     <q-select v-model="$store.productoCal10" :options="products" label="Producto"  outlined dense class="bg-white"
@@ -303,7 +303,7 @@
                     <q-input v-model="cieloFalsoDesmontableSoleraConstante" outlined label="Constante" readonly/>
                   </td>
                   <td>
-                    <q-input :model-value="cieloFalsoSolera" outlined label="Placas" readonly/>
+                    <q-input :model-value="cieloFalsoSolera" outlined label="Placas" readonly bg-color="primary"/>
                   </td>
                   <td>
                     <q-select v-model="$store.productoCal11" :options="products" label="Producto"  outlined dense class="bg-white"
@@ -323,7 +323,7 @@
                     <q-input v-model="cieloFalsoDesmontableAngularConstante" outlined label="Constante" readonly/>
                   </td>
                   <td>
-                    <q-input :model-value="cieloFalsoAngular" outlined label="Placas" readonly/>
+                    <q-input :model-value="cieloFalsoAngular" outlined label="Placas" readonly bg-color="primary"/>
                   </td>
                   <td>
                     <q-select v-model="$store.productoCal12" :options="products" label="Producto"  outlined dense class="bg-white"
