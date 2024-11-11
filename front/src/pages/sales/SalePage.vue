@@ -43,7 +43,10 @@
         <q-card>
           <q-card-section class="q-pa-none q-ma-none ">
             <div class="row">
-              <div class="col-6 text-h6 q-pt-xs q-pl-lg">Canasta</div>
+              <div class="col-6 text-h6 q-pt-xs q-pl-lg">
+                Canasta
+                <q-checkbox v-model="checkAll" dense color="primary" @update:model-value="checkAllClick" />
+              </div>
               <div class="col-6 text-right"><q-btn class="text-subtitle1 text-blue-10 text-bold" style="text-decoration: underline;" label="Vaciar canasta" @click="vaciarCanasta" no-caps flat outline/></div>
             </div>
           </q-card-section>
@@ -55,67 +58,77 @@
                 Aún no tienes productos en tu canasta. Haz clic sobre un producto para agregarlo.
               </div>
             </div>
-            <q-scroll-area v-else style="height: 400px;">
-              <q-table dense flat bordered hide-bottom hide-header :rows="$store.productosVenta" :columns="columnsProductosVenta" :rows-per-page-options="[0]">
-                <template v-slot:body="props">
-                  <q-tr :props="props">
-                    <q-td key="borrar" :props="props" style="padding: 0px;margin: 0px" auto-width>
-                      <q-btn flat dense @click="deleteProductosVenta(props.row,props.pageIndex)" icon="delete" color="red" size="10px" class="q-pa-none q-ma-none" />
-                    </q-td>
-                    <q-td key="nombre" :props="props" auto-width>
-                      <!--                      <div class="row">-->
-                      <!--                        <div class="col-3">-->
-                      <!--                        </div>-->
-                      <!--                        <div class="col-9">-->
-                      <div>
-<!--                        <q-img :src="props.row.image.includes('http')?props.row.image:`${$url}../images/${props.row.image}`"-->
-<!--                               width="40px" height="40px"-->
-<!--                               style="padding: 0px; margin: 0px; border-radius: 0px;position: absolute; top: 20px; left: 8px"-->
-<!--                        />-->
-<!--                        style="padding-left: 42px"-->
-                        <div >
-                          <div class="text-caption" style="max-width: 170px; white-space: normal; overflow-wrap: break-word;line-height: 0.9;">
-                            {{props.row.nombre}}
-                          </div>
-                          <div class="text-grey">Disponible: {{props.row.stock}}</div>
-                          <q-input v-model="props.row.precioVenta" style="width: 170px" class="super-small" step="0.01" type="number" @update:model-value="precioVenta(props.row)" dense outlined>
-                            <template v-slot:prepend>
-                              <q-icon name="edit" size="xs" />
-                              <div style="font-size: 10px">Bs.</div>
-                            </template>
-                            <template v-slot:after>
-                              <q-checkbox v-model="props.row.visible" dense color="primary" />
-                            </template>
-                          </q-input>
-                        </div>
-                      </div>
-                      <!--                          <div>-->
-                      <!--                            <div class="row">-->
-                      <!--                              <div class="col-8">-->
-                      <!--                              </div>-->
-                      <!--                              <div class="col-2 text-bold flex flex-center">-->
-                      <!--                                x und-->
-                      <!--                              </div>-->
-                      <!--                            </div>-->
-                      <!--                          </div>-->
-                      <!--                        </div>-->
-                      <!--                      </div>-->
-                    </q-td>
-                    <q-td key="cantidadVenta" :props="props">
-                      <q-input dense outlined bottom-slots min="1" class="super-small" v-model="props.row.cantidadVenta" @update:model-value="cambioNumero(props.row,props.pageIndex)" :rules="ruleNumber" type="number" input-class="text-center" required>
-<!--                        <template v-slot:prepend>-->
-<!--                          <q-btn style="cursor: pointer" dense flat icon="remove_circle_outline" @click="removeCantidad(props.row,props.pageIndex)"/>-->
-<!--                        </template>-->
-<!--                        <template v-slot:append>-->
-<!--                          <q-btn style="cursor: pointer" dense flat icon="add_circle_outline" @click="addCantidad(props.row,props.pageIndex)"/>-->
-<!--                        </template>-->
-                      </q-input>
-                      <div class="text-grey">= Bs {{redondeo(props.row.cantidadVenta*props.row.precioVenta)}}</div>
-                    </q-td>
-                  </q-tr>
-                </template>
-              </q-table>
-            </q-scroll-area>
+            <div v-else>
+<!--              <q-table dense flat bordered hide-bottom hide-header :rows="$store.productosVenta" :columns="columnsProductosVenta" :rows-per-page-options="[0]">-->
+<!--                <template v-slot:body="props">-->
+<!--                  <q-tr :props="props">-->
+<!--                    <q-td key="borrar" :props="props" style="padding: 0px;margin: 0px" auto-width>-->
+<!--                      <q-btn flat dense @click="deleteProductosVenta(props.row,props.pageIndex)" icon="delete" color="red" size="10px" class="q-pa-none q-ma-none" />-->
+<!--                    </q-td>-->
+<!--                    <q-td key="nombre" :props="props" auto-width>-->
+<!--                      <div>-->
+<!--                        <div >-->
+<!--                          <div class="text-caption" style="max-width: 170px; white-space: normal; overflow-wrap: break-word;line-height: 0.9;">-->
+<!--                            {{props.row.nombre}}-->
+<!--                          </div>-->
+<!--                          <div class="text-grey">Disponible: {{props.row.stock}}</div>-->
+<!--                          <q-input v-model="props.row.precioVenta" style="width: 170px" class="super-small" step="0.01" type="number" @update:model-value="precioVenta(props.row)" dense outlined>-->
+<!--                            <template v-slot:prepend>-->
+<!--                              <q-icon name="edit" size="xs" />-->
+<!--                              <div style="font-size: 10px">Bs.</div>-->
+<!--                            </template>-->
+<!--                            <template v-slot:after>-->
+<!--                              <q-checkbox v-model="props.row.visible" dense color="primary" />-->
+<!--                            </template>-->
+<!--                          </q-input>-->
+<!--                        </div>-->
+<!--                      </div>-->
+<!--                    </q-td>-->
+<!--                    <q-td key="cantidadVenta" :props="props">-->
+<!--                      <q-input dense outlined bottom-slots min="1" class="super-small" v-model="props.row.cantidadVenta" @update:model-value="cambioNumero(props.row,props.pageIndex)" :rules="ruleNumber" type="number" input-class="text-center" required>-->
+
+<!--                      </q-input>-->
+<!--                      <div class="text-grey">= Bs {{redondeo(props.row.cantidadVenta*props.row.precioVenta)}}</div>-->
+<!--                    </q-td>-->
+<!--                  </q-tr>-->
+<!--                </template>-->
+<!--              </q-table>-->
+              <q-markup-table dense wrap-cells>
+                <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Nombre</th>
+                  <th>Cantidad</th>
+                  <th>Precio</th>
+                  <th>Subtotal</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="(product, index) in $store.productosVenta" :key="product.id">
+                  <td>
+                    <q-btn flat dense @click="deleteProductosVenta(product,index)" icon="delete" color="red" size="10px" class="q-pa-none q-ma-none" />{{index + 1}}
+                  </td>
+                  <td>
+                    <div class="text-caption" style="max-width: 100px; white-space: normal; overflow-wrap: break-word;line-height: 0.9;">
+                    {{product.nombre}}
+                    </div>
+                  </td>
+                  <td>
+<!--                    {{product.cantidadVenta}}-->
+                    <input min="1" v-model="product.cantidadVenta" :rules="ruleNumber" type="number"  required style="width: 50px" class="text-center"/>
+                  </td>
+                  <td class="text-right">
+<!--                    {{numero2digitosRedondeado(product.precioVenta)}}-->
+                    <input v-model="product.precioVenta" type="number" step="0.01" style="width: 50px" class="text-right"/>
+                  </td>
+                  <td class="text-right">
+                    {{numero2digitosRedondeado(product.cantidadVenta * product.precioVenta)}} Bs.
+                    <q-checkbox v-model="product.visible" dense color="primary" />
+                  </td>
+                </tr>
+                </tbody>
+              </q-markup-table>
+            </div>
           </q-card-section>
           <q-card-section >
             <q-list padding bordered dense class="rounded-borders full-width q-pa-none q-ma-none">
@@ -304,6 +317,7 @@ export default {
   data () {
     return {
       totalSale: 0,
+      checkAll: false,
       totalSale2: 0,
       descuento: '',
       vista: 'tabla',
@@ -345,6 +359,17 @@ export default {
     this.clientsGet()
   },
   methods: {
+    checkAllClick () {
+      if (this.checkAll) {
+        this.$store.productosVenta.forEach(p => {
+          p.visible = true
+        })
+      } else {
+        this.$store.productosVenta.forEach(p => {
+          p.visible = false
+        })
+      }
+    },
     clientsGet () {
       this.$axios.get('clients', {
         params: {
@@ -474,6 +499,7 @@ export default {
         Imprimir.nota(response.data)
         this.productsGet()
         this.$alert.success('Venta realizada')
+        this.checkAll = false
       }).finally(() => {
         this.loading = false
         this.saleDialog = false
