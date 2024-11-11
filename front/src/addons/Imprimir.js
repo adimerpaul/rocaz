@@ -106,6 +106,17 @@ Oruro</div>
       }
       const env = useCounterStore().env
       QRCode.toDataURL(`Fecha: ${factura.fecha_emision} Monto: ${parseFloat(factura.total).toFixed(2)}`, opts).then(url => {
+        let producto = ''
+        let cantidad = ''
+        if (factura.producto) {
+          // eslint-disable-next-line no-template-curly-in-string
+          producto = '<tr><td class=\'titder\'>PRODUCTO:</td><td class=\'contenido\'>' + factura.producto + '</td></tr>'
+        }
+        if (factura.cantidad) {
+          // eslint-disable-next-line no-template-curly-in-string
+          cantidad = '<tr><td class=\'titder\'>CANTIDAD:</td><td class=\'contenido\'>' + factura.cantidad + '</td></tr>'
+        }
+
         let cadena = `${this.head()}
   <!--div style='padding-left: 0.5cm;padding-right: 0.5cm'>
   <img src="logo.png" alt="logo" style="width: 100px; height: 50px; display: block; margin-left: auto; margin-right: auto;">
@@ -129,12 +140,15 @@ Oruro</div!-->
 </style>
 <title></title>
 </head>
+<body>
 <div class="mono">
 <hr>
 <table>
 <tr><td class='titder'>NOMBRE/RAZÓN SOCIAL:</td><td class='titder'>${factura.client ? (factura.name == null ? factura.client.nombre : factura.name) : ''}</td>
 </tr><tr><!-- td class='titder'>NIT/CI/CEX:</td><td class='contenido'>${factura.client ? factura.client.nit : ''}</td --></tr>
 <tr><td class='titder'>FECHA DE EMISIÓN:</td><td class='contenido'>${factura.fecha_emision}</td></tr>
+${producto}
+${cantidad}
 </table><hr><div class='titulo'>DETALLE</div>`
         factura.details.forEach(r => {
           console.log('r', r)
