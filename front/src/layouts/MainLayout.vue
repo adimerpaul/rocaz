@@ -89,7 +89,7 @@
                 </q-item-label>
               </q-item-section>
             </q-item>
-            <q-item clickable v-ripple exact active-class="bg-primary text-white" to="/compraHistory">
+            <q-item clickable v-ripple exact active-class="bg-primary text-white" to="/compraHistory" v-if="$store.user?.type === 'ADMINISTRADOR'">
               <q-item-section avatar><q-icon name="o_file_copy" /></q-item-section>
               <q-item-section>
                 <q-item-label>
@@ -100,7 +100,7 @@
                 </q-item-label>
               </q-item-section>
             </q-item>
-            <q-item clickable v-ripple exact active-class="bg-primary text-white" to="/productos" >
+            <q-item clickable v-ripple exact active-class="bg-primary text-white" to="/productos" v-if="$store.user?.type === 'ADMINISTRADOR'">
               <q-item-section avatar><q-icon name="o_local_mall" /></q-item-section>
               <q-item-section>
                 <q-item-label>Productos</q-item-label>
