@@ -90,6 +90,8 @@ class SaleController extends Controller{
         $sale->fecha_emision = now();
         $sale->almacen = $almacen;
         $sale->name = $client->nombre;
+        $sale->producto = $request->producto;
+        $sale->cantidad = $request->cantidad;
         $sale->save();
         $concepto = '';
         $totalGanancia=0;

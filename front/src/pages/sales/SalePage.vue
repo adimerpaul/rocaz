@@ -186,6 +186,12 @@
               <div class="col-12 col-md-12">
                 <q-input outlined dense label="Comentario" v-model="client.comentario" style="text-transform: uppercase" type="textarea"></q-input>
               </div>
+              <div class="col-12 col-md-6">
+                <q-input outlined dense label="Producto" v-model="client.producto"  />
+              </div>
+              <div class="col-12 col-md-6">
+                <q-input outlined dense label="Cantidad" v-model="client.cantidad"  />
+              </div>
               <!--              <div class="col-4 col-md-4">-->
               <!--                <q-select v-model="almacenSelected" :options="['Todos','Almacen 1','Almacen 2']" label="Almacen" outlined dense class="bg-white" emit-value />-->
               <!--              </div>-->
@@ -228,11 +234,6 @@
           </q-card-section>
           <q-markup-table dense wrap-cells>
             <thead>
-<!--            "id": 4,-->
-<!--            "nombre": "Gypsum 239-G color",-->
-<!--            "cantidadVenta": 1,-->
-<!--            "precioVenta": 7.2,-->
-<!--            "stock": 0,-->
             <tr>
               <th>#</th>
               <th>Nombre</th>
@@ -464,7 +465,9 @@ export default {
         metodo: this.metodoPago,
         almacen: this.almacenSelected,
         productos: this.$store.productosVenta,
-        descuento: this.descuento
+        descuento: this.descuento,
+        producto: this.client.producto,
+        cantidad: this.client.cantidad
       }).then(response => {
         // console.log(response.data)
         Imprimir.nota(response.data)
@@ -475,6 +478,8 @@ export default {
         this.loading = false
         this.saleDialog = false
         this.$store.productosVenta = []
+      }).catch(() => {
+        this.$alert.error('Error al realizar la venta')
       })
     },
     precioVenta (n) {
