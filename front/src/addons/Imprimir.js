@@ -137,7 +137,7 @@ Oruro</div!-->
     <style>
    .mono {
     font-family: Monospace,serif !important;
-    font-size: 18px !important;
+    font-size: 20px !important;
   }
 </style>
 <title></title>
@@ -157,10 +157,10 @@ ${cantidad}
           cadena += `<div style='font-size: 12px'><b> ${r.producto} </b></div>`
           if (r.visible === 1) {
             cadena += `<div>
-                    <span style='font-size: 18px;font-weight: bold'>
+                    <span style='font-size: 18px;font-weight: bold;padding-left: 20px;'>
                         ${r.cantidad}
                     </span>
-                    <span>
+                    <span style="padding-left: 20px;">
                     ${parseFloat(r.precio).toFixed(2)}
                     </span>
 
@@ -541,7 +541,7 @@ Oruro</div>
       width:70%;
       }
             .contenido{
-      font-size: 10px;
+      font-size: 12px;
       text-align: left;
       }
       .conte2{

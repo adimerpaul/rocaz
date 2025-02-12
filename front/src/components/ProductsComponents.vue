@@ -39,9 +39,13 @@
       <template v-slot:body-cell-costo="props">
         <q-td :props="props">
 <!--          si es costo cero en bold rojo-->
-          <div :class="`text-${props.row.costo === 0?'red text-bold':'black'}`">
+          <div :class="`text-${props.row.costo === 0?'red text-bold':'black'}`" v-if="$store.user.type === 'ADMINISTRADOR'">
             {{ props.row.costo }} Bs.
           </div>
+<!--          <div>-->
+<!--            {{ $store.user }}-->
+<!--            { "id": 1, "name": "Administrator", "email": "admin@test.com", "username": "admin", "email_verified_at": null, "lugar": "ORURO", "type": "ADMINISTRADOR" }-->
+<!--          </div>-->
         </q-td>
       </template>
       <template v-slot:body-cell-stock="props">
@@ -84,18 +88,12 @@ export default {
       columns: [
         { name: 'codigo', label: 'Codigo', align: 'left', field: row => row.codigo },
         { name: 'nombre', label: 'Nombre', align: 'left', field: row => row.nombre },
-        // { name: 'ubicacion', label: 'Ubicacion', align: 'left', field: row => row.ubicacion },
-        // { name: 'minStock', label: 'Min Stock', align: 'left', field: row => row.minStock },
-        // { name: 'stock1', label: 'Stock 1', align: 'left', field: row => row.stock1 },
-        // { name: 'stock2', label: 'Stock 2', align: 'left', field: row => row.stock2 },
         { name: 'precio1', label: 'Precio 1', align: 'left', field: row => row.precio1 },
         { name: 'precio2', label: 'Precio 2', align: 'left', field: row => row.precio2 },
         { name: 'precio3', label: 'Precio 3', align: 'left', field: row => row.precio3 },
         { name: 'precio4', label: 'Precio 4', align: 'left', field: row => row.precio4 },
         { name: 'precio5', label: 'Precio 5', align: 'left', field: row => row.precio5 },
         { name: 'precio6', label: 'Precio 6', align: 'left', field: row => row.precio6 },
-        // { name: 'category_id', label: 'Category Id', align: 'left', field: row => row.category_id },
-        // { name: 'medida_id', label: 'Medida Id', align: 'left', field: row => row.medida_id },
         { name: 'stock', label: 'Stock', align: 'left', field: row => row.stock },
         { name: 'category', label: 'Category', align: 'left', field: row => row.category?.name },
         { name: 'costo', label: 'Costo', align: 'left', field: row => row.costo }
