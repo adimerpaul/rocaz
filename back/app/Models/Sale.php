@@ -28,7 +28,8 @@ class Sale extends Model
         'name',
         'ganancia',
         'producto',
-        'cantidad'
+        'cantidad',
+        'precioProducto'
     ];
     protected $hidden = [
         'created_at',

@@ -112,9 +112,11 @@ Oruro</div>
           // eslint-disable-next-line no-template-curly-in-string
           producto = '<tr><td class=\'titder\'>PRODUCTO:</td><td class=\'contenido\'>' + factura.producto + '</td></tr>'
         }
-        if (factura.cantidad) {
+        if (factura.cantidad && factura.cantidad !== 0 && factura.cantidad !== '0') {
           // eslint-disable-next-line no-template-curly-in-string
-          cantidad = '<tr><td class=\'titder\'>CANTIDAD:</td><td class=\'contenido\'>' + factura.cantidad + '</td></tr>'
+          cantidad = '<tr><td class=\'titder\'>CANTIDAD:</td><td class=\'contenido\'>' + factura.cantidad + '</td></tr>' +
+            '<tr><td class=\'titder\'>PRECIO:</td><td class=\'contenido\'>' + factura.precioProducto + '</td></tr>' +
+            '<tr><td class=\'titder\'>SUBTOTAL:</td><td class=\'contenido\'>' + (factura.cantidad * factura.precioProducto).toFixed(2) + '</td></tr>'
         }
 
         let cadena = `${this.head()}

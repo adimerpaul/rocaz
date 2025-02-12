@@ -200,10 +200,24 @@
                 <q-input outlined dense label="Comentario" v-model="client.comentario" style="text-transform: uppercase" type="textarea"></q-input>
               </div>
               <div class="col-12 col-md-6">
-                <q-input outlined dense label="Producto" v-model="client.producto"  />
+<!--                <q-input outlined dense label="Producto" v-model="client.producto"  list="products" />-->
+<!--                <datalist id="products">-->
+<!--                  <option v-for="p in products" :value="p.nombre" :key="p.id"/>-->
+<!--                </datalist>-->
+                <q-select v-model="client.producto" :options="productsMasVacio" label="Producto" outlined dense class="bg-white" emit-value map-options :option-label="item => item.nombre" :option-value="item => item.nombre" />
+<!--                <pre>{{client.producto}}</pre>-->
               </div>
               <div class="col-12 col-md-6">
                 <q-input outlined dense label="Cantidad" v-model="client.cantidad"  />
+              </div>
+              <div class="col-12 col-md-6">
+                <div class="text-bold">Precio</div>
+                  {{precioProductoSelected}}
+              </div>
+              <div class="col-12 col-md-6">
+                <div class="text-bold">Total</div>
+<!--                <pre>{{ client.cantidad }}</pre>-->
+                {{((client.cantidad == '' || client.cantidad == undefined ?0: client.cantidad) * precioProductoSelected).toFixed(2)}} Bs.
               </div>
               <!--              <div class="col-4 col-md-4">-->
               <!--                <q-select v-model="almacenSelected" :options="['Todos','Almacen 1','Almacen 2']" label="Almacen" outlined dense class="bg-white" emit-value />-->
@@ -492,7 +506,8 @@ export default {
         productos: this.$store.productosVenta,
         descuento: this.descuento,
         producto: this.client.producto,
-        cantidad: this.client.cantidad
+        cantidad: this.client.cantidad === '' || this.client.cantidad === undefined ? 0 : this.client.cantidad,
+        precioProducto: this.precioProductoSelected
       }).then(response => {
         // console.log(response.data)
         Imprimir.nota(response.data)
@@ -663,6 +678,18 @@ export default {
     }
   },
   computed: {
+    precioProductoSelected () {
+      var producto = this.products.find(p => p.nombre === this.client.producto)
+      if (producto) {
+        return producto.precio1
+      }
+      return 0
+    },
+    productsMasVacio () {
+      var products = this.productsAll
+      products.unshift({ nombre: '', id: '' })
+      return products
+    },
     Imprimir () {
       return Imprimir
     },

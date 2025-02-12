@@ -92,6 +92,7 @@ class SaleController extends Controller{
         $sale->name = $client->nombre;
         $sale->producto = $request->producto;
         $sale->cantidad = $request->cantidad;
+        $sale->precioProducto = $request->precioProducto;
         $sale->save();
         $concepto = '';
         $totalGanancia=0;
