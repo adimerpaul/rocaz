@@ -200,11 +200,11 @@
                 <q-input outlined dense label="Comentario" v-model="client.comentario" style="text-transform: uppercase" type="textarea"></q-input>
               </div>
               <div class="col-12 col-md-6">
-<!--                <q-input outlined dense label="Producto" v-model="client.producto"  list="products" />-->
-<!--                <datalist id="products">-->
-<!--                  <option v-for="p in products" :value="p.nombre" :key="p.id"/>-->
-<!--                </datalist>-->
-                <q-select v-model="client.producto" :options="productsMasVacio" label="Producto" outlined dense class="bg-white" emit-value map-options :option-label="item => item.nombre" :option-value="item => item.nombre" />
+                <q-input outlined dense label="Producto" v-model="client.producto"  list="products" />
+                <datalist id="products">
+                  <option v-for="p in products" :value="p.nombre" :key="p.id"/>
+                </datalist>
+<!--                <q-select v-model="client.producto" :options="productsMasVacio" label="Producto" outlined dense class="bg-white" emit-value map-options :option-label="item => item.nombre" :option-value="item => item.nombre" />-->
 <!--                <pre>{{client.producto}}</pre>-->
               </div>
               <div class="col-12 col-md-6">
@@ -212,12 +212,13 @@
               </div>
               <div class="col-12 col-md-6">
                 <div class="text-bold">Precio</div>
-                  {{precioProductoSelected}}
+<!--                  {{precioProductoSelected}}-->
+                <q-input outlined dense label="Precio" v-model="precioExtra" />
               </div>
               <div class="col-12 col-md-6">
                 <div class="text-bold">Total</div>
 <!--                <pre>{{ client.cantidad }}</pre>-->
-                {{((client.cantidad == '' || client.cantidad == undefined ?0: client.cantidad) * precioProductoSelected).toFixed(2)}} Bs.
+                {{((client.cantidad == '' || client.cantidad == undefined ?0: client.cantidad) * precioExtra).toFixed(2)}}
               </div>
               <!--              <div class="col-4 col-md-4">-->
               <!--                <q-select v-model="almacenSelected" :options="['Todos','Almacen 1','Almacen 2']" label="Almacen" outlined dense class="bg-white" emit-value />-->
@@ -340,6 +341,7 @@ export default {
       precio: 'PRECIO 1',
       almacenSelected: 'Todo',
       search: '',
+      precioExtra: '',
       categories: [
         { id: '', name: 'Selecciona una categoría' }
       ],
