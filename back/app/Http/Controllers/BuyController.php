@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Buy;
 use App\Models\BuyDetail;
+use App\Models\Notification;
 use App\Models\Product;
 use App\Models\Sale;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -90,6 +92,21 @@ class BuyController extends Controller{
             $sale=$gastoController->registrarGasto($request);
             $buy->sale_id = $sale->id;
             $buy->save();
+
+            $actorName = $request->user()->name;
+            $providerName = $buy->client?->nombre ?: 'Sin proveedor';
+            $notificationMessage = $actorName . ' registro una compra a ' . $providerName . ' por Bs ' . $buy->total;
+            $users = User::query()->select('id')->get();
+            foreach ($users as $user) {
+                Notification::create([
+                    'user_id' => $user->id,
+                    'actor_user_id' => $request->user()->id,
+                    'buy_id' => $buy->id,
+                    'type' => 'BUY_CREATED',
+                    'title' => 'Nueva compra registrada',
+                    'message' => $notificationMessage
+                ]);
+            }
 
             DB::commit();
             return response()->json(Buy::with(['client', 'user', 'buyDetails'])->find($buy->id));

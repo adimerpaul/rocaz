@@ -21,6 +21,8 @@ Route::post('/login', [\App\Http\Controllers\UserController::class, 'login']);
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/me', [\App\Http\Controllers\UserController::class, 'me']);
     Route::post('/logout', [\App\Http\Controllers\UserController::class, 'logout']);
+    Route::get('notifications', [\App\Http\Controllers\NotificationController::class, 'index']);
+    Route::post('notifications/read-all', [\App\Http\Controllers\NotificationController::class, 'markAllRead']);
     Route::get('categories', [\App\Http\Controllers\CategoryController::class, 'index']);
     Route::post('categories', [\App\Http\Controllers\CategoryController::class, 'store']);
     Route::put('categories/{category}', [\App\Http\Controllers\CategoryController::class, 'update']);

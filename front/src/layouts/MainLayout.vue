@@ -26,6 +26,48 @@
         <q-space />
 
         <div class="toolbar-user row items-center no-wrap">
+          <q-btn
+            flat
+            dense
+            round
+            icon="notifications"
+            aria-label="Notificaciones"
+            class="header-icon-btn q-mr-xs"
+          >
+            <q-badge v-if="unreadNotifications > 0" color="red" floating rounded>
+              {{ unreadNotifications }}
+            </q-badge>
+            <q-menu anchor="bottom right" self="top right" @show="handleNotificationsOpen">
+              <q-list class="notification-list">
+                <q-item-label header class="text-weight-bold">
+                  Notificaciones
+                </q-item-label>
+                <q-item v-if="notifications.length === 0">
+                  <q-item-section>
+                    <q-item-label>No hay notificaciones nuevas</q-item-label>
+                    <q-item-label caption>Solo se muestran compras del ultimo dia</q-item-label>
+                  </q-item-section>
+                </q-item>
+                <q-item v-for="item in notifications" :key="item.id" clickable>
+                  <q-item-section avatar>
+                    <q-avatar size="34px" class="notification-avatar">
+                      <q-icon name="o_local_shipping" size="18px" />
+                    </q-avatar>
+                  </q-item-section>
+                  <q-item-section>
+                    <q-item-label class="text-weight-medium">{{ item.title }}</q-item-label>
+                    <q-item-label caption>{{ item.message }}</q-item-label>
+                    <q-item-label caption class="text-grey-7">
+                      {{ notificationDate(item.created_at) }}
+                    </q-item-label>
+                  </q-item-section>
+                  <q-item-section side v-if="!item.read_at">
+                    <q-badge rounded color="red" />
+                  </q-item-section>
+                </q-item>
+              </q-list>
+            </q-menu>
+          </q-btn>
           <div class="toolbar-user-copy text-right gt-xs">
             <div class="toolbar-user-name">{{ $store.user?.name || 'Usuario' }}</div>
             <div class="toolbar-user-role">{{ userRoleLabel }}</div>
@@ -121,12 +163,19 @@
 </template>
 
 <script>
+import moment from 'moment'
+
 export default {
   name: 'MainLayout',
   data () {
     return {
-      leftDrawerOpen: false
+      leftDrawerOpen: false,
+      notifications: [],
+      unreadNotifications: 0
     }
+  },
+  mounted () {
+    this.loadNotifications()
   },
   computed: {
     rutaTitle () {
@@ -236,6 +285,34 @@ export default {
     }
   },
   methods: {
+    notificationDate (value) {
+      return moment(value).format('DD/MM/YYYY HH:mm')
+    },
+    loadNotifications () {
+      this.$axios.get('notifications')
+        .then(({ data }) => {
+          this.notifications = data.items || []
+          this.unreadNotifications = data.unread || 0
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+    handleNotificationsOpen () {
+      if (this.unreadNotifications === 0) return
+
+      this.$axios.post('notifications/read-all')
+        .then(() => {
+          this.notifications = this.notifications.map(item => ({
+            ...item,
+            read_at: item.read_at || new Date().toISOString()
+          }))
+          this.unreadNotifications = 0
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
     toggleLeftDrawer () {
       this.leftDrawerOpen = !this.leftDrawerOpen
     },
@@ -335,6 +412,14 @@ export default {
   box-shadow: 0 8px 18px rgba(5, 41, 24, 0.18);
 }
 
+.header-icon-btn {
+  color: #fff;
+  width: 34px;
+  height: 34px;
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+}
+
 .toolbar-user-copy {
   margin-right: 8px;
 }
@@ -368,6 +453,17 @@ export default {
   font-weight: 700;
   padding: 0 12px;
   font-size: 0.8rem;
+}
+
+.notification-list {
+  min-width: 300px;
+  max-width: 360px;
+  max-height: 420px;
+}
+
+.notification-avatar {
+  background: rgba(19, 128, 74, 0.12);
+  color: #0d6b3c;
 }
 
 .main-drawer {
@@ -546,7 +642,8 @@ export default {
 
   .logout-btn {
     min-width: 0;
-    padding: 0 10px;
+    padding: 0 8px;
+    font-size: 0.72rem;
   }
 }
 </style>
