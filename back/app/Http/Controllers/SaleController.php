@@ -7,6 +7,7 @@ use App\Models\Detail;
 use App\Models\Product;
 use App\Models\Sale;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use function Laravel\Prompts\error;
 
@@ -205,5 +206,92 @@ class SaleController extends Controller{
             'resIngresos' => $resIngresos,
             'resEgresos' => $resEgresos
         ];
+    }
+    public function analytics(Request $request)
+    {
+        if ($request->user()->type !== 'ADMINISTRADOR') {
+            return response()->json(['message' => 'No autorizado'], 403);
+        }
+
+        $fechaInicio = Carbon::parse($request->fechaInicioSemana)->startOfDay();
+        $fechaFin = Carbon::parse($request->fechaFinSemana)->endOfDay();
+
+        $sales = Sale::whereBetween('fecha_emision', [$fechaInicio, $fechaFin])
+            ->where('estado', 'ACTIVO')
+            ->with(['user', 'details', 'client'])
+            ->get();
+
+        $ingresos = $sales->where('tipo_venta', 'INGRESO')->sum('total');
+        $egresos = $sales->where('tipo_venta', 'EGRESO')->sum('total');
+        $ganancia = $sales->sum('ganancia');
+
+        $ventasPorDia = $sales->groupBy(function ($sale) {
+            return Carbon::parse($sale->fecha_emision)->format('d/m');
+        })->map(function ($items) {
+            return round($items->where('tipo_venta', 'INGRESO')->sum('total'), 2);
+        });
+
+        $gastosPorDia = $sales->groupBy(function ($sale) {
+            return Carbon::parse($sale->fecha_emision)->format('d/m');
+        })->map(function ($items) {
+            return round($items->where('tipo_venta', 'EGRESO')->sum('total'), 2);
+        });
+
+        $ventasPorMetodo = $sales->where('tipo_venta', 'INGRESO')
+            ->groupBy('metodo')
+            ->map(fn ($items) => round($items->sum('total'), 2))
+            ->sortDesc();
+
+        $vendedores = $sales->where('tipo_venta', 'INGRESO')
+            ->groupBy('user_id')
+            ->map(function ($items) {
+                $first = $items->first();
+                return [
+                    'usuario' => $first->user?->name ?: 'Sin usuario',
+                    'ventas' => round($items->sum('total'), 2),
+                    'ganancia' => round($items->sum('ganancia'), 2),
+                    'cantidad' => $items->count()
+                ];
+            })
+            ->sortByDesc('ventas')
+            ->values();
+
+        $productos = $sales->where('tipo_venta', 'INGRESO')
+            ->flatMap(fn ($sale) => $sale->details)
+            ->groupBy('product_id')
+            ->map(function ($items) {
+                $first = $items->first();
+                return [
+                    'producto' => $first->producto,
+                    'cantidad' => round($items->sum('cantidad'), 2),
+                    'ventas' => round($items->sum('total'), 2),
+                    'ganancia' => round($items->sum('ganancia'), 2)
+                ];
+            })
+            ->sortByDesc('cantidad')
+            ->take(8)
+            ->values();
+
+        return response()->json([
+            'resumen' => [
+                'ingresos' => round($ingresos, 2),
+                'egresos' => round($egresos, 2),
+                'ganancia' => round($ganancia, 2),
+                'cantidadVentas' => $sales->where('tipo_venta', 'INGRESO')->count(),
+                'cantidadGastos' => $sales->where('tipo_venta', 'EGRESO')->count(),
+                'mejorVendedor' => $vendedores->first()
+            ],
+            'ventasPorDia' => [
+                'labels' => array_values($ventasPorDia->keys()->all()),
+                'ventas' => array_values($ventasPorDia->all()),
+                'gastos' => array_values($gastosPorDia->all())
+            ],
+            'ventasPorMetodo' => [
+                'labels' => array_values($ventasPorMetodo->keys()->all()),
+                'series' => array_values($ventasPorMetodo->all())
+            ],
+            'vendedores' => $vendedores,
+            'productos' => $productos
+        ]);
     }
 }

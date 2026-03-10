@@ -17,7 +17,9 @@
               <q-img src="logo.png" fit="contain" />
             </q-avatar>
             <div class="brand-copy">
-              <div class="brand-caption">Panel principal</div>
+              <q-chip dense square class="brand-chip" text-color="white">
+                {{ branchLabel }}
+              </q-chip>
               <div class="brand-title">{{ rutaTitle }}</div>
             </div>
           </div>
@@ -199,12 +201,17 @@ export default {
           return 'Historial de compras'
         case '/reportes':
           return 'Reportes'
+        case '/graficos':
+          return 'Graficos'
         default:
           return 'Movimientos'
       }
     },
     userRoleLabel () {
       return this.$store.user?.type === 'ADMINISTRADOR' ? 'Administrador' : 'Usuario'
+    },
+    branchLabel () {
+      return (import.meta.env.VITE_BRANCH_LABEL || 'CENTRAL').toUpperCase()
     },
     userInitials () {
       const name = this.$store.user?.name || 'Usuario'
@@ -279,6 +286,13 @@ export default {
           label: 'Usuarios',
           caption: 'Administrar usuarios',
           icon: 'o_manage_accounts',
+          show: isAdmin
+        },
+        {
+          to: '/graficos',
+          label: 'Graficos',
+          caption: 'Analitica visual',
+          icon: 'bar_chart',
           show: isAdmin
         }
       ].filter(item => item.show)
@@ -392,11 +406,14 @@ export default {
   line-height: 1.1;
 }
 
-.brand-caption {
+.brand-chip {
+  min-height: 18px;
+  padding: 0 6px;
   font-size: 10px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.74);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.18);
 }
 
 .brand-title {

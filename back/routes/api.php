@@ -62,4 +62,5 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('updateSaleComentarioEfectivo', [\App\Http\Controllers\SaleController::class, 'updateSaleComentarioEfectivo']);
 
     Route::post('reportProductos', [\App\Http\Controllers\SaleController::class, 'reportProductos']);
+    Route::post('sales-analytics', [\App\Http\Controllers\SaleController::class, 'analytics']);
 });

@@ -11,7 +11,8 @@ const routes = [
       { path: '/users', component: () => import('../pages/users/UsersIndex.vue'), meta: { requiresAuth: true } },
       { path: '/compra', component: () => import('../pages/compra/CompraPage.vue'), meta: { requiresAuth: true } },
       { path: '/compraHistory', component: () => import('../pages/compra/CompraHistoryPage.vue'), meta: { requiresAuth: true } },
-      { path: '/reportes', component: () => import('../pages/reportes/ReportesIndex.vue'), meta: { requiresAuth: true } }
+      { path: '/reportes', component: () => import('../pages/reportes/ReportesIndex.vue'), meta: { requiresAuth: true } },
+      { path: '/graficos', component: () => import('../pages/reportes/GraficosPage.vue'), meta: { requiresAuth: true, adminOnly: true } }
     ]
   },
   {

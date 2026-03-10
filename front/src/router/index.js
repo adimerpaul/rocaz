@@ -28,8 +28,11 @@ export default route(function (/* { store, ssrContext } */) {
   })
   Router.beforeEach((to, from, next) => {
     if (to.matched.some(record => record.meta.requiresAuth)) {
-      // if (store().getters['login/isLoggedIn']) {
       if (useCounterStore().isLogin) {
+        if (to.matched.some(record => record.meta.adminOnly) && useCounterStore().user?.type !== 'ADMINISTRADOR') {
+          next('/')
+          return
+        }
         next()
         return
       }
