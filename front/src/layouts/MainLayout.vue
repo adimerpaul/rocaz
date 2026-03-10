@@ -1,175 +1,120 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
-      <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="toggleLeftDrawer"
-        />
+  <q-layout view="lHh Lpr lFf" class="main-layout">
+    <q-header class="main-header" elevated>
+      <q-toolbar class="toolbar-shell">
+        <div class="row items-center no-wrap">
+          <q-btn
+            flat
+            dense
+            round
+            icon="menu"
+            aria-label="Menu"
+            class="header-menu-btn"
+            @click="toggleLeftDrawer"
+          />
+          <div class="brand-block q-ml-md">
+            <q-avatar rounded size="52px" class="brand-avatar">
+              <q-img src="logo.png" fit="contain" />
+            </q-avatar>
+            <div class="brand-copy">
+              <div class="brand-caption">Panel principal</div>
+              <div class="brand-title">{{ rutaTitle }}</div>
+            </div>
+          </div>
+        </div>
 
-        <q-toolbar-title>
-          <q-img src="logo.png" style="width: 100px" />
-          <span class="text-white text-subtitle1 text-bold q-pl-md">{{ rutaTitle }}</span>
-        </q-toolbar-title>
+        <q-space />
 
-<!--        <div>Quasar v{{ $q.version }}</div>-->
-<!--        boton cion salir-->
-        <q-btn
-          flat
-          dense
-          round
-          icon="o_logout"
-          aria-label="Salir"
-          @click="logout"
-          class="q-mr-md"></q-btn>
+        <div class="toolbar-user row items-center no-wrap">
+          <div class="toolbar-user-copy text-right gt-xs">
+            <div class="toolbar-user-name">{{ $store.user?.name || 'Usuario' }}</div>
+            <div class="toolbar-user-role">{{ userRoleLabel }}</div>
+          </div>
+          <q-avatar size="44px" class="toolbar-user-avatar">
+            {{ userInitials }}
+          </q-avatar>
+          <q-btn
+            unelevated
+            no-caps
+            icon="o_logout"
+            label="Salir"
+            aria-label="Salir"
+            class="logout-btn q-ml-sm"
+            @click="logout"
+          />
+        </div>
       </q-toolbar>
     </q-header>
 
     <q-drawer
       v-model="leftDrawerOpen"
       show-if-above
-      :width="200"
+      :width="250"
+      bordered
+      class="main-drawer"
     >
-      <!--      :breakpoint="400"-->
-      <q-layout>
-        <q-header class="bg-white">
-          <q-list bordered padding class="text-black">
-            <div class="q-pl-md q-pb-xs" style="line-height: 0.5">
-
-              <div>
-                <div style="line-height: 1">
-                  <b class="text-grey">Bienvenido:</b> <br>
-                  <a class="text-caption text-primary">{{ $store.user?.name }}</a>
-                  <br>
-                  <q-chip
-                    dense
-                    color="primary"
-                    text-color="white"
-                    :label="$store.user?.type"
-                    />
-                </div>
+      <div class="drawer-shell column no-wrap fit">
+        <div class="drawer-top">
+          <div class="drawer-user-card">
+            <div class="row items-center no-wrap">
+              <q-avatar size="62px" class="drawer-user-avatar">
+                {{ userInitials }}
+              </q-avatar>
+              <div class="q-ml-md">
+                <div class="drawer-greeting">Bienvenido</div>
+                <div class="drawer-user-name">{{ $store.user?.name || 'Usuario' }}</div>
+                <q-chip
+                  dense
+                  class="drawer-role-chip"
+                  text-color="white"
+                  :label="userRoleLabel"
+                  icon="o_verified_user"
+                />
               </div>
             </div>
-            <div>
-            </div>
-            <q-item clickable v-ripple exact active-class="bg-primary text-white" to="/">
-              <q-item-section avatar><q-icon name="o_store" /></q-item-section>
-              <q-item-section>
-                <q-item-label>
-                  Movimientos
-                  <q-tooltip anchor="top middle" self="bottom middle">
-                    Movimientos de caja
-                  </q-tooltip>
-                </q-item-label>
-              </q-item-section>
-            </q-item>
-            <q-item clickable v-ripple exact active-class="bg-primary text-white" to="/sale">
-              <q-item-section avatar><q-icon name="o_shopping_cart" /></q-item-section>
-              <q-item-section>
-                <q-item-label>
-                  Venta
-                  <q-tooltip anchor="top middle" self="bottom middle">
-                    Venta de productos
-                  </q-tooltip>
-                </q-item-label>
-              </q-item-section>
-            </q-item>
-            <q-item clickable v-ripple exact active-class="bg-primary text-white" to="/compra">
-              <q-item-section avatar><q-icon name="o_local_shipping" /></q-item-section>
-              <q-item-section>
-                <q-item-label>
-                  Compras
-                  <q-tooltip anchor="top middle" self="bottom middle">
-                    Compra de productos
-                  </q-tooltip>
-                </q-item-label>
-              </q-item-section>
-            </q-item>
-            <q-item clickable v-ripple exact active-class="bg-primary text-white" to="/compraHistory" v-if="$store.user?.type === 'ADMINISTRADOR'">
-              <q-item-section avatar><q-icon name="o_file_copy" /></q-item-section>
-              <q-item-section>
-                <q-item-label>
-                  Historial compras
-                  <q-tooltip anchor="top middle" self="bottom middle">
-                    Historial de compras
-                  </q-tooltip>
-                </q-item-label>
-              </q-item-section>
-            </q-item>
-            <q-item clickable v-ripple exact active-class="bg-primary text-white" to="/productos" v-if="$store.user?.type === 'ADMINISTRADOR'">
-              <q-item-section avatar><q-icon name="o_local_mall" /></q-item-section>
-              <q-item-section>
-                <q-item-label>Productos</q-item-label>
-                <q-tooltip anchor="top middle" self="bottom middle">
-                  Administrar productos
-                </q-tooltip>
-              </q-item-section>
-            </q-item>
-            <q-item clickable v-ripple exact active-class="bg-primary text-white" to="/clientes" >
-              <q-item-section avatar><q-icon name="o_face" /></q-item-section>
-              <q-item-section>
-                <q-item-label>Cliente</q-item-label>
-                <q-tooltip anchor="top middle" self="bottom middle">
-                  Administrar clientes
-                </q-tooltip>
-              </q-item-section>
-            </q-item>
-            <q-item clickable v-ripple exact active-class="bg-primary text-white" to="/provedores" >
-              <q-item-section avatar><q-icon name="o_assignment_ind" /></q-item-section>
-              <q-item-section>
-                <q-item-label>Provedor</q-item-label>
-                <q-tooltip anchor="top middle" self="bottom middle">
-                  Administrar provedores
-                </q-tooltip>
-              </q-item-section>
-            </q-item>
-<!--            <q-item clickable v-ripple exact active-class="bg-primary text-white" to="/proveedores" >-->
-<!--              <q-item-section avatar><q-icon name="o_assignment_ind" /></q-item-section>-->
-<!--              <q-item-section>-->
-<!--                <q-item-label>Proveedores</q-item-label>-->
-<!--                <q-tooltip anchor="top middle" self="bottom middle">-->
-<!--                  Administrar proveedores-->
-<!--                </q-tooltip>-->
-<!--              </q-item-section>-->
-<!--            </q-item>-->
-            <q-item clickable v-ripple exact active-class="bg-primary text-white" to="/reportes" >
-              <q-item-section avatar><q-icon name="o_print" /></q-item-section>
-              <q-item-section>
-                <q-item-label>Reportes</q-item-label>
-                <q-tooltip anchor="top middle" self="bottom middle">
-                  Consultar reportes
-                </q-tooltip>
-              </q-item-section>
-            </q-item>
-            <q-item clickable v-ripple exact active-class="bg-primary text-white" to="/users" v-if="$store.user?.type === 'ADMINISTRADOR'">
-              <q-item-section avatar><q-icon name="o_manage_accounts" /></q-item-section>
-              <q-item-section>
-                <q-item-label>Usuarios</q-item-label>
-                <q-tooltip anchor="top middle" self="bottom middle">
-                  Administrar usuarios
-                </q-tooltip>
-              </q-item-section>
-            </q-item>
-          </q-list>
-        </q-header>
-        <q-footer class="bg-white">
-          <q-list bordered padding dense class="rounded-borders text-red">
-            <q-item clickable v-ripple @click="logout()">
+          </div>
+        </div>
+
+        <div class="drawer-nav">
+          <div class="drawer-section-label">Navegacion</div>
+          <q-list class="menu-list" padding>
+            <q-item
+              v-for="item in menuItems"
+              :key="item.to"
+              clickable
+              v-ripple
+              exact
+              :to="item.to"
+              active-class="menu-item-active"
+              class="menu-item"
+            >
               <q-item-section avatar>
-                <q-icon name="o_logout" />
+                <div class="menu-icon-wrap">
+                  <q-icon :name="item.icon" />
+                </div>
               </q-item-section>
-              <q-item-section> Cerrar sesión</q-item-section>
+              <q-item-section>
+                <q-item-label class="menu-label">{{ item.label }}</q-item-label>
+                <q-item-label caption class="menu-caption">{{ item.caption }}</q-item-label>
+              </q-item-section>
             </q-item>
           </q-list>
-        </q-footer>
-      </q-layout>
+        </div>
+
+        <div class="drawer-footer">
+          <q-btn
+            unelevated
+            no-caps
+            icon="o_logout"
+            label="Cerrar sesion"
+            class="full-width drawer-logout-btn"
+            @click="logout"
+          />
+        </div>
+      </div>
     </q-drawer>
 
-    <q-page-container>
+    <q-page-container class="page-shell">
       <router-view />
     </q-page-container>
   </q-layout>
@@ -183,14 +128,121 @@ export default {
       leftDrawerOpen: false
     }
   },
+  computed: {
+    rutaTitle () {
+      const ruta = this.$route.path
+      switch (ruta) {
+        case '/':
+          return 'Movimientos'
+        case '/productos':
+          return 'Productos'
+        case '/sale':
+          return 'Venta'
+        case '/clientes':
+          return 'Clientes'
+        case '/provedores':
+          return 'Proveedores'
+        case '/users':
+          return 'Usuarios'
+        case '/compra':
+          return 'Compras'
+        case '/compraHistory':
+          return 'Historial de compras'
+        case '/reportes':
+          return 'Reportes'
+        default:
+          return 'Movimientos'
+      }
+    },
+    userRoleLabel () {
+      return this.$store.user?.type === 'ADMINISTRADOR' ? 'Administrador' : 'Usuario'
+    },
+    userInitials () {
+      const name = this.$store.user?.name || 'Usuario'
+      return name
+        .split(' ')
+        .filter(Boolean)
+        .slice(0, 2)
+        .map(part => part.charAt(0).toUpperCase())
+        .join('')
+    },
+    menuItems () {
+      const isAdmin = this.$store.user?.type === 'ADMINISTRADOR'
+      return [
+        {
+          to: '/',
+          label: 'Movimientos',
+          caption: 'Movimientos de caja',
+          icon: 'o_store',
+          show: true
+        },
+        {
+          to: '/sale',
+          label: 'Venta',
+          caption: 'Venta de productos',
+          icon: 'o_shopping_cart',
+          show: true
+        },
+        {
+          to: '/compra',
+          label: 'Compras',
+          caption: 'Compra de productos',
+          icon: 'o_local_shipping',
+          show: true
+        },
+        {
+          to: '/compraHistory',
+          label: 'Historial compras',
+          caption: 'Historial de compras',
+          icon: 'o_file_copy',
+          show: isAdmin
+        },
+        {
+          to: '/productos',
+          label: 'Productos',
+          caption: 'Administrar productos',
+          icon: 'o_local_mall',
+          show: isAdmin
+        },
+        {
+          to: '/clientes',
+          label: 'Clientes',
+          caption: 'Administrar clientes',
+          icon: 'o_face',
+          show: true
+        },
+        {
+          to: '/provedores',
+          label: 'Proveedores',
+          caption: 'Administrar proveedores',
+          icon: 'o_assignment_ind',
+          show: true
+        },
+        {
+          to: '/reportes',
+          label: 'Reportes',
+          caption: 'Consultar reportes',
+          icon: 'o_print',
+          show: true
+        },
+        {
+          to: '/users',
+          label: 'Usuarios',
+          caption: 'Administrar usuarios',
+          icon: 'o_manage_accounts',
+          show: isAdmin
+        }
+      ].filter(item => item.show)
+    }
+  },
   methods: {
     toggleLeftDrawer () {
       this.leftDrawerOpen = !this.leftDrawerOpen
     },
     logout () {
       this.$q.dialog({
-        title: 'Cerrar sesión',
-        message: '¿Está seguro que desea cerrar sesión?',
+        title: 'Cerrar sesion',
+        message: '¿Esta seguro que desea cerrar sesion?',
         ok: {
           label: 'Si',
           color: 'negative',
@@ -214,39 +266,287 @@ export default {
           })
       })
     }
-  },
-  computed: {
-    rutaTitle () {
-      // { path: '', component: () => import('pages/IndexPage/IndexPage.vue'), meta: { requiresAuth: true } },
-      // { path: '/productos', component: () => import('pages/productos/ProductosPage.vue'), meta: { requiresAuth: true } },
-      // { path: '/sale', component: () => import('pages/sales/SalePage.vue'), meta: { requiresAuth: true } },
-      // { path: '/clientes', component: () => import('pages/clientes/ClientIndex.vue'), meta: { requiresAuth: true } },
-      // { path: '/provedores', component: () => import('pages/clientes/ProveedorIndex.vue'), meta: { requiresAuth: true } },
-      // { path: '/users', component: () => import('../pages/users/UsersIndex.vue'), meta: { requiresAuth: true } },
-      // { path: '/compra', component: () => import('../pages/compra/CompraPage.vue'), meta: { requiresAuth: true } }
-      const ruta = this.$route.path
-      // return 'asa'
-      switch (ruta) {
-        case '/':
-          return 'Movimientos'
-        case '/productos':
-          return 'Productos'
-        case '/sale':
-          return 'Venta'
-        case '/clientes':
-          return 'Clientes'
-        case '/provedores':
-          return 'Provedores'
-        case '/users':
-          return 'Usuarios'
-        case '/compra':
-          return 'Compras'
-        case '/reportes':
-          return 'Reportes'
-        default:
-          return 'Movimientos'
-      }
-    }
   }
 }
 </script>
+
+<style scoped>
+.main-layout {
+  background:
+    radial-gradient(circle at top left, rgba(111, 255, 190, 0.14), transparent 28%),
+    radial-gradient(circle at bottom right, rgba(10, 96, 63, 0.12), transparent 26%),
+    linear-gradient(180deg, #edf8f1 0%, #f7fbf8 100%);
+}
+
+.main-header {
+  background: linear-gradient(135deg, #0d6b3c 0%, #11844a 55%, #169855 100%);
+  color: #fff;
+}
+
+.toolbar-shell {
+  min-height: 68px;
+  padding: 8px 14px;
+  gap: 12px;
+}
+
+.header-menu-btn {
+  color: #fff;
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.brand-block {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-avatar {
+  width: 44px;
+  height: 44px;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.16);
+}
+
+.brand-copy {
+  line-height: 1.1;
+}
+
+.brand-caption {
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.74);
+}
+
+.brand-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.toolbar-user {
+  padding: 5px 7px 5px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 0 8px 18px rgba(5, 41, 24, 0.18);
+}
+
+.toolbar-user-copy {
+  margin-right: 8px;
+}
+
+.toolbar-user-name {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.1;
+}
+
+.toolbar-user-role {
+  font-size: 0.68rem;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.toolbar-user-avatar,
+.drawer-user-avatar {
+  background: linear-gradient(145deg, #dff7e8, #ffffff);
+  color: #11613d;
+  font-weight: 700;
+  border: 2px solid rgba(255, 255, 255, 0.48);
+  box-shadow: 0 6px 14px rgba(9, 58, 35, 0.18);
+}
+
+.logout-btn {
+  color: #fff;
+  min-height: 34px;
+  background: rgba(255, 255, 255, 0.16);
+  border-radius: 999px;
+  font-weight: 700;
+  padding: 0 12px;
+  font-size: 0.8rem;
+}
+
+.main-drawer {
+  background: linear-gradient(180deg, #0d6b3c 0%, #13804a 100%);
+  color: #effcf3;
+}
+
+.main-drawer :deep(.q-drawer) {
+  background: linear-gradient(180deg, #0d6b3c 0%, #13804a 100%) !important;
+}
+
+.main-drawer :deep(.q-drawer__content) {
+  background: linear-gradient(180deg, #0d6b3c 0%, #13804a 100%) !important;
+}
+
+.drawer-shell {
+  padding: 12px 10px 14px;
+  background: linear-gradient(180deg, #0d6b3c 0%, #13804a 100%);
+}
+
+.drawer-top {
+  padding: 2px 4px 10px;
+}
+
+.drawer-user-card {
+  padding: 14px;
+  border-radius: 18px;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.06));
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 12px 24px rgba(1, 25, 13, 0.16);
+}
+
+.drawer-greeting {
+  font-size: 0.64rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: rgba(227, 250, 235, 0.72);
+}
+
+.drawer-user-name {
+  margin-top: 2px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.2;
+}
+
+.drawer-role-chip {
+  margin-top: 8px;
+  font-size: 0.68rem;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.drawer-nav {
+  flex: 1;
+  min-height: 0;
+  background: transparent;
+}
+
+.drawer-section-label {
+  padding: 0 12px 4px;
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(240, 252, 243, 0.72);
+}
+
+.menu-list {
+  padding-top: 2px;
+  background: transparent;
+}
+
+.main-drawer :deep(.q-list),
+.main-drawer :deep(.q-item),
+.main-drawer :deep(.q-item__section) {
+  background: transparent;
+}
+
+.menu-item {
+  min-height: 52px;
+  margin-bottom: 4px;
+  padding: 4px 8px;
+  border-radius: 14px;
+  color: rgba(239, 252, 243, 0.92);
+  transition: all 0.2s ease;
+}
+
+.menu-item:hover {
+  background: #fff;
+  color: #13623e;
+  box-shadow: 0 8px 18px rgba(4, 28, 15, 0.16);
+}
+
+.menu-icon-wrap {
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.12);
+  font-size: 0.98rem;
+}
+
+.menu-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.1;
+}
+
+.menu-caption {
+  margin-top: 1px;
+  font-size: 0.72rem;
+  color: rgba(231, 249, 237, 0.74);
+}
+
+.menu-item:hover .menu-icon-wrap {
+  background: linear-gradient(145deg, #e2f8ea, #c7f1d5);
+  color: #10653f;
+}
+
+.menu-item:hover .menu-label,
+.menu-item:hover .menu-caption {
+  color: #13623e;
+}
+
+.menu-item-active {
+  background: #fff;
+  color: #13623e;
+  font-weight: 700;
+  box-shadow: 0 8px 18px rgba(4, 28, 15, 0.18);
+}
+
+.menu-item-active .menu-icon-wrap {
+  background: linear-gradient(145deg, #e2f8ea, #c7f1d5);
+  color: #10653f;
+}
+
+.menu-item-active .menu-label,
+.menu-item-active .menu-caption {
+  color: #13623e;
+}
+
+.drawer-footer {
+  padding: 10px 4px 0;
+}
+
+.drawer-logout-btn {
+  min-height: 42px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.84rem;
+}
+
+.page-shell {
+  position: relative;
+}
+
+@media (max-width: 599px) {
+  .toolbar-shell {
+    min-height: 62px;
+    padding: 8px 10px;
+  }
+
+  .brand-title {
+    font-size: 0.94rem;
+  }
+
+  .toolbar-user {
+    padding-left: 8px;
+  }
+
+  .logout-btn {
+    min-width: 0;
+    padding: 0 10px;
+  }
+}
+</style>
