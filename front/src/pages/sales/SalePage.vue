@@ -181,11 +181,26 @@
         <q-form @submit.prevent="saleInsert">
           <q-card-section>
             <div class="row">
+              <div class="col-12 col-md-4">
+                <q-select
+                  v-model="selectedSpecialClientId"
+                  outlined
+                  dense
+                  label="Cliente con precio especial"
+                  :options="specialClients"
+                  emit-value
+                  map-options
+                  option-value="id"
+                  option-label="specialLabel"
+                  clearable
+                  @update:model-value="selectSpecialClient"
+                />
+              </div>
               <div class="col-6 col-md-3">
                 <q-input outlined dense label="Numero" required @update:model-value="searchClient" v-model="client.nit" :loading="loading" :debounce="500" />
               </div>
               <div class="col-12 col-md-3">
-                <q-input outlined dense label="Nombre Razon Social" required v-model="client.nombre"  list="users" />
+                <q-input outlined dense label="Nombre Razon Social" required v-model="client.nombre" list="users" @update:model-value="onClientNameChange" />
                   <datalist id="users">
                     <option v-for="c in clients" :value="c.nombre" :key="c.id"/>
                   </datalist>
@@ -212,7 +227,7 @@
               </div>
               <div class="col-12 col-md-6">
                 <div class="text-bold">Precio</div>
-<!--                  {{precioProductoSelected}}-->
+                <div class="text-caption text-primary q-mb-xs">Tarifa del cliente: {{ client.precio_preferido || 'PRECIO 1' }}</div>
                 <q-input outlined dense label="Precio" v-model="precioExtra" />
               </div>
               <div class="col-12 col-md-6">
@@ -365,7 +380,8 @@ export default {
         nombre: ''
       },
       clients: [],
-      efectivo: ''
+      efectivo: '',
+      selectedSpecialClientId: null
     }
   },
   mounted () {
@@ -392,7 +408,57 @@ export default {
           type: 'CLIENTE'
         }
       }).then(response => {
-        this.clients = this.clients.concat(response.data)
+        this.clients = response.data.map(client => ({
+          ...client,
+          specialLabel: `${client.nombre} - ${client.precio_preferido || 'PRECIO 1'}`
+        }))
+      })
+    },
+    selectSpecialClient (clientId) {
+      const client = this.clients.find(item => item.id === clientId)
+      if (!client) return
+      this.applyClientData(client)
+    },
+    onClientNameChange (name) {
+      const client = this.clients.find(item => item.nombre === name)
+      if (!client) return
+      this.applyClientData(client)
+    },
+    applyClientData (client) {
+      this.client = {
+        ...this.client,
+        id: client.id,
+        nit: client.nit,
+        nombre: client.nombre,
+        telefono: client.telefono,
+        direccion: client.direccion,
+        precio_preferido: client.precio_preferido || 'PRECIO 1'
+      }
+      this.selectedSpecialClientId = client.id
+      this.precio = this.client.precio_preferido
+      this.applyPreferredPriceToCart()
+      this.precioExtra = this.precioProductoSelected
+    },
+    getProductPriceByPreference (product, priceKey) {
+      const fieldMap = {
+        'PRECIO 1': 'precio1',
+        'PRECIO 2': 'precio2',
+        'PRECIO 3': 'precio3',
+        'PRECIO 4': 'precio4',
+        'PRECIO 5': 'precio5',
+        'PRECIO 6': 'precio6'
+      }
+      const field = fieldMap[priceKey] || 'precio1'
+      return product[field]
+    },
+    applyPreferredPriceToCart () {
+      this.$store.productosVenta = this.$store.productosVenta.map(product => {
+        const sourceProduct = this.productsAll.find(item => item.id === product.id)
+        if (!sourceProduct) return product
+        return {
+          ...product,
+          precioVenta: this.getProductPriceByPreference(sourceProduct, this.client.precio_preferido || 'PRECIO 1')
+        }
       })
     },
     addProduct (data) {
@@ -502,6 +568,7 @@ export default {
         telefono: this.client.telefono,
         direccion: this.client.direccion,
         comentario: this.client.comentario,
+        precio_preferido: this.client.precio_preferido || 'PRECIO 1',
         total: this.totalSale2,
         metodo: this.metodoPago,
         almacen: this.almacenSelected,
@@ -603,8 +670,10 @@ export default {
       this.efectivo = ''
       this.client = {
         nit: '0',
-        nombre: 'SN'
+        nombre: 'SN',
+        precio_preferido: 'PRECIO 1'
       }
+      this.selectedSpecialClientId = null
       this.totalSale = 0
       this.$store.productosVenta.forEach(row => {
         this.totalSale = this.totalSale + (parseFloat(row.precioVenta) * parseFloat(row.cantidadVenta))
@@ -670,9 +739,7 @@ export default {
         nit
       }).then(res => {
         if (res.data.nombre !== undefined) {
-          this.client.nombre = res.data.nombre
-          this.client.telefono = res.data.telefono
-          this.client.direccion = res.data.direccion
+          this.applyClientData(res.data)
         }
       }).finally(() => {
         this.loading = false
@@ -683,9 +750,12 @@ export default {
     precioProductoSelected () {
       var producto = this.products.find(p => p.nombre === this.client.producto)
       if (producto) {
-        return producto.precio1
+        return this.getProductPriceByPreference(producto, this.client.precio_preferido || 'PRECIO 1')
       }
       return 0
+    },
+    specialClients () {
+      return this.clients.filter(client => client.precio_preferido && client.precio_preferido !== 'PRECIO 1')
     },
     productsMasVacio () {
       var products = this.productsAll

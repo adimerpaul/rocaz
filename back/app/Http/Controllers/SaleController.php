@@ -64,12 +64,14 @@ class SaleController extends Controller{
             $client->telefono = $request->telefono;
             $client->direccion = $request->direccion;
             $client->tipo = 'CLIENTE';
+            $client->precio_preferido = $request->precio_preferido ?: 'PRECIO 1';
             $client->save();
         }else{
             $client->nombre = $request->nombre;
             $client->telefono = $request->telefono;
             $client->direccion = $request->direccion;
             $client->tipo = 'CLIENTE';
+            $client->precio_preferido = $request->precio_preferido ?: $client->precio_preferido ?: 'PRECIO 1';
             $client->save();
         }
 

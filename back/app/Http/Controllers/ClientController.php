@@ -24,7 +24,9 @@ class ClientController extends Controller{
     {
         $search = $request->input('search');
         $type = $request->input('type');
+        $precioPreferido = $request->input('precio_preferido');
         $type = $type == 'TODO' ? '' : $type;
+        $precioPreferido = $precioPreferido == 'TODOS' ? '' : $precioPreferido;
         $pagination = $request->input('pagination', 15);
 
         // Validar el parámetro de paginación
@@ -47,6 +49,10 @@ class ClientController extends Controller{
 
         if ($type) {
             $clientsQuery->where('tipo', 'like', '%'.$type.'%');
+        }
+
+        if ($precioPreferido) {
+            $clientsQuery->where('precio_preferido', $precioPreferido);
         }
 
         // Aplicar la paginación después de ejecutar la consulta
@@ -77,6 +83,7 @@ class ClientController extends Controller{
         $client->telefono = $request->telefono;
         $client->direccion = $request->direccion;
         $client->tipo = $request->tipo;
+        $client->precio_preferido = $request->precio_preferido ?: 'PRECIO 1';
         $client->save();
         return response()->json($client);
     }
@@ -88,6 +95,7 @@ class ClientController extends Controller{
         $client->telefono = $request->telefono;
         $client->direccion = $request->direccion;
         $client->tipo = $request->tipo;
+        $client->precio_preferido = $request->precio_preferido ?: 'PRECIO 1';
         $client->save();
         return response()->json($client);
     }

@@ -16,7 +16,8 @@ class Client extends Model
         'email',
         'telefono',
         'direccion',
-        'tipo'
+        'tipo',
+        'precio_preferido'
     ];
     protected $hidden = [
         'created_at',
