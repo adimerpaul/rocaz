@@ -323,12 +323,26 @@ export default {
     }
   },
   mounted () {
-    this.proveedoresGet()
-    this.categoriesGet()
-    this.productsGet()
-    this.medidasGet()
+    this.loadBootstrap()
   },
   methods: {
+    loadBootstrap () {
+      this.loading = true
+      this.$axios.get('commerce-bootstrap', {
+        params: {
+          module: 'buy'
+        }
+      }).then(response => {
+        this.proveedores = response.data.proveedores || []
+        this.proveedoresAll = response.data.proveedores || []
+        this.categories = [{ id: '', name: 'Selecciona una categorÃ­a' }, ...response.data.categories]
+        this.products = response.data.products
+        this.productsAll = response.data.products
+        this.medidas = response.data.medidas
+      }).finally(() => {
+        this.loading = false
+      })
+    },
     fnFilter (val, update) {
       if (val === '') {
         update(() => {

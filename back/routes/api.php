@@ -24,6 +24,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('notifications', [\App\Http\Controllers\NotificationController::class, 'index']);
     Route::post('notifications/read-all', [\App\Http\Controllers\NotificationController::class, 'markAllRead']);
     Route::get('categories', [\App\Http\Controllers\CategoryController::class, 'index']);
+    Route::get('commerce-bootstrap', [\App\Http\Controllers\CommerceBootstrapController::class, 'index']);
     Route::post('categories', [\App\Http\Controllers\CategoryController::class, 'store']);
     Route::put('categories/{category}', [\App\Http\Controllers\CategoryController::class, 'update']);
     Route::delete('categories/{category}', [\App\Http\Controllers\CategoryController::class, 'destroy']);

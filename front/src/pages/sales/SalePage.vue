@@ -385,12 +385,28 @@ export default {
     }
   },
   mounted () {
-    this.categoriesGet()
-    this.productsGet()
-    this.medidasGet()
-    this.clientsGet()
+    this.loadBootstrap()
   },
   methods: {
+    loadBootstrap () {
+      this.loading = true
+      this.$axios.get('commerce-bootstrap', {
+        params: {
+          module: 'sale'
+        }
+      }).then(response => {
+        this.categories = [{ id: '', name: 'Selecciona una categorÃ­a' }, ...response.data.categories]
+        this.products = response.data.products
+        this.productsAll = response.data.products
+        this.medidas = response.data.medidas
+        this.clients = (response.data.clients || []).map(client => ({
+          ...client,
+          specialLabel: `${client.nombre} - ${client.precio_preferido || 'PRECIO 1'}`
+        }))
+      }).finally(() => {
+        this.loading = false
+      })
+    },
     checkAllClick () {
       if (this.checkAll) {
         this.$store.productosVenta.forEach(p => {
