@@ -1,5 +1,5 @@
 <template>
-  <q-page class="q-pa-xs bg-grey-3">
+  <q-page class="page-ui q-pa-sm">
     <div class="row">
       <div class="col-6 col-md-2 q-pa-xs">
         <q-input v-model="fechaInicioSemana" label="Fecha inicio" dense outlined type="date" class="bg-white"/>
@@ -231,3 +231,14 @@ export default {
   }
 }
 </script>
+<style scoped>
+.page-ui {
+  background: #f3f7f4;
+}
+
+.page-ui :deep(.q-table__container),
+.page-ui :deep(.q-field__control) {
+  border-radius: 12px;
+  background: #fff;
+}
+</style>

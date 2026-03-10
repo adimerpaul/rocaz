@@ -1,5 +1,5 @@
 <template>
-  <q-page class="bg-grey-3 q-pa-xs">
+  <q-page class="page-ui q-pa-sm">
     <div class="row">
       <div class="col-12 col-md-8">
         <div class="row">
@@ -56,63 +56,69 @@
               </div>
             </div>
             <q-scroll-area v-else style="height: 400px;">
-              <q-table dense flat bordered hide-bottom hide-header :rows="$store.productosBuys" :columns="columnsProductosVenta" :rows-per-page-options="[0]">
-                <template v-slot:body="props">
-                  <q-tr :props="props">
-                    <q-td key="borrar" :props="props" style="padding: 0px;margin: 0px" auto-width>
-                      <q-btn flat dense @click="deleteProductosVenta(props.row,props.pageIndex)" icon="delete" color="red" size="10px" class="q-pa-none q-ma-none" />
-                    </q-td>
-                    <q-td key="nombre" :props="props" auto-width>
-                      <!--                      <div class="row">-->
-                      <!--                        <div class="col-3">-->
-                      <!--                        </div>-->
-                      <!--                        <div class="col-9">-->
-                      <div>
-<!--                        <q-img :src="props.row.image.includes('http')?props.row.image:`${$url}../images/${props.row.image}`"-->
-<!--                               width="40px" height="40px"-->
-<!--                               style="padding: 0px; margin: 0px; border-radius: 0px;position: absolute; top: 20px; left: 8px"-->
-<!--                        />-->
-<!--                        style="padding-left: 42px"-->
-                        <div >
-                          <div class="text-caption" style="max-width: 170px; white-space: normal; overflow-wrap: break-word;line-height: 0.9;">
-                            {{props.row.nombre}}
-                          </div>
-                          <div class="text-grey">Disponible: {{props.row.stock}}</div>
-                          <q-input v-model="props.row.precioVenta" style="width: 170px" class="super-small" step="0.01" type="number" @update:model-value="precioVenta(props.row)" dense outlined>
-                            <template v-slot:prepend>
-<!--                              <q-icon name="edit" size="xs" />-->
-                              <div style="font-size: 10px">Bs.</div>
-                            </template>
-                          </q-input>
-                        </div>
-                      </div>
-                      <!--                          <div>-->
-                      <!--                            <div class="row">-->
-                      <!--                              <div class="col-8">-->
-                      <!--                              </div>-->
-                      <!--                              <div class="col-2 text-bold flex flex-center">-->
-                      <!--                                x und-->
-                      <!--                              </div>-->
-                      <!--                            </div>-->
-                      <!--                          </div>-->
-                      <!--                        </div>-->
-                      <!--                      </div>-->
-                    </q-td>
-                    <q-td key="cantidadVenta" :props="props">
-                      <q-input dense outlined bottom-slots min="1" class="super-small" v-model="props.row.cantidadVenta" @update:model-value="cambioNumero(props.row,props.pageIndex)" :rules="ruleNumber" type="number" input-class="text-center" required>
-                        <template v-slot:prepend>
-                          <q-btn style="cursor: pointer" dense flat icon="remove_circle_outline" @click="removeCantidad(props.row,props.pageIndex)"/>
-                        </template>
-                        <template v-slot:append>
-                          <q-btn style="cursor: pointer" dense flat icon="add_circle_outline" @click="addCantidad(props.row,props.pageIndex)"/>
-                        </template>
-                      </q-input>
-                      <div class="text-grey">= Bs {{redondeo(props.row.cantidadVenta*props.row.precioVenta)}}</div>
-                    </q-td>
-                  </q-tr>
-                </template>
-              </q-table>
-<!--              <pre>{{$store.productosBuys}}</pre>-->
+              <q-markup-table dense flat class="buy-table full-width">
+                <thead>
+                <tr>
+                  <th style="width: 28px"></th>
+                  <th class="text-left">
+                    <q-icon name="o_shopping_cart" size="14px" class="q-mr-xs" />
+                    Producto
+                  </th>
+                  <th class="text-center">Cant.</th>
+                  <th class="text-center">Precio</th>
+                  <th class="text-center">Subtotal</th>
+                  <th style="width: 56px"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="(product, index) in $store.productosBuys" :key="product.id">
+                  <td class="text-center">
+                    <q-btn flat dense @click="deleteProductosVenta(product, index)" icon="delete" color="red" size="10px" class="q-pa-none q-ma-none" />
+                  </td>
+                  <td>
+                    <div class="text-caption buy-name-text">{{ product.nombre }}</div>
+                    <div class="text-grey-7">Disponible: {{ product.stock }}</div>
+                  </td>
+                  <td class="text-center">
+                    <input
+                      v-model="product.cantidadVenta"
+                      min="1"
+                      step="1"
+                      type="number"
+                      class="buy-inline-input buy-inline-input-sm"
+                      @blur="cambioNumero(product, index)"
+                    >
+                  </td>
+                  <td class="text-center">
+                    <input
+                      v-model="product.precioVenta"
+                      min="0.01"
+                      step="0.01"
+                      type="number"
+                      class="buy-inline-input"
+                      @blur="precioVenta(product)"
+                    >
+                  </td>
+                  <td class="text-center">
+                    <input
+                      :value="product.subtotalEdit ?? numero2digitosRedondeado(product.cantidadVenta * product.precioVenta)"
+                      min="0.01"
+                      step="0.01"
+                      type="number"
+                      class="buy-inline-input"
+                      @input="product.subtotalEdit = $event.target.value"
+                      @blur="updateSubtotal(product)"
+                    >
+                  </td>
+                  <td class="text-center">
+                    <div class="buy-actions">
+                      <q-btn style="cursor: pointer" dense flat icon="remove_circle_outline" @click="removeCantidad(product, index)" />
+                      <q-btn style="cursor: pointer" dense flat icon="add_circle_outline" @click="addCantidad(product, index)" />
+                    </div>
+                  </td>
+                </tr>
+                </tbody>
+              </q-markup-table>
             </q-scroll-area>
           </q-card-section>
           <q-card-section >
@@ -387,21 +393,24 @@ export default {
       })
     },
     precioVenta (n) {
-      if (n.precioVenta === '') {
-        n.precioVenta = 1
-      }
+      n.precioVenta = this.normalizePurchaseNumber(n.precioVenta, 0.01)
     },
     cambioNumero (n, i) {
-      console.log(n)
-      // if (n.cantidadVenta !== '') {
-      //   n.cantidad = parseInt(n.cantidadReal) - parseInt(n.cantidadVenta)
-      //   n.cantidadPedida = parseInt(n.cantidadVenta)
-      // }
-      // if (n.cantidadVenta === 0) {
-      //   n.cantidad = parseInt(n.cantidadReal) - 1
-      //   n.cantidadVenta = 1
-      //   n.cantidadPedida = 1
-      // }
+      n.cantidadVenta = this.normalizePurchaseNumber(n.cantidadVenta, 1, true)
+    },
+    updateSubtotal (n) {
+      const subtotalValue = this.normalizePurchaseNumber(n.subtotalEdit, 0.01)
+      const cantidad = this.normalizePurchaseNumber(n.cantidadVenta, 1, true)
+      n.cantidadVenta = cantidad
+      n.precioVenta = this.redondeo(subtotalValue / cantidad)
+      delete n.subtotalEdit
+    },
+    normalizePurchaseNumber (value, fallback = 1, integer = false) {
+      const parsed = integer ? parseInt(value, 10) : parseFloat(value)
+      if (Number.isNaN(parsed) || parsed <= 0) {
+        return fallback
+      }
+      return integer ? parsed : this.redondeo(parsed)
     },
     removeCantidad (n, i) {
       n.cantidad++
@@ -574,3 +583,47 @@ export default {
   }
 }
 </script>
+<style scoped>
+.page-ui {
+  background: #f3f7f4;
+}
+
+.page-ui :deep(.q-card),
+.page-ui :deep(.q-table__container),
+.page-ui :deep(.q-field__control) {
+  border-radius: 12px;
+  background: #fff;
+}
+
+.buy-name-text {
+  max-width: 160px;
+  white-space: normal;
+  overflow-wrap: break-word;
+  line-height: 0.9;
+}
+
+.buy-table {
+  background: #fff;
+}
+
+.buy-inline-input {
+  width: 70px;
+  height: 28px;
+  padding: 4px 6px;
+  border: 1px solid #cfd8d3;
+  border-radius: 8px;
+  outline: none;
+  font-size: 12px;
+}
+
+.buy-inline-input-sm {
+  width: 56px;
+}
+
+.buy-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  justify-content: center;
+}
+</style>

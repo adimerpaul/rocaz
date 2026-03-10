@@ -1,5 +1,5 @@
 <template>
-<q-page class="bg-grey-3 q-pa-xs">
+<q-page class="page-ui q-pa-sm">
   <div class="row">
     <div class="col-12 col-md-5">
       <q-input v-model="search" outlined label="Search" dense class="bg-white" @update:model-value="clientGet" debounce="300" :loading="loading" clearable />
@@ -204,3 +204,14 @@ export default {
   }
 }
 </script>
+<style scoped>
+.page-ui {
+  background: #f3f7f4;
+}
+
+.page-ui :deep(.q-field__control),
+.page-ui :deep(.q-markup-table) {
+  border-radius: 12px;
+  background: #fff;
+}
+</style>

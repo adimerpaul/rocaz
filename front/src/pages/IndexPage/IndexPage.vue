@@ -1,59 +1,101 @@
 <template>
-  <q-page class="q-pa-xs bg-grey-3">
-    <div class="row">
-      <div class="col-6 col-md-2 q-pa-xs">
-        <q-input v-model="fechaInicioSemana" label="Fecha inicio" dense outlined type="date" class="bg-white" @update:model-value="salesGet('todo')"/>
+  <q-page class="index-page q-pa-sm">
+    <q-card flat bordered class="q-mb-sm page-block">
+      <q-card-section class="q-pa-sm">
+        <div class="row q-col-gutter-sm items-start">
+          <div class="col-6 col-md-2">
+            <q-input v-model="fechaInicioSemana" label="Fecha inicio" dense outlined type="date" class="bg-white" @update:model-value="salesGet('todo')" />
+          </div>
+          <div class="col-6 col-md-2">
+            <q-input v-model="fechaFinSemana" label="Fecha fin" dense outlined type="date" class="bg-white" @update:model-value="salesGet('todo')" />
+          </div>
+          <div class="col-12 col-md-3">
+            <q-input
+              v-model="concepto"
+              label="Buscar por concepto"
+              dense
+              outlined
+              class="bg-white"
+              debounce="300"
+              clearable
+              placeholder="Buscar por concepto"
+              @update:model-value="salesGet('todo')"
+            >
+              <template v-slot:prepend>
+                <q-icon name="search" />
+              </template>
+            </q-input>
+          </div>
+          <div class="col-12 col-md-2" v-if="$store.user.type=='ADMINISTRADOR'">
+            <q-select v-model="user" label="Usuario" dense outlined class="bg-white" :options="users" map-options emit-value @update:model-value="salesGet('todo')" />
+          </div>
+          <div class="col-12 col-md-2" v-if="$store.user.type=='ADMINISTRADOR'">
+            <q-select v-model="metodo" label="Metodo" dense outlined class="bg-white" :options="[ 'Todos',...$metodos]" @update:model-value="salesGet('todo')" />
+          </div>
+          <div class="col-12 col-md-2 col-lg-2">
+            <q-btn-dropdown
+              unelevated
+              dense
+              no-caps
+              color="primary"
+              icon="get_app"
+              label="Exportar"
+              dropdown-icon="expand_more"
+              class="full-width"
+            >
+              <q-list dense style="min-width: 180px">
+                <q-item v-for="option in exportOptions" :key="option.value" clickable v-close-popup @click="exportar(option.value)">
+                  <q-item-section avatar>
+                    <q-icon :name="option.icon" :color="option.color" />
+                  </q-item-section>
+                  <q-item-section>
+                    <q-item-label>{{ option.label }}</q-item-label>
+                    <q-item-label caption>{{ option.caption }}</q-item-label>
+                  </q-item-section>
+                </q-item>
+              </q-list>
+            </q-btn-dropdown>
+          </div>
+          <div class="col-12 col-md-2 col-lg-2">
+            <q-btn dense label="Nuevo Gasto" color="red" icon="add_circle_outline" no-caps rounded @click="gastoDialog = true" size="11px" />
+          </div>
+        </div>
+      </q-card-section>
+    </q-card>
+
+    <div class="row q-col-gutter-sm q-mb-sm" v-if="$store.user.type=='ADMINISTRADOR'">
+      <div class="col-12 col-sm-6 col-md-3">
+        <CardComponent class="cursor-pointer summary-card" :monto="ganancia" color="blue" title="Ganancia" icono="o_trending_up" @click="salesGet('todo')" />
       </div>
-      <div class="col-6 col-md-2 q-pa-xs">
-        <q-input v-model="fechaFinSemana" label="Fecha fin" dense outlined type="date" class="bg-white" @update:model-value="salesGet('todo')"/>
+      <div class="col-12 col-sm-6 col-md-3">
+        <CardComponent class="cursor-pointer summary-card" :monto="balance" color="grey" title="Balance" icono="o_trending_up" @click="salesGet('todo')" />
       </div>
-      <div class="col-12 col-md-2 q-pa-xs">
-        <q-input v-model="concepto" label="Buscar por concepto" dense outlined class="bg-white" debounce="300" clearable
-                  placeholder="Buscar por concepto" @update:model-value="salesGet('todo')"
-        >
-          <template v-slot:prepend>
-            <q-icon name="search" />
-          </template>
-        </q-input>
+      <div class="col-12 col-sm-6 col-md-3">
+        <CardComponent class="cursor-pointer summary-card" :monto="ingreso" color="green" title="Ventas" icono="o_trending_up" @click="salesGet('ingreso')" />
       </div>
-      <div class="col-12 col-md-2 q-pa-xs">
-        <q-select v-model="user" label="Usuario" dense outlined class="bg-white" :options="users" map-options emit-value @update:model-value="salesGet('todo')" v-if="$store.user.type=='ADMINISTRADOR'"/>
-<!--        <pre>{{user}}</pre>-->
+      <div class="col-12 col-sm-6 col-md-3">
+        <CardComponent class="cursor-pointer summary-card" :monto="gasto" color="red" title="Gastos" icono="o_trending_down" @click="salesGet('egreso')" />
       </div>
-      <div class="col-12 col-md-2 q-pa-xs">
-        <q-select v-model="metodo" label="Metodo" dense outlined class="bg-white"
-                  :options="[ 'Todos',...$metodos]"
-                  @update:model-value="salesGet('todo')" v-if="$store.user.type=='ADMINISTRADOR'"/>
-        <!--        <pre>{{user}}</pre>-->
-      </div>
-<!--      <div class="col-12 col-md-1 text-right">-->
-<!--        <q-btn class="" flat dense label="Exportar" color="primary"  icon="get_app" no-caps rounded @click="exportar" size="10px"/>-->
-<!--      </div>-->
-      <div class="col-12 col-md-2 text-right">
-<!--        <q-btn dense label="Nuevo Venta" color="green"  icon="add_circle_outline" no-caps rounded to="/sale"/>-->
-                <q-btn class="" flat dense label="Exportar" color="primary"  icon="get_app" no-caps rounded @click="exportar" size="10px"/>
-        <q-btn dense label="Nuevo Gasto" color="red"  icon="add_circle_outline" no-caps rounded @click="gastoDialog = true"/>
-      </div>
-      <div class="col-12 col-md-3 q-pa-xs" v-if="$store.user.type=='ADMINISTRADOR'">
-        <CardComponent class="cursor-pointer" :monto="ganancia" color="blue" title="Ganancia" icono="o_trending_up" @click="salesGet('todo')"/>
-      </div>
-      <div class="col-12 col-md-3 q-pa-xs" v-if="$store.user.type=='ADMINISTRADOR'">
-        <CardComponent class="cursor-pointer" :monto="balance" color="grey" title="Balance" icono="o_trending_up" @click="salesGet('todo')"/>
-      </div>
-      <div class="col-12 col-md-3 q-pa-xs" v-if="$store.user.type=='ADMINISTRADOR'">
-        <CardComponent class="cursor-pointer" :monto="ingreso" color="green" title="Ventas" icono="o_trending_up" @click="salesGet('ingreso')"/>
-      </div>
-      <div class="col-12 col-md-3 q-pa-xs" v-if="$store.user.type=='ADMINISTRADOR'">
-        <CardComponent class="cursor-pointer" :monto="gasto" color="red" title="Gastos" icono="o_trending_down" @click="salesGet('egreso')"/>
-      </div>
-      <div class="col-12">
-        <q-table :columns="columns" :rows="sales" dense :rows-per-page-options="[0]" :filter="filter" :loading="loading" wrap-cells
-                 no-data-label="No hay ventas" no-results-label="No hay ventas"
+    </div>
+
+    <q-card flat bordered class="page-block">
+      <q-card-section class="q-pa-none">
+        <q-table
+          :columns="columns"
+          :rows="sales"
+          dense
+          flat
+          :rows-per-page-options="[0]"
+          :filter="filter"
+          :loading="loading"
+          wrap-cells
+          no-data-label="No hay ventas"
+          no-results-label="No hay ventas"
         >
           <template v-slot:top-right>
-            <q-input outlined v-model="filter" debounce="300" placeholder="Buscar" dense>
+            <q-input outlined v-model="filter" debounce="300" placeholder="Buscar" dense class="q-ma-sm search-input">
               <template v-slot:append>
-                <q-btn flat round dense icon="search" />
+                <q-icon name="search" />
               </template>
             </q-input>
           </template>
@@ -99,16 +141,13 @@
                 </div>
               </q-td>
               <q-td key="proveedorcliente" :props="props">
-                <div class="text-grey" v-if="props.row.client">{{ props.row.name==null?(props.row.client.id==28?'SN':props.row.client.nombre):props.row.name }}</div>
-<!--                <pre>{{ props.row }}</pre>-->
+                <div class="text-grey-8 text-weight-medium" v-if="props.row.client">{{ props.row.name==null?(props.row.client.id==28?'SN':props.row.client.nombre):props.row.name }}</div>
               </q-td>
               <q-td key="montoTotal" :props="props" style="min-width: 120px">
-<!--                <pre>{{props.row.descuento}}</pre>-->
-<!--                si descuento es mayor que cero mostrar en color rojo-->
                 <span :class="`text-${props.row.descuento>0?'red':'green'}`" v-if="props.row.descuento > 0">
                   {{ props.row.descuento }}Bs -
                 </span>
-                <span class="text-black">{{ props.row.total-props.row.descuento }}Bs</span>
+                <span class="text-black text-weight-medium">{{ props.row.total-props.row.descuento }}Bs</span>
                 <span v-if="$store.user.type=='ADMINISTRADOR'">
                   / <span :class="`text-${props.row.tipo_venta=='INGRESO'?'green':'red'}`">{{ props.row.ganancia }}Bs</span>
                 </span>
@@ -118,7 +157,6 @@
               </q-td>
               <q-td key="concepto" :props="props" class="">
                 <div>
-<!--                  {{ props.row.tipo_venta}}-->
                   <q-btn icon="o_local_atm" size="15px" :color="`${props.row.tipo_venta=='INGRESO'?'green':'red'}-7`"
                          :class="`bg-${props.row.tipo_venta=='INGRESO'?'green':'red'}-2`" dense flat
                          style="padding: 0px; margin: 0px; border-radius: 0px;position: absolute;top: 5px;left: 0px;"/>
@@ -137,17 +175,16 @@
                 <q-chip :color="`${props.row.metodo=='EFECTIVO'?'blue':'orange'}-5`" text-color="white" dense flat :label="props.row.metodo"/>
               </q-td>
               <q-td key="user" :props="props">
-                <p>{{ props.row.user?.name }}</p>
+                <span class="text-grey-8">{{ props.row.user?.name }}</span>
               </q-td>
               <q-td key="lugar" :props="props">
-                <p>{{ props.row.lugar }}</p>
+                <span class="text-grey-8">{{ props.row.lugar }}</span>
               </q-td>
             </q-tr>
           </template>
         </q-table>
-<!--        <pre>{{sales}}</pre>-->
-      </div>
-    </div>
+      </q-card-section>
+    </q-card>
   </q-page>
   <q-dialog v-model="gastoDialog" position="right" maximized>
     <DialogGasto @gastoCreated="gastoCreated"/>
@@ -265,25 +302,94 @@ export default {
           console.log(error)
         })
     },
-    exportar () {
-      const data = [
-        {
-          sheet: 'Adults',
-          columns: [
-            { label: 'Proveedor / cliente', value: 'name' },
-            { label: 'Monto total', value: 'total' },
-            { label: 'Fecha y hora', value: 'fecha_emision' },
-            { label: 'Concepto', value: 'concepto' },
-            { label: 'Comentario', value: 'comentario' },
-            { label: 'Egreso / ingreso', value: 'tipo_venta' },
-            { label: 'Usuario', value: 'user.name' },
-            { label: 'Lugar', value: 'lugar' }
-          ],
-          content: this.sales
-        }
+    exportar (type) {
+      if (!type) return
+
+      const exportConfig = this.buildExportConfig(type)
+      Excel.export(exportConfig.data, exportConfig.fileName)
+      this.exportOption = null
+    },
+    buildExportConfig (type) {
+      const fileBase = `movimientos_${type}_${this.fechaInicioSemana}_${this.fechaFinSemana}`
+      const commonColumns = [
+        { label: 'Proveedor / Cliente', value: 'cliente' },
+        { label: 'Monto total', value: 'monto_total' },
+        { label: 'Descuento', value: 'descuento' },
+        { label: 'Monto neto', value: 'neto' },
+        { label: 'Fecha y hora', value: 'fecha_emision' },
+        { label: 'Concepto', value: 'concepto' },
+        { label: 'Comentario', value: 'comentario' },
+        { label: 'Tipo', value: 'tipo_venta' },
+        { label: 'Metodo pago', value: 'metodo' },
+        { label: 'Usuario', value: 'usuario' },
+        { label: 'Lugar', value: 'lugar' },
+        { label: 'Estado', value: 'estado' }
       ]
 
-      Excel.export(data, 'ventas')
+      if (type === 'ganancias') {
+        return {
+          fileName: fileBase,
+          data: [
+            {
+              sheet: 'Ganancias',
+              columns: [
+                { label: 'Proveedor / Cliente', value: 'cliente' },
+                { label: 'Monto total', value: 'monto_total' },
+                { label: 'Descuento', value: 'descuento' },
+                { label: 'Monto neto', value: 'neto' },
+                { label: 'Ganancia', value: 'ganancia' },
+                { label: 'Fecha y hora', value: 'fecha_emision' },
+                { label: 'Concepto', value: 'concepto' },
+                { label: 'Metodo pago', value: 'metodo' },
+                { label: 'Usuario', value: 'usuario' },
+                { label: 'Lugar', value: 'lugar' },
+                { label: 'Estado', value: 'estado' }
+              ],
+              content: this.sales
+                .filter(item => item.tipo_venta === 'INGRESO' && item.estado !== 'ANULADO')
+                .map(this.mapSaleForExport)
+            }
+          ]
+        }
+      }
+
+      const filteredSales = this.sales.filter(item => {
+        if (type === 'ventas') return item.tipo_venta === 'INGRESO'
+        if (type === 'gastos') return item.tipo_venta === 'EGRESO'
+        return true
+      })
+
+      return {
+        fileName: fileBase,
+        data: [
+          {
+            sheet: this.exportOptions.find(option => option.value === type)?.label || 'Movimientos',
+            columns: commonColumns,
+            content: filteredSales.map(this.mapSaleForExport)
+          }
+        ]
+      }
+    },
+    mapSaleForExport (sale) {
+      const cliente = sale.name == null
+        ? (sale.client?.id === 28 ? 'SN' : sale.client?.nombre || '')
+        : sale.name
+
+      return {
+        cliente,
+        monto_total: sale.total,
+        descuento: sale.descuento,
+        neto: sale.total - sale.descuento,
+        ganancia: sale.ganancia,
+        fecha_emision: sale.fecha_emision,
+        concepto: sale.concepto,
+        comentario: sale.comentario,
+        tipo_venta: sale.tipo_venta,
+        metodo: sale.metodo,
+        usuario: sale.user?.name || '',
+        lugar: sale.lugar || sale.user?.lugar || '',
+        estado: sale.estado || ''
+      }
     },
     reimprimirNota (sale) {
       Imprimir.nota(sale).then(r => {
@@ -364,6 +470,14 @@ export default {
     }
   },
   computed: {
+    exportOptions () {
+      return [
+        { label: 'Todo', value: 'todo', icon: 'table_view', color: 'primary', caption: 'Todos los movimientos' },
+        { label: 'Ventas', value: 'ventas', icon: 'trending_up', color: 'green', caption: 'Solo ingresos' },
+        { label: 'Gastos', value: 'gastos', icon: 'trending_down', color: 'red', caption: 'Solo egresos' },
+        { label: 'Ganancias', value: 'ganancias', icon: 'payments', color: 'blue', caption: 'Resumen de utilidad' }
+      ]
+    },
     ganancia () {
       const total = this.sales.reduce((acc, sale) => {
         return sale.estado !== 'ANULADO' ? sale.tipo_venta === 'INGRESO' ? acc + (sale.total - sale.descuento) : acc - (sale.total - sale.descuento) : acc
@@ -400,3 +514,23 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.index-page {
+  background: #f3f7f4;
+}
+
+.page-block {
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.96);
+}
+
+.summary-card {
+  height: 100%;
+}
+
+.search-input {
+  min-width: 220px;
+}
+
+</style>

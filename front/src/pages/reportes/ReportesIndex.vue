@@ -1,5 +1,5 @@
 <template>
-<q-page class="q-pa-xs bg-grey-3">
+<q-page class="page-ui q-pa-sm">
   <q-card>
     <q-card-section class="q-pa-md">
       <q-item clickable >
@@ -184,6 +184,18 @@ export default {
   }
 }
 </script>
+<style scoped>
+.page-ui {
+  background: #f3f7f4;
+}
+
+.page-ui :deep(.q-card),
+.page-ui :deep(.q-markup-table),
+.page-ui :deep(.q-field__control) {
+  border-radius: 12px;
+  background: #fff;
+}
+</style>
 
 <!--<template>-->
 <!--  <Bar-->

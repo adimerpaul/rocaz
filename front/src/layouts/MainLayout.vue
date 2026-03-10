@@ -49,7 +49,7 @@
     <q-drawer
       v-model="leftDrawerOpen"
       show-if-above
-      :width="250"
+      :width="205"
       bordered
       class="main-drawer"
     >
@@ -384,17 +384,17 @@ export default {
 }
 
 .drawer-shell {
-  padding: 12px 10px 14px;
+  padding: 8px 6px 10px;
   background: linear-gradient(180deg, #0d6b3c 0%, #13804a 100%);
 }
 
 .drawer-top {
-  padding: 2px 4px 10px;
+  padding: 1px 1px 6px;
 }
 
 .drawer-user-card {
-  padding: 14px;
-  border-radius: 18px;
+  padding: 10px;
+  border-radius: 14px;
   background:
     linear-gradient(145deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.06));
   border: 1px solid rgba(255, 255, 255, 0.12);
@@ -410,15 +410,15 @@ export default {
 
 .drawer-user-name {
   margin-top: 2px;
-  font-size: 0.92rem;
+  font-size: 0.86rem;
   font-weight: 700;
   color: #fff;
   line-height: 1.2;
 }
 
 .drawer-role-chip {
-  margin-top: 8px;
-  font-size: 0.68rem;
+  margin-top: 6px;
+  font-size: 0.64rem;
   background: rgba(255, 255, 255, 0.14);
 }
 
@@ -429,7 +429,7 @@ export default {
 }
 
 .drawer-section-label {
-  padding: 0 12px 4px;
+  padding: 0 8px 3px;
   font-size: 0.64rem;
   font-weight: 700;
   letter-spacing: 0.14em;
@@ -449,10 +449,10 @@ export default {
 }
 
 .menu-item {
-  min-height: 52px;
-  margin-bottom: 4px;
-  padding: 4px 8px;
-  border-radius: 14px;
+  min-height: 42px;
+  margin-bottom: 2px;
+  padding: 3px 5px;
+  border-radius: 10px;
   color: rgba(239, 252, 243, 0.92);
   transition: all 0.2s ease;
 }
@@ -464,8 +464,8 @@ export default {
 }
 
 .menu-icon-wrap {
-  width: 34px;
-  height: 34px;
+  width: 28px;
+  height: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -475,14 +475,14 @@ export default {
 }
 
 .menu-label {
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   font-weight: 600;
   line-height: 1.1;
 }
 
 .menu-caption {
   margin-top: 1px;
-  font-size: 0.72rem;
+  font-size: 0.63rem;
   color: rgba(231, 249, 237, 0.74);
 }
 
@@ -514,7 +514,7 @@ export default {
 }
 
 .drawer-footer {
-  padding: 10px 4px 0;
+  padding: 8px 2px 0;
 }
 
 .drawer-logout-btn {

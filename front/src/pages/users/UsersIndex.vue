@@ -1,5 +1,5 @@
 <template>
-  <q-page class="bg-grey-3 q-pa-xs">
+  <q-page class="page-ui q-pa-sm">
     <q-table :rows="users" :rows-per-page-options="[0]" dense wrap-cells :columns="columns">
       <template v-slot:top-right>
         <q-btn label="Registrar Usuario" icon="add_circle_outline" dense no-caps color="green" @click="usersNew"></q-btn>
@@ -163,3 +163,14 @@ export default {
   }
 }
 </script>
+<style scoped>
+.page-ui {
+  background: #f3f7f4;
+}
+
+.page-ui :deep(.q-table__container),
+.page-ui :deep(.q-field__control) {
+  border-radius: 12px;
+  background: #fff;
+}
+</style>
