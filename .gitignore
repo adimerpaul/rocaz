@@ -28,3 +28,5 @@ yarn-error.log*
 *.njsproj
 *.sln
 AGENTS.md
+front/AGENTS.md
+back/AGENTS.md

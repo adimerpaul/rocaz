@@ -67,7 +67,7 @@
                   <th class="text-center">Cant.</th>
                   <th class="text-center">Precio</th>
                   <th class="text-center">Subtotal</th>
-                  <th style="width: 56px"></th>
+<!--                  <th style="width: 56px"></th>-->
                 </tr>
                 </thead>
                 <tbody>
@@ -110,12 +110,12 @@
                       @blur="updateSubtotal(product)"
                     >
                   </td>
-                  <td class="text-center">
-                    <div class="buy-actions">
-                      <q-btn style="cursor: pointer" dense flat icon="remove_circle_outline" @click="removeCantidad(product, index)" />
-                      <q-btn style="cursor: pointer" dense flat icon="add_circle_outline" @click="addCantidad(product, index)" />
-                    </div>
-                  </td>
+<!--                  <td class="text-center">-->
+<!--                    <div class="buy-actions">-->
+<!--                      <q-btn style="cursor: pointer" dense flat icon="remove_circle_outline" @click="removeCantidad(product, index)" />-->
+<!--                      <q-btn style="cursor: pointer" dense flat icon="add_circle_outline" @click="addCantidad(product, index)" />-->
+<!--                    </div>-->
+<!--                  </td>-->
                 </tr>
                 </tbody>
               </q-markup-table>
