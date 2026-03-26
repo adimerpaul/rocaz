@@ -140,7 +140,7 @@ class SaleController extends Controller{
         }
         $concepto = substr($concepto, 0, -1);
         $sale->concepto = $concepto;
-        $sale->ganancia = $sale->total - $totalGastoProducto;
+        $sale->ganancia = ($sale->total - $sale->descuento) - $totalGastoProducto;
         $sale->save();
         DB::commit();
         return Sale::with(['user', 'client', 'details'])->find($sale->id);

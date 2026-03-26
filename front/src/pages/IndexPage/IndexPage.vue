@@ -147,9 +147,9 @@
                 <span :class="`text-${props.row.descuento>0?'red':'green'}`" v-if="props.row.descuento > 0">
                   {{ props.row.descuento }}Bs -
                 </span>
-                <span class="text-black text-weight-medium">{{ props.row.total-props.row.descuento }}Bs</span>
+                <span class="text-black text-weight-medium">{{ getSaleNetTotal(props.row) }}Bs</span>
                 <span v-if="$store.user.type=='ADMINISTRADOR'">
-                  / <span :class="`text-${props.row.tipo_venta=='INGRESO'?'green':'red'}`">{{ props.row.ganancia }}Bs</span>
+                  / <span :class="`text-${props.row.tipo_venta=='INGRESO'?'green':'red'}`">{{ getSaleProfit(props.row) }}Bs</span>
                 </span>
               </q-td>
               <q-td key="fechayhora" :props="props" style="min-width: 150px">
@@ -275,6 +275,13 @@ export default {
     this.salesGet()
   },
   methods: {
+    getSaleNetTotal (sale) {
+      return Math.round(((sale.total || 0) - (sale.descuento || 0)) * 100) / 100
+    },
+    getSaleProfit (sale) {
+      if (sale.tipo_venta !== 'INGRESO' || sale.estado === 'ANULADO') return 0
+      return Math.round((((sale.ganancia || 0) - (sale.descuento || 0)) * 100)) / 100
+    },
     updateSaleComentarioEfectivo () {
       this.loading = true
       this.$axios.post('updateSaleComentarioEfectivo', this.sale)
@@ -379,8 +386,8 @@ export default {
         cliente,
         monto_total: sale.total,
         descuento: sale.descuento,
-        neto: sale.total - sale.descuento,
-        ganancia: sale.ganancia,
+        neto: this.getSaleNetTotal(sale),
+        ganancia: this.getSaleProfit(sale),
         fecha_emision: sale.fecha_emision,
         concepto: sale.concepto,
         comentario: sale.comentario,
@@ -480,34 +487,28 @@ export default {
     },
     ganancia () {
       const total = this.sales.reduce((acc, sale) => {
-        return sale.estado !== 'ANULADO' ? sale.tipo_venta === 'INGRESO' ? acc + (sale.total - sale.descuento) : acc - (sale.total - sale.descuento) : acc
+        return acc + this.getSaleProfit(sale)
       }, 0)
-      const totalDescuento = this.sales.reduce((acc, sale) => {
-        return sale.tipo_venta === 'INGRESO' && sale.estado !== 'ANULADO' ? acc + sale.descuento : acc
-      }, 0)
-      // return Math.round(total * 100) / 100
-      return Math.round((total - totalDescuento) * 100) / 100
+      return Math.round(total * 100) / 100
     },
     balance () {
       const total = this.sales.reduce((acc, sale) => {
-        // y que no se anulado
-        // return sale.tipo_venta === 'INGRESO' ? acc + sale.total : acc - sale.total
-        return sale.estado !== 'ANULADO' ? sale.tipo_venta === 'INGRESO' ? acc + (sale.total - sale.descuento) : acc - (sale.total - sale.descuento) : acc
+        if (sale.estado === 'ANULADO') return acc
+        return sale.tipo_venta === 'INGRESO'
+          ? acc + this.getSaleNetTotal(sale)
+          : acc - this.getSaleNetTotal(sale)
       }, 0)
       return Math.round(total * 100) / 100
     },
     ingreso () {
       const total = this.sales.reduce((acc, sale) => {
-        // y que no sea anulado
-        return sale.tipo_venta === 'INGRESO' && sale.estado !== 'ANULADO' ? acc + (sale.total - sale.descuento) : acc
+        return sale.tipo_venta === 'INGRESO' && sale.estado !== 'ANULADO' ? acc + this.getSaleNetTotal(sale) : acc
       }, 0)
       return Math.round(total * 100) / 100
     },
     gasto () {
       const total = this.sales.reduce((acc, sale) => {
-        // return sale.tipo_venta === 'EGRESO' ? acc + sale.total : acc
-        // y que su estado no se anulado
-        return sale.tipo_venta === 'EGRESO' && sale.estado !== 'ANULADO' ? acc + sale.total : acc
+        return sale.tipo_venta === 'EGRESO' && sale.estado !== 'ANULADO' ? acc + this.getSaleNetTotal(sale) : acc
       }, 0)
       return Math.round(total * 100) / 100
     }
