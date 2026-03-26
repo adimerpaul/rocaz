@@ -1,21 +1,30 @@
 <template>
-  <q-card style="width: 900px;max-width: 100%" @keyup="handleKeyUp">
-    <q-card-section class="row items-center">
+  <q-card class="calculate-dialog" style="width: 840px;max-width: 100%" @keyup="handleKeyUp">
+    <q-card-section class="row items-center q-pb-sm">
       <div class="text-h6">Calculos</div>
       <q-icon name="calculate" />
       <q-space />
       <q-btn flat @click="$emit('close')" icon="close" />
     </q-card-section>
-    <q-card-section>
+    <q-card-section class="q-pt-none">
       <q-splitter
         v-model="splitterModel"
+        :limits="[14, 24]"
       >
 
         <template v-slot:before>
           <q-tabs
             v-model="$store.tab"
             vertical
+            dense
+            class="calc-tabs"
           >
+            <q-tab name="Cielo Drywall" icon="view_quilt" no-caps :class="{'bg-grey-6 text-white': $store.tab === 'Cielo Drywall'}">
+              Cielo <br> drywall
+            </q-tab>
+            <q-tab name="Muro Drywall" icon="view_sidebar" no-caps :class="{'bg-grey-6 text-white': $store.tab === 'Muro Drywall'}">
+              Muro <br> drywall
+            </q-tab>
             <q-tab name="Calculo 2 piso flotante 8 mm" icon="functions" no-caps :class="{'bg-grey-6 text-white': $store.tab === 'Calculo 2 piso flotante 8 mm'}">
               Calculo 2 piso <br> flotante 8 mm
             </q-tab>
@@ -48,8 +57,138 @@
             vertical
             transition-prev="jump-up"
             transition-next="jump-up"
-            class="bg-grey-3"
+            class="bg-grey-2 calc-panels"
           >
+            <q-tab-panel name="Cielo Drywall">
+              <div class="text-h6 q-mb-sm">Cielo Drywall</div>
+              <q-markup-table dense flat bordered class="calc-table">
+                <thead>
+                <tr>
+                  <th>Detalle</th>
+                  <th>M2</th>
+                  <th>Factor</th>
+                  <th>Placas</th>
+                  <th style="width: 220px">Producto</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <td class="text-bold">PLACAS</td>
+                  <td><q-input v-model="$store.cieloDrywall" outlined dense label="Metros cuadrados" class="bg-orange-1" /></td>
+                  <td><q-input :model-value="redondear($store.cieloDrywallConstantePlaca, 2)" outlined dense label="Factor" readonly /></td>
+                  <td><q-input :model-value="cieloDrywallPlacas" outlined dense label="Placas" readonly class="bg-blue-1" /></td>
+                  <td>
+                    <q-select v-model="$store.productoCal16" :options="products" label="Producto" outlined dense class="bg-white"
+                              option-value="id" option-label="nombre" use-input @filter="filterProducts" clearable style="width: 200px">
+                      <template v-slot:after>
+                        <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct(cieloDrywallPlacas, $store.productoCal16)"/>
+                      </template>
+                    </q-select>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="text-bold">PERIMETRAL ANGULO</td>
+                  <td><q-input :model-value="cieloDrywallRaiz" outlined dense label="Metros base" readonly /></td>
+                  <td><q-input :model-value="redondear($store.cieloDrywallConstantePerimetralAngulo, 2)" outlined dense label="Factor" readonly /></td>
+                  <td><q-input :model-value="cieloDrywallPerimetralAngulo" outlined dense label="Placas" readonly class="bg-blue-1" /></td>
+                  <td>
+                    <q-select v-model="$store.productoCal17" :options="products" label="Producto" outlined dense class="bg-white"
+                              option-value="id" option-label="nombre" use-input @filter="filterProducts" clearable style="width: 200px">
+                      <template v-slot:after>
+                        <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct(cieloDrywallPerimetralAngulo, $store.productoCal17)"/>
+                      </template>
+                    </q-select>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="text-bold">OMEGA</td>
+                  <td><q-input v-model="$store.cieloDrywall" outlined dense label="Metros cuadrados" readonly /></td>
+                  <td><q-input :model-value="redondear(1 / $store.cieloDrywallConstanteOmega, 3)" outlined dense label="Factor" readonly /></td>
+                  <td><q-input :model-value="cieloDrywallOmega" outlined dense label="Placas" readonly class="bg-blue-1" /></td>
+                  <td>
+                    <q-select v-model="$store.productoCal18" :options="products" label="Producto" outlined dense class="bg-white"
+                              option-value="id" option-label="nombre" use-input @filter="filterProducts" clearable style="width: 200px">
+                      <template v-slot:after>
+                        <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct(cieloDrywallOmega, $store.productoCal18)"/>
+                      </template>
+                    </q-select>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="text-bold">MONTANTE</td>
+                  <td><q-input v-model="$store.cieloDrywall" outlined dense label="Metros cuadrados" readonly /></td>
+                  <td><q-input :model-value="redondear(1 / $store.cieloDrywallConstanteMontante, 3)" outlined dense label="Factor" readonly /></td>
+                  <td><q-input :model-value="cieloDrywallMontante" outlined dense label="Placas" readonly class="bg-blue-1" /></td>
+                  <td>
+                    <q-select v-model="$store.productoCal19" :options="products" label="Producto" outlined dense class="bg-white"
+                              option-value="id" option-label="nombre" use-input @filter="filterProducts" clearable style="width: 200px">
+                      <template v-slot:after>
+                        <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct(cieloDrywallMontante, $store.productoCal19)"/>
+                      </template>
+                    </q-select>
+                  </td>
+                </tr>
+                </tbody>
+              </q-markup-table>
+            </q-tab-panel>
+            <q-tab-panel name="Muro Drywall">
+              <div class="text-h6 q-mb-sm">Muro Drywall</div>
+              <q-markup-table dense flat bordered class="calc-table">
+                <thead>
+                <tr>
+                  <th>Detalle</th>
+                  <th>M2</th>
+                  <th>Factor</th>
+                  <th>Placas</th>
+                  <th style="width: 220px">Producto</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <td class="text-bold">PLACAS</td>
+                  <td><q-input v-model="$store.muroDrywall" outlined dense label="Metros cuadrados" class="bg-orange-1" /></td>
+                  <td><q-input :model-value="redondear($store.muroDrywallConstantePlaca, 2)" outlined dense label="Factor" readonly /></td>
+                  <td><q-input :model-value="muroDrywallPlacas" outlined dense label="Placas" readonly class="bg-blue-1" /></td>
+                  <td>
+                    <q-select v-model="$store.productoCal20" :options="products" label="Producto" outlined dense class="bg-white"
+                              option-value="id" option-label="nombre" use-input @filter="filterProducts" clearable style="width: 200px">
+                      <template v-slot:after>
+                        <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct(muroDrywallPlacas, $store.productoCal20)"/>
+                      </template>
+                    </q-select>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="text-bold">SOLERA 70 mm.</td>
+                  <td><q-input :model-value="muroDrywallRaiz" outlined dense label="Metros base" readonly /></td>
+                  <td><q-input :model-value="redondear($store.muroDrywallConstanteSolera, 2)" outlined dense label="Factor" readonly /></td>
+                  <td><q-input :model-value="muroDrywallSolera" outlined dense label="Placas" readonly class="bg-blue-1" /></td>
+                  <td>
+                    <q-select v-model="$store.productoCal21" :options="products" label="Producto" outlined dense class="bg-white"
+                              option-value="id" option-label="nombre" use-input @filter="filterProducts" clearable style="width: 200px">
+                      <template v-slot:after>
+                        <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct(muroDrywallSolera, $store.productoCal21)"/>
+                      </template>
+                    </q-select>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="text-bold">MONTANTE 69 mm.</td>
+                  <td><q-input v-model="$store.muroDrywall" outlined dense label="Metros cuadrados" readonly /></td>
+                  <td><q-input :model-value="redondear(1 / $store.muroDrywallConstanteMontante, 3)" outlined dense label="Factor" readonly /></td>
+                  <td><q-input :model-value="muroDrywallMontante" outlined dense label="Placas" readonly class="bg-blue-1" /></td>
+                  <td>
+                    <q-select v-model="$store.productoCal22" :options="products" label="Producto" outlined dense class="bg-white"
+                              option-value="id" option-label="nombre" use-input @filter="filterProducts" clearable style="width: 200px">
+                      <template v-slot:after>
+                        <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct(muroDrywallMontante, $store.productoCal22)"/>
+                      </template>
+                    </q-select>
+                  </td>
+                </tr>
+                </tbody>
+              </q-markup-table>
+            </q-tab-panel>
             <q-tab-panel name="Calculo 2 piso flotante 8 mm">
               <div class="text-h6 q-mb-md">Calculo 2 piso flotante 8 mm</div>
               <div class="row">
@@ -435,12 +574,15 @@ export default {
     return {
       producto: '',
       products: [],
-      splitterModel: 20
+      splitterModel: 16
       // area2PisoFlotante8mm: ''
     }
   },
   mounted () {
     this.products = [...this.productsAll]
+    if (!this.$store.tab) {
+      this.$store.tab = 'Cielo Drywall'
+    }
     window.addEventListener('keyup', this.handleKeyUp)
   },
   beforeUnmount () {
@@ -479,6 +621,42 @@ export default {
     }
   },
   computed: {
+    cieloDrywallPlacas () {
+      const calculate = this.$store.cieloDrywall / this.$store.cieloDrywallConstantePlaca
+      return calculate.toFixed(1)
+    },
+    cieloDrywallRaiz () {
+      const raizcudrada = Math.sqrt(this.$store.cieloDrywall || 0)
+      return raizcudrada.toFixed(1)
+    },
+    cieloDrywallPerimetralAngulo () {
+      const calculate = this.cieloDrywallRaiz * this.$store.cieloDrywallConstantePerimetralAngulo
+      return Number(calculate).toFixed(1)
+    },
+    cieloDrywallOmega () {
+      const calculate = this.$store.cieloDrywall / this.$store.cieloDrywallConstanteOmega
+      return calculate.toFixed(1)
+    },
+    cieloDrywallMontante () {
+      const calculate = this.$store.cieloDrywall / this.$store.cieloDrywallConstanteMontante
+      return calculate.toFixed(1)
+    },
+    muroDrywallPlacas () {
+      const calculate = this.$store.muroDrywall / this.$store.muroDrywallConstantePlaca
+      return calculate.toFixed(1)
+    },
+    muroDrywallRaiz () {
+      const raizcudrada = Math.sqrt(this.$store.muroDrywall || 0)
+      return raizcudrada.toFixed(1)
+    },
+    muroDrywallSolera () {
+      const calculate = this.muroDrywallRaiz * this.$store.muroDrywallConstanteSolera
+      return Number(calculate).toFixed(1)
+    },
+    muroDrywallMontante () {
+      const calculate = this.$store.muroDrywall / this.$store.muroDrywallConstanteMontante
+      return calculate.toFixed(1)
+    },
     piezasArea2PisoFlotante8mm () {
       const calculate = this.$store.area2PisoFlotante8mm / this.$store.area2PisoFlotante8mmConstante
       const redondear = Math.ceil(calculate)
@@ -577,3 +755,31 @@ export default {
   }
 }
 </script>
+<style scoped>
+.calculate-dialog :deep(.q-card__section) {
+  padding: 10px 12px;
+}
+
+.calc-tabs :deep(.q-tab) {
+  min-height: 52px;
+  padding: 6px 8px;
+  font-size: 12px;
+  line-height: 1.15;
+}
+
+.calc-panels :deep(.q-tab-panel) {
+  padding: 10px;
+}
+
+.calc-table :deep(.q-field__control),
+.calculate-dialog :deep(.q-field__control) {
+  min-height: 34px;
+}
+
+.calc-table :deep(.q-field__native),
+.calc-table :deep(.q-field__input),
+.calculate-dialog :deep(.q-field__native),
+.calculate-dialog :deep(.q-field__input) {
+  font-size: 12px;
+}
+</style>

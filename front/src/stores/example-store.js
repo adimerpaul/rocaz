@@ -12,6 +12,15 @@ export const useCounterStore = defineStore('counter', {
     pvcTablilla: '',
     pvcTablillaConstante: 1.4875,
     pvcTablillaConstanteCorinsa: (4 / 3),
+    cieloDrywall: '',
+    cieloDrywallConstantePlaca: 2.88,
+    cieloDrywallConstantePerimetralAngulo: (4 / 3),
+    cieloDrywallConstanteOmega: 1.8,
+    cieloDrywallConstanteMontante: 3.6,
+    muroDrywall: '',
+    muroDrywallConstantePlaca: 2.88,
+    muroDrywallConstanteSolera: (4 / 3),
+    muroDrywallConstanteMontante: 1.8,
     cieloFalsoDesmontable: '',
     cieloFalsoDesmontableConstantePlaca: 0.36,
     cieloFalsoDesmontableConstanteAngular: (4 / 3),
@@ -51,7 +60,14 @@ export const useCounterStore = defineStore('counter', {
     productoCal12: '',
     productoCal13: '',
     productoCal14: '',
-    productoCal15: ''
+    productoCal15: '',
+    productoCal16: '',
+    productoCal17: '',
+    productoCal18: '',
+    productoCal19: '',
+    productoCal20: '',
+    productoCal21: '',
+    productoCal22: ''
   }),
   getters: {
     doubleCount: (state) => state.counter * 2
