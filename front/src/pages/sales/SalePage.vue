@@ -29,7 +29,7 @@
             <q-select v-model="almacenSelected" :options="['Todo','Almacen 1','Almacen 2']" label="Almacen" outlined dense class="bg-white" emit-value />
           </div>
           <div class="col-12 col-md-2 text-right">
-            <q-select v-model="precio" :options="['PRECIO 1','PRECIO 2','PRECIO 3','PRECIO 4','PRECIO 5','PRECIO 6']" label="Precio" outlined dense class="bg-white" emit-value />
+            <q-select v-model="precio" :options="priceOptions" label="Precio" outlined dense class="bg-white" emit-value map-options />
           </div>
           <div class="col-12 col-md-2 text-right">
             <q-btn label="Calculos" color="green" icon="o_calculate"  no-caps rounded class="bg-white" @click="calculateDialog = true" />
@@ -215,7 +215,7 @@
                 <q-input outlined dense label="Comentario" v-model="client.comentario" style="text-transform: uppercase" type="textarea"></q-input>
               </div>
               <div class="col-12 col-md-6">
-                <q-input outlined dense label="Producto" v-model="client.producto"  list="products" />
+                <q-input outlined dense label="Producto" v-model="client.producto" list="products" class="sale-highlight-green" />
                 <datalist id="products">
                   <option v-for="p in products" :value="p.nombre" :key="p.id"/>
                 </datalist>
@@ -223,12 +223,12 @@
 <!--                <pre>{{client.producto}}</pre>-->
               </div>
               <div class="col-12 col-md-6">
-                <q-input outlined dense label="Cantidad" v-model="client.cantidad"  />
+                <q-input outlined dense label="Cantidad" v-model="client.cantidad" class="sale-highlight-red" />
               </div>
               <div class="col-12 col-md-6">
-                <div class="text-bold">Precio</div>
+                <div class="text-bold text-blue-8">Precio</div>
                 <div class="text-caption text-primary q-mb-xs">Tarifa del cliente: {{ client.precio_preferido || 'PRECIO 1' }}</div>
-                <q-input outlined dense label="Precio" v-model="precioExtra" />
+                <q-input outlined dense label="Precio" v-model="precioExtra" class="sale-highlight-blue" />
               </div>
               <div class="col-12 col-md-6">
                 <div class="text-bold">Total</div>
@@ -395,7 +395,7 @@ export default {
           module: 'sale'
         }
       }).then(response => {
-        this.categories = [{ id: '', name: 'Selecciona una categorÃ­a' }, ...response.data.categories]
+        this.categories = [{ id: '', name: 'Selecciona una Categoria' }, ...response.data.categories]
         this.products = response.data.products
         this.productsAll = response.data.products
         this.medidas = response.data.medidas
@@ -763,6 +763,13 @@ export default {
     }
   },
   computed: {
+    priceOptions () {
+      return [
+        { label: 'Precio 1 (Cliente)', value: 'PRECIO 1' },
+        { label: 'Precio 2 (Tecnico)', value: 'PRECIO 2' },
+        { label: 'Precio 3 (Distribuidor)', value: 'PRECIO 3' }
+      ]
+    },
     precioProductoSelected () {
       var producto = this.products.find(p => p.nombre === this.client.producto)
       if (producto) {
@@ -839,5 +846,20 @@ export default {
 .page-ui :deep(.q-field__control) {
   border-radius: 12px;
   background: #fff;
+}
+
+.sale-highlight-green :deep(.q-field__control) {
+  background: #dff2d8;
+  border: 2px solid #7cb342;
+}
+
+.sale-highlight-red :deep(.q-field__control) {
+  background: #ffd9dc;
+  border: 2px solid #e57373;
+}
+
+.sale-highlight-blue :deep(.q-field__control) {
+  background: #d9eafc;
+  border: 2px solid #64b5f6;
 }
 </style>

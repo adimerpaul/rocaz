@@ -38,7 +38,7 @@
         <q-select v-model="almacenSelected" :options="['Todo','Almacen 1','Almacen 2']" label="Almacen" outlined dense class="bg-white" emit-value />
       </div>
       <div class="col-12 col-md-2 text-right">
-        <q-select v-model="precio" :options="['PRECIO 1','PRECIO 2','PRECIO 3','PRECIO 4','PRECIO 5','PRECIO 6']" label="Precio" outlined dense class="bg-white" emit-value />
+        <q-select v-model="precio" :options="priceOptions" label="Precio" outlined dense class="bg-white" emit-value map-options />
       </div>
       <div class="col-12 col-md-3 text-right">
         <q-btn label="Categorias" color="black" icon="o_edit" outline no-caps rounded class="bg-white" @click="categoriesDialog = true" />
@@ -53,7 +53,7 @@
       @productSaved="productSaved" @productUpdated="productUpdated" @productDeleted="productDeleted" @categoryCreated="categoryCreated" />
     </q-dialog>
     <q-dialog v-model="categoriesDialog" position="right" maximized>
-      <DialogCategory :categories="categories.filter(c => c.id !== '')" @categoryUpdated="categoryUpdated" @categoryDeleted="categoryDeleted"/>
+      <DialogCategory :categories="categories.filter(c => c.id !== '')" @categoryUpdated="categoryUpdated" @categoryDeleted="categoryDeleted" @categoryCreated="categoryCreated"/>
     </q-dialog>
   </q-page>
 </template>
@@ -116,12 +116,9 @@ export default {
             { label: 'Ubicación', value: 'ubicacion' },
             { label: 'Stock', value: 'stock' },
             { label: 'Stock mínimo', value: 'minStock' },
-            { label: 'Precio 1', value: 'precio1' },
-            { label: 'Precio 2', value: 'precio2' },
-            { label: 'Precio 3', value: 'precio3' },
-            { label: 'Precio 4', value: 'precio4' },
-            { label: 'Precio 5', value: 'precio5' },
-            { label: 'Precio 6', value: 'precio6' },
+            { label: 'Precio 1 (Cliente)', value: 'precio1' },
+            { label: 'Precio 2 (Tecnico)', value: 'precio2' },
+            { label: 'Precio 3 (Distribuidor)', value: 'precio3' },
             { label: 'Categoría', value: 'category_id' },
             { label: 'Medida', value: 'medida_id' }
           ],
@@ -241,6 +238,13 @@ export default {
     }
   },
   computed: {
+    priceOptions () {
+      return [
+        { label: 'Precio 1 (Cliente)', value: 'PRECIO 1' },
+        { label: 'Precio 2 (Tecnico)', value: 'PRECIO 2' },
+        { label: 'Precio 3 (Distribuidor)', value: 'PRECIO 3' }
+      ]
+    },
     ganancias () {
       if (this.products.length === 0) {
         return 0

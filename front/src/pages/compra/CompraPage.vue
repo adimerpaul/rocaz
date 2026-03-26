@@ -29,7 +29,7 @@
             <q-select v-model="almacenSelected" :options="['Todo','Almacen 1','Almacen 2']" label="Almacen" outlined dense class="bg-white" emit-value />
           </div>
           <div class="col-12 col-md-2 text-right">
-            <q-select v-model="precio" :options="['PRECIO 1','PRECIO 2','PRECIO 3','PRECIO 4','PRECIO 5','PRECIO 6']" label="Precio" outlined dense class="bg-white" emit-value />
+            <q-select v-model="precio" :options="priceOptions" label="Precio" outlined dense class="bg-white" emit-value map-options />
           </div>
           <div class="col-12 col-md-2 text-right">
 <!--            <q-btn label="Calculos" color="green" icon="o_calculate"  no-caps rounded class="bg-white" @click="calculateDialog = true" />-->
@@ -335,7 +335,7 @@ export default {
       }).then(response => {
         this.proveedores = response.data.proveedores || []
         this.proveedoresAll = response.data.proveedores || []
-        this.categories = [{ id: '', name: 'Selecciona una categorÃ­a' }, ...response.data.categories]
+        this.categories = [{ id: '', name: 'Selecciona una categoria' }, ...response.data.categories]
         this.products = response.data.products
         this.productsAll = response.data.products
         this.medidas = response.data.medidas
@@ -554,6 +554,13 @@ export default {
     }
   },
   computed: {
+    priceOptions () {
+      return [
+        { label: 'Precio 1 (Cliente)', value: 'PRECIO 1' },
+        { label: 'Precio 2 (Tecnico)', value: 'PRECIO 2' },
+        { label: 'Precio 3 (Distribuidor)', value: 'PRECIO 3' }
+      ]
+    },
     cambio () {
       const efectivo = parseFloat(this.efectivo === '' ? 0 : this.efectivo)
       const total = parseFloat(this.total === '' ? 0 : this.total)

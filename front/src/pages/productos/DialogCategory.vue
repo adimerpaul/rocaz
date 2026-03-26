@@ -9,6 +9,9 @@
     </q-card-section>
     <q-card-section>
       <div class="row">
+        <div class="col-12 q-mb-sm">
+          <q-btn label="Agregar categoria" color="green" icon="add_circle_outline" no-caps @click="categoryCreate" />
+        </div>
         <div class="col-12">
           <q-table :rows="categories" dense :rows-per-page-options="[0]" :columns="[
             { name: 'name', label: 'Nombre', align: 'left', field: 'name' },
@@ -49,6 +52,24 @@ export default {
     }
   },
   methods: {
+    categoryCreate () {
+      this.$q.dialog({
+        title: 'Nueva categoria',
+        message: 'Ingrese el nombre de la categoria',
+        prompt: {
+          model: '',
+          type: 'text'
+        },
+        cancel: true,
+        persistent: true
+      }).onOk(data => {
+        this.$axios.post('categories', { name: data }).then(res => {
+          this.$emit('categoryCreated', res.data)
+        }).catch(err => {
+          this.$alert.error(err.response.data.message)
+        })
+      })
+    },
     categoryEdit (category) {
       this.$q.dialog({
         title: 'Editar categoría',

@@ -53,22 +53,13 @@
             <q-input v-model="product.stock2" label="Stock 2" outlined dense type="number" hint=""/>
           </div>
           <div class="col-6 col-md-4">
-            <q-input v-model="product.precio1" label="Precio 1" outlined dense step="0.01" type="number" hint=""/>
+            <q-input v-model="product.precio1" label="Precio 1 (Cliente)" outlined dense step="0.01" type="number" hint=""/>
           </div>
           <div class="col-6 col-md-4">
-            <q-input v-model="product.precio2" label="Precio 2" outlined dense step="0.01" type="number" hint=""/>
+            <q-input v-model="product.precio2" label="Precio 2 (Tecnico)" outlined dense step="0.01" type="number" hint=""/>
           </div>
           <div class="col-6 col-md-4">
-            <q-input v-model="product.precio3" label="Precio 3" outlined dense step="0.01" type="number" hint=""/>
-          </div>
-          <div class="col-6 col-md-4">
-            <q-input v-model="product.precio4" label="Precio 4" outlined dense step="0.01" type="number" hint=""/>
-          </div>
-          <div class="col-6 col-md-4">
-            <q-input v-model="product.precio5" label="Precio 5" outlined dense step="0.01" type="number" hint=""/>
-          </div>
-          <div class="col-6 col-md-4">
-            <q-input v-model="product.precio6" label="Precio 6" outlined dense step="0.01" type="number" hint=""/>
+            <q-input v-model="product.precio3" label="Precio 3 (Distribuidor)" outlined dense step="0.01" type="number" hint=""/>
           </div>
           <div class="col-6 col-md-4">
             <q-input v-model="product.costo" label="Costo" outlined dense step="0.01" type="number" hint=""/>
@@ -122,7 +113,7 @@
                 <div class="col-6">
                   <div class="text-bold text-grey">
                     <q-icon name="o_paid" class="text-grey" size="20px" />
-                    Precio 1
+                    Precio 1 (Cliente)
                   </div>
                 </div>
                 <div class="col-6">
@@ -131,7 +122,7 @@
                 <div class="col-6">
                   <div class="text-bold text-grey">
                     <q-icon name="o_paid" class="text-grey" size="20px" />
-                    Precio 2
+                    Precio 2 (Tecnico)
                   </div>
                 </div>
                 <div class="col-6">
@@ -140,38 +131,11 @@
                 <div class="col-6">
                   <div class="text-bold text-grey">
                     <q-icon name="o_paid" class="text-grey" size="20px" />
-                    Precio 3
+                    Precio 3 (Distribuidor)
                   </div>
                 </div>
                 <div class="col-6">
                   <div class="text-grey text-caption text-right">{{ product.precio3 }} Bs</div>
-                </div>
-                <div class="col-6">
-                  <div class="text-bold text-grey">
-                    <q-icon name="o_paid" class="text-grey" size="20px" />
-                    Precio 4
-                  </div>
-                </div>
-                <div class="col-6">
-                  <div class="text-grey text-caption text-right">{{ product.precio4 }} Bs</div>
-                </div>
-                <div class="col-6">
-                  <div class="text-bold text-grey">
-                    <q-icon name="o_paid" class="text-grey" size="20px" />
-                    Precio 5
-                  </div>
-                </div>
-                <div class="col-6">
-                  <div class="text-grey text-caption text-right">{{ product.precio5 }} Bs</div>
-                </div>
-                <div class="col-6">
-                  <div class="text-bold text-grey">
-                    <q-icon name="o_paid" class="text-grey" size="20px" />
-                    Precio 6
-                  </div>
-                </div>
-                <div class="col-6">
-                  <div class="text-grey text-caption text-right">{{ product.precio6 }} Bs</div>
                 </div>
               <div class="col-6">
                 <div class="text-bold text-grey">

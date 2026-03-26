@@ -32,7 +32,7 @@
           <div class="col-12 col-md-2" v-if="$store.user.type=='ADMINISTRADOR'">
             <q-select v-model="metodo" label="Metodo" dense outlined class="bg-white" :options="[ 'Todos',...$metodos]" @update:model-value="salesGet('todo')" />
           </div>
-          <div class="col-12 col-md-2 col-lg-2">
+          <div class="col-12 col-md-2 col-lg-2" v-if="$store.user.type=='ADMINISTRADOR'">
             <q-btn-dropdown
               unelevated
               dense
