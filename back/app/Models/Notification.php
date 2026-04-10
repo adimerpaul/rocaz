@@ -13,14 +13,19 @@ class Notification extends Model
         'user_id',
         'actor_user_id',
         'buy_id',
+        'batch_key',
         'type',
         'title',
         'message',
+        'is_manual',
+        'target_scope',
+        'target_branch',
         'read_at'
     ];
 
     protected $casts = [
-        'read_at' => 'datetime'
+        'read_at' => 'datetime',
+        'is_manual' => 'boolean'
     ];
 
     protected $hidden = ['updated_at'];

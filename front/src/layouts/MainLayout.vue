@@ -47,13 +47,13 @@
                 <q-item v-if="notifications.length === 0">
                   <q-item-section>
                     <q-item-label>No hay notificaciones nuevas</q-item-label>
-                    <q-item-label caption>Solo se muestran compras del ultimo dia</q-item-label>
+                    <q-item-label caption>Se muestran las notificaciones mas recientes</q-item-label>
                   </q-item-section>
                 </q-item>
                 <q-item v-for="item in notifications" :key="item.id" clickable>
                   <q-item-section avatar>
                     <q-avatar size="34px" class="notification-avatar">
-                      <q-icon name="o_local_shipping" size="18px" />
+                      <q-icon :name="notificationIcon(item.type)" size="18px" />
                     </q-avatar>
                   </q-item-section>
                   <q-item-section>
@@ -65,6 +65,18 @@
                   </q-item-section>
                   <q-item-section side v-if="!item.read_at">
                     <q-badge rounded color="red" />
+                  </q-item-section>
+                </q-item>
+                <q-separator spaced />
+                <q-item clickable v-close-popup @click="goToAllNotifications">
+                  <q-item-section avatar>
+                    <q-avatar size="34px" class="notification-avatar">
+                      <q-icon name="notifications" size="18px" />
+                    </q-avatar>
+                  </q-item-section>
+                  <q-item-section>
+                    <q-item-label class="text-weight-medium">Mostrar todas las notificaciones</q-item-label>
+                    <q-item-label caption>Ver el historial completo del usuario</q-item-label>
                   </q-item-section>
                 </q-item>
               </q-list>
@@ -169,6 +181,13 @@ import moment from 'moment'
 
 export default {
   name: 'MainLayout',
+  watch: {
+    '$route.path' (value) {
+      if (value === '/') {
+        this.loadNotifications()
+      }
+    }
+  },
   data () {
     return {
       leftDrawerOpen: false,
@@ -203,6 +222,10 @@ export default {
           return 'Reportes'
         case '/graficos':
           return 'Graficos'
+        case '/notifications':
+          return 'Notificaciones'
+        case '/notifications-admin':
+          return 'Admin notificaciones'
         default:
           return 'Movimientos'
       }
@@ -299,6 +322,20 @@ export default {
           caption: 'Analitica visual',
           icon: 'bar_chart',
           show: isAdmin
+        },
+        {
+          to: '/notifications',
+          label: 'Notificaciones',
+          caption: 'Ver historial completo',
+          icon: 'notifications',
+          show: true
+        },
+        {
+          to: '/notifications-admin',
+          label: 'Admin notificaciones',
+          caption: 'Crear y editar avisos',
+          icon: 'campaign',
+          show: isAdmin
         }
       ].filter(item => item.show)
     }
@@ -306,6 +343,12 @@ export default {
   methods: {
     notificationDate (value) {
       return moment(value).format('DD/MM/YYYY HH:mm')
+    },
+    notificationIcon (type) {
+      if (type === 'BUY_CREATED') return 'o_local_shipping'
+      if (type === 'PROMOCION') return 'o_sell'
+      if (type === 'NOVEDAD') return 'o_campaign'
+      return 'notifications'
     },
     loadNotifications () {
       this.$axios.get('notifications')
@@ -331,6 +374,9 @@ export default {
         .catch(error => {
           console.log(error)
         })
+    },
+    goToAllNotifications () {
+      this.$router.push('/notifications')
     },
     toggleLeftDrawer () {
       this.leftDrawerOpen = !this.leftDrawerOpen

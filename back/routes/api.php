@@ -23,6 +23,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/logout', [\App\Http\Controllers\UserController::class, 'logout']);
     Route::get('notifications', [\App\Http\Controllers\NotificationController::class, 'index']);
     Route::post('notifications/read-all', [\App\Http\Controllers\NotificationController::class, 'markAllRead']);
+    Route::get('notifications-admin', [\App\Http\Controllers\NotificationController::class, 'adminIndex']);
+    Route::post('notifications-admin', [\App\Http\Controllers\NotificationController::class, 'store']);
+    Route::put('notifications-admin/{batchKey}', [\App\Http\Controllers\NotificationController::class, 'update']);
+    Route::delete('notifications-admin/{batchKey}', [\App\Http\Controllers\NotificationController::class, 'destroy']);
     Route::get('categories', [\App\Http\Controllers\CategoryController::class, 'index']);
     Route::get('commerce-bootstrap', [\App\Http\Controllers\CommerceBootstrapController::class, 'index']);
     Route::post('categories', [\App\Http\Controllers\CategoryController::class, 'store']);
