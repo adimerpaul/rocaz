@@ -13,8 +13,8 @@
             @click="toggleLeftDrawer"
           />
           <div class="brand-block q-ml-md">
-            <q-avatar rounded size="52px" class="brand-avatar">
-              <q-img src="logo.png" fit="contain" />
+            <q-avatar rounded size="64px" class="brand-avatar">
+              <q-img :src="branchLogo" fit="contain" />
             </q-avatar>
             <div class="brand-copy">
               <q-chip dense square class="brand-chip" text-color="white">
@@ -212,6 +212,11 @@ export default {
     },
     branchLabel () {
       return (import.meta.env.VITE_BRANCH_LABEL || 'CENTRAL').toUpperCase()
+    },
+    branchLogo () {
+      return this.branchLabel.includes('COCHABAMBA')
+        ? '/logoCbba.jpeg'
+        : '/logoOruro.jpeg'
     },
     userInitials () {
       const name = this.$store.user?.name || 'Usuario'
