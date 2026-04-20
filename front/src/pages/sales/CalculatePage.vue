@@ -476,31 +476,31 @@
                 </tbody>
               </q-markup-table>
             </q-tab-panel>
-            <q-tab-panel name="Calculo piso flotante 8 mm">
-              <div class="text-h6 q-mb-md">Calculo piso flotante 8 mm</div>
-              <div class="row">
-                <div class="col-12 col-md-3">
-                  <q-input outlined v-model="$store.pisoFlotante8mm" label="Area (m2)" class="bg-orange" />
-                </div>
-                <div class="col-12 col-md-3 hidden">
-                  <q-input outlined :model-value="redondear($store.pisoFlotante8mmConstante,3)" label="Constante" class="bg-white" readonly/>
-                </div>
-                <div class="col-12 col-md-2">
-                  <q-input outlined :model-value="(($store.pisoFlotante8mm/$store.pisoFlotante8mmConstante)).toFixed()" label="Piezas" class="bg-blue" readonly/>
-                </div>
-                <div class="col-12 col-md-2">
-                  <q-input outlined :model-value="redondear($store.pisoFlotante8mm/$store.pisoFlotante8mmConstante/10)" label="Cajas" class="bg-green" readonly/>
-                </div>
-                <div class="col-12 col-md-5">
-                  <q-select v-model="$store.productoCal13" :options="products" label="Producto"  outlined dense class="bg-white"
-                            option-value="id" option-label="nombre" use-input @filter="filterProducts" clearable>
-                    <template v-slot:after>
-                      <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct((($store.pisoFlotante8mm/$store.pisoFlotante8mmConstante)).toFixed(), $store.productoCal13)"/>
-                    </template>
-                  </q-select>
-                </div>
-              </div>
-            </q-tab-panel>
+<!--            <q-tab-panel name="Calculo piso flotante 8 mm">-->
+<!--              <div class="text-h6 q-mb-md">Calculo piso flotante 8 mm</div>-->
+<!--              <div class="row">-->
+<!--                <div class="col-12 col-md-3">-->
+<!--                  <q-input outlined v-model="$store.pisoFlotante8mm" label="Area (m2)" class="bg-orange" />-->
+<!--                </div>-->
+<!--                <div class="col-12 col-md-3 hidden">-->
+<!--                  <q-input outlined :model-value="redondear($store.pisoFlotante8mmConstante,3)" label="Constante" class="bg-white" readonly/>-->
+<!--                </div>-->
+<!--                <div class="col-12 col-md-2">-->
+<!--                  <q-input outlined :model-value="(($store.pisoFlotante8mm/$store.pisoFlotante8mmConstante)).toFixed()" label="Piezas" class="bg-blue" readonly/>-->
+<!--                </div>-->
+<!--                <div class="col-12 col-md-2">-->
+<!--                  <q-input outlined :model-value="redondear($store.pisoFlotante8mm/$store.pisoFlotante8mmConstante/10)" label="Cajas" class="bg-green" readonly/>-->
+<!--                </div>-->
+<!--                <div class="col-12 col-md-5">-->
+<!--                  <q-select v-model="$store.productoCal13" :options="products" label="Producto"  outlined dense class="bg-white"-->
+<!--                            option-value="id" option-label="nombre" use-input @filter="filterProducts" clearable>-->
+<!--                    <template v-slot:after>-->
+<!--                      <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct((($store.pisoFlotante8mm/$store.pisoFlotante8mmConstante)).toFixed(), $store.productoCal13)"/>-->
+<!--                    </template>-->
+<!--                  </q-select>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </q-tab-panel>-->
             <q-tab-panel name="Calculo piso flotante SPC">
               <div class="text-h6 q-mb-md">Calculo piso flotante SPC</div>
               <div class="row">
@@ -526,31 +526,31 @@
                 </div>
               </div>
             </q-tab-panel>
-            <q-tab-panel name="Calculo piso flotante 12 mm">
-              <div class="text-h6 q-mb-md">Calculo piso flotante 12 mm</div>
-              <div class="row">
-                <div class="col-12 col-md-3">
-                  <q-input outlined v-model="$store.pisoFlotante12mm" label="Area (m2)" class="bg-orange" />
-                </div>
+<!--            <q-tab-panel name="Calculo piso flotante 12 mm">-->
+<!--              <div class="text-h6 q-mb-md">Calculo piso flotante 12 mm</div>-->
+<!--              <div class="row">-->
 <!--                <div class="col-12 col-md-3">-->
-<!--                  <q-input outlined :model-value="redondear($store.pisoFlotante12mmConstante,3)" label="Constante" class="bg-white" readonly/>-->
+<!--                  <q-input outlined v-model="$store.pisoFlotante12mm" label="Area (m2)" class="bg-orange" />-->
 <!--                </div>-->
-                <div class="col-12 col-md-2">
-                  <q-input outlined :model-value="redondear($store.pisoFlotante12mm/$store.pisoFlotante12mmConstante)" label="Piezas" class="bg-blue" readonly/>
-                </div>
-                <div class="col-12 col-md-2">
-                  <q-input outlined :model-value="redondear($store.pisoFlotante12mm/$store.pisoFlotante12mmConstante/10)" label="Cajas" class="bg-green" readonly/>
-                </div>
-                <div class="col-12 col-md-5">
-                  <q-select v-model="$store.productoCal15" :options="products" label="Producto"  outlined dense class="bg-white"
-                            option-value="id" option-label="nombre" use-input @filter="filterProducts" clearable>
-                    <template v-slot:after>
-                      <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct(redondear($store.pisoFlotante12mm/$store.pisoFlotante12mmConstante), $store.productoCal15)"/>
-                    </template>
-                  </q-select>
-                </div>
-              </div>
-            </q-tab-panel>
+<!--&lt;!&ndash;                <div class="col-12 col-md-3">&ndash;&gt;-->
+<!--&lt;!&ndash;                  <q-input outlined :model-value="redondear($store.pisoFlotante12mmConstante,3)" label="Constante" class="bg-white" readonly/>&ndash;&gt;-->
+<!--&lt;!&ndash;                </div>&ndash;&gt;-->
+<!--                <div class="col-12 col-md-2">-->
+<!--                  <q-input outlined :model-value="redondear($store.pisoFlotante12mm/$store.pisoFlotante12mmConstante)" label="Piezas" class="bg-blue" readonly/>-->
+<!--                </div>-->
+<!--                <div class="col-12 col-md-2">-->
+<!--                  <q-input outlined :model-value="redondear($store.pisoFlotante12mm/$store.pisoFlotante12mmConstante/10)" label="Cajas" class="bg-green" readonly/>-->
+<!--                </div>-->
+<!--                <div class="col-12 col-md-5">-->
+<!--                  <q-select v-model="$store.productoCal15" :options="products" label="Producto"  outlined dense class="bg-white"-->
+<!--                            option-value="id" option-label="nombre" use-input @filter="filterProducts" clearable>-->
+<!--                    <template v-slot:after>-->
+<!--                      <q-btn dense size="14px" color="primary" round icon="add" @click="addProduct(redondear($store.pisoFlotante12mm/$store.pisoFlotante12mmConstante), $store.productoCal15)"/>-->
+<!--                    </template>-->
+<!--                  </q-select>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </q-tab-panel>-->
           </q-tab-panels>
         </template>
 

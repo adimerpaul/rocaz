@@ -681,6 +681,8 @@ export default {
       }
     },
     clickSale () {
+      // limpiar
+      this.precioExtra = ''
       this.saleDialog = true
       this.descuento = ''
       this.efectivo = ''

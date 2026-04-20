@@ -307,7 +307,7 @@ export default {
           label: 'Reportes',
           caption: 'Consultar reportes',
           icon: 'o_print',
-          show: true
+          show: isAdmin
         },
         {
           to: '/users',
