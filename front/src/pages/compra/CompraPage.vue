@@ -483,18 +483,18 @@ export default {
     clickSale () {
       console.log('a')
       // nose puede comprara si el total es arriba de 10000
-      if (this.total > 10000) {
-        this.$q.dialog({
-          title: 'Alerta',
-          message: 'El total de la compra es mayor a 10,000 Bs. ¿Deseas continuar?',
-          cancel: true,
-          persistent: true
-        }).onOk(() => {
-          this.openSaleDialog()
-        })
-      } else {
+      // if (this.total > 10000) {
+      //   this.$q.dialog({
+      //     title: 'Alerta',
+      //     message: 'El total de la compra es mayor a 10,000 Bs. ¿Deseas continuar?',
+      //     cancel: true,
+      //     persistent: true
+      //   }).onOk(() => {
+      //     this.openSaleDialog()
+      //   })
+      // } else {
         this.openSaleDialog()
-      }
+      // }
     },
     openSaleDialog () {
       this.saleDialog = true
