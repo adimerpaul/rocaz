@@ -451,9 +451,6 @@ export default {
         precio_preferido: client.precio_preferido || 'PRECIO 1'
       }
       this.selectedSpecialClientId = client.id
-      this.precio = this.client.precio_preferido
-      this.applyPreferredPriceToCart()
-      this.precioExtra = this.precioProductoSelected
     },
     getProductPriceByPreference (product, priceKey) {
       const fieldMap = {
@@ -592,7 +589,7 @@ export default {
         descuento: this.descuento,
         producto: this.client.producto,
         cantidad: this.client.cantidad === '' || this.client.cantidad === undefined ? 0 : this.client.cantidad,
-        precioProducto: this.precioProductoSelected
+        precioProducto: this.precioExtra
       }).then(response => {
         // console.log(response.data)
         Imprimir.nota(response.data)
