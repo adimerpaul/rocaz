@@ -253,8 +253,12 @@ Oruro</div>
 </table><hr><div class='titulo'>DETALLE</div>`
         detalle.forEach(r => {
           cadena += `<div style='font-size: 12px'><b> ${r.nombre} </b></div>`
-          cadena += `<div><span style='font-size: 18px;font-weight: bold'>${r.cantidadVenta}</span> ${parseFloat(r.precioVenta).toFixed(2)} 0.00
+          if (r.visible === true || r.visible === 1) {
+            cadena += `<div><span style='font-size: 18px;font-weight: bold'>${r.cantidadVenta}</span> ${parseFloat(r.precioVenta).toFixed(2)} 0.00
                     <span style='float:right'>${parseFloat(r.precioVenta * r.cantidadVenta).toFixed(2)}</span></div>`
+          } else {
+            cadena += `<div><span style='font-size: 18px;font-weight: bold'>${r.cantidadVenta}</span></div>`
+          }
         })
         cadena += `<hr>
 <div>${cliente.comentario === '' || cliente.comentario === null || cliente.comentario === undefined ? '' : 'Comentario: ' + cliente.comentario}</div>
